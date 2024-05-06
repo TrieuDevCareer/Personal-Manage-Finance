@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import "./ErrorMessage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.scss";
 
-function Header() {
+function Header({ clickPattern, setClickPattern }) {
   let [styleIncome, setStyleIncome] = useState("box-bg default-btn");
   let [styleExpense, setStyleExpense] = useState("box-bg default-btn");
   let [styleSaving, setStyleSaving] = useState("box-bg default-btn");
   let [styleInvest, setStyleInvest] = useState("box-bg default-btn");
 
   function onClickHeaderBtn(typeBtn) {
+    setClickPattern("header");
     switch (typeBtn) {
       case "Income":
         setStyleIncome("box-bg gradient-btn");
@@ -38,7 +39,14 @@ function Header() {
     }
     return;
   }
-
+  useEffect(() => {
+    if (clickPattern !== "header") {
+      setStyleIncome("box-bg default-btn");
+      setStyleExpense("box-bg default-btn");
+      setStyleInvest("box-bg default-btn");
+      setStyleSaving("box-bg default-btn");
+    }
+  }, [clickPattern]);
   return (
     <div className="header-container">
       <div className={styleIncome}>
