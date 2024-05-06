@@ -1,0 +1,38 @@
+@import "../../style/variables.scss";
+
+.header-container {
+    display: grid;
+    grid-template-columns: 15% 15% 15% 15%;
+    position: relative;
+    transform: translate(0%, 70%);
+
+    .box-bg {
+        margin-left: 10%;
+        text-align: center;
+        border-radius: 10px;
+
+        .txt-style {
+            color: var(--text-light-color);
+            text-decoration: none;
+
+            p {
+                position: relative;
+                transform: translate(0%, 25%);
+            }
+        }
+
+    }
+
+    .gradient-btn {
+        background-color: var(--background-title-color);
+    }
+
+    .default-btn {
+        background-color: var(--background-rdcolor);
+    }
+
+    .box-bg:hover {
+        background: var(--background-title-color);
+        background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+    }
+}

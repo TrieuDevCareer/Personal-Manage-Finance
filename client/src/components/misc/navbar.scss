@@ -1,0 +1,29 @@
+@import "../../style/variables.scss";
+
+.vertical-nav {
+    min-width: 17rem;
+    width: 17rem;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s;
+    background-color: var(--background-stcolor);
+
+    .list-nav {
+        list-style-type: none;
+
+        li {
+            margin-bottom: 10%;
+            font-weight: 600;
+        }
+
+        .line-nav {
+            height: 2px;
+            width: 90%;
+            border-width: 0;
+            color: gray;
+            background-color: gray
+        }
+    }
+}
