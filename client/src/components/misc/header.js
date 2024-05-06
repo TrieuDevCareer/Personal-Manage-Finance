@@ -42,7 +42,7 @@ function Header() {
   return (
     <div className="header-container">
       <div className={styleIncome}>
-        <Link className="txt-style" to="/expense" onClick={() => onClickHeaderBtn("Income")}>
+        <Link className="txt-style" to="/income" onClick={() => onClickHeaderBtn("Income")}>
           <p>Báo cáo thu</p>
         </Link>
       </div>
@@ -52,12 +52,12 @@ function Header() {
         </Link>
       </div>
       <div className={styleSaving}>
-        <Link className="txt-style" to="/expense" onClick={() => onClickHeaderBtn("Saving")}>
+        <Link className="txt-style" to="/saving" onClick={() => onClickHeaderBtn("Saving")}>
           <p>Báo cáo Tiết kiệm</p>
         </Link>
       </div>
       <div className={styleInvest}>
-        <Link className="txt-style" to="/expense" onClick={() => onClickHeaderBtn("Invest")}>
+        <Link className="txt-style" to="/invest" onClick={() => onClickHeaderBtn("Invest")}>
           <p>Báo cáo Đầu tư</p>
         </Link>
       </div>
