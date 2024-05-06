@@ -9,9 +9,17 @@
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.4s;
     background-color: var(--background-stcolor);
+    .nav-logo {
+            position: relative;
+            top: -2rem;
+            width: 9rem;
+            left: 2rem;
+        }
 
     .list-nav {
         list-style-type: none;
+            position: relative;
+                top: -2rem;
 
         li {
             margin-bottom: 10%;
@@ -21,10 +29,17 @@
         .txt-style {
 
             text-decoration: none;
+            display: flex;
 
             p {
                 position: relative;
                 transform: translate(0%, 25%);
+                margin-left: 0.3rem;
+            }
+            .nav-icon{
+                width: 2rem;
+                height: fit-content;
+                border-radius: 50%;
             }
         }
 
@@ -48,7 +63,7 @@
         height: 1.1px;
         position: absolute;
         left: 1rem;
-        top: 5rem;
+        top: 6rem;
         background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
     }
 

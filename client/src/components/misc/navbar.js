@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// import Logo from "../../../public/image/logo.png";
 // import "./ErrorMessage.scss";
 import "./navbar.scss";
 
@@ -77,42 +78,43 @@ function Navbar({ clickPattern, setClickPattern }) {
   }, [clickPattern]);
   return (
     <div className="vertical-nav">
+      <Link to="/">
+        <img src={"/images/logo.png"} alt="..." className="nav-logo" />
+      </Link>
       <ul className="list-nav">
         <li>
-          <img
-            src="https://bootstrapious.com/i/snippets/sn-v-nav/avatar.png"
-            alt="..."
-            width="65"
-            className="mr-3 rounded-circle img-thumbnail shadow-sm"
-          />
-        </li>
-        <li>
           <Link className={styleIncome} to="/income" onClick={() => onClickHeaderBtn("Income")}>
+            <img src={"/images/income.png"} alt="..." className="nav-icon" />
             <p>Thu</p>
           </Link>
         </li>
         <li>
           <Link className={styleExpense} to="/expense" onClick={() => onClickHeaderBtn("Expense")}>
+            <img src={"/images/expense.png"} alt="..." className="nav-icon" />
             <p>Chi</p>
           </Link>
         </li>
         <li>
           <Link className={styleSaving} to="/saving" onClick={() => onClickHeaderBtn("Saving")}>
+            <img src={"/images/saving.png"} alt="..." className="nav-icon" />
             <p>Tiết kiệm</p>
           </Link>
         </li>
         <li>
           <Link className={styleInvest} to="/invest" onClick={() => onClickHeaderBtn("Invest")}>
+            <img src={"/images/invest.png"} alt="..." className="nav-icon" />
             <p>Đầu tư</p>
           </Link>
         </li>
         <li>
           <Link className={styleContent} to="/invest" onClick={() => onClickHeaderBtn("Content")}>
+            <img src={"/images/content.png"} alt="..." className="nav-icon" />
             <p>Danh mục</p>
           </Link>
         </li>
         <li>
           <Link className={styleTotal} to="/invest" onClick={() => onClickHeaderBtn("Total")}>
+            <img src={"/images/total.png"} alt="..." className="nav-icon" />
             <p>Tổng hợp</p>
           </Link>
         </li>
