@@ -1,0 +1,16 @@
+@import url("../../../style//variables.scss");
+
+.income-container {
+    justify-content: center;
+    justify-items: center;
+    display: grid;
+    margin: 1rem;
+    text-align: center;
+
+    .title-income {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--background-title-color);
+    }
+}

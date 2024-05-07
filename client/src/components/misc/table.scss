@@ -1,0 +1,56 @@
+@import url("../../style/variables.scss");
+
+
+// table {
+//     border: 2px solid forestgreen;
+//     width: 800px;
+//     height: 200px;
+// }
+
+// th {
+//     border-bottom: 1px solid black;
+// }
+
+// td {
+//     text-align: center;
+// }
+
+.table-root {
+    width: 68rem;
+    height: auto;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    overflow-y: auto;
+
+    .table-container {
+        width: auto;
+        height: auto;
+        background-color: var(--background-ndcolor);
+
+        .table-header {
+            .table-title {
+                font-size: 0.8rem;
+                width: 14rem;
+                height: 2rem;
+                text-align: center;
+                font-weight: bold;
+                // background-color: var(--background-green-color);
+                border: 1px solid var(--background-title-color);
+            }
+
+            .stt-style {
+                width: 5rem;
+            }
+        }
+
+        .table-Item {
+            .item-value {
+                border: 1px solid var(--background-title-color);
+                border-collapse: collapse;
+                text-align: center;
+                height: 2rem;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+@import url("../../../style//variables.scss");
+
+.expense-container {
+    justify-content: center;
+    justify-items: center;
+    display: grid;
+    margin: 1rem;
+    text-align: center;
+    height: 37rem;
+
+    .title-expense {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--background-title-color);
+    }
+}

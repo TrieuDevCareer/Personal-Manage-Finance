@@ -1,0 +1,37 @@
+@import url("../../../style//variables.scss");
+
+.saving-container {
+    .report-saving {
+        display: grid;
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns: auto;
+        font-size: small;
+        margin-bottom: 1rem;
+
+        .report-item {
+            display: flex;
+            justify-content: end;
+            height: 1.5rem;
+        }
+
+        p {
+            justify-content: flex-end;
+            margin-right: 2rem;
+        }
+
+        span {}
+    }
+
+    justify-content: center;
+    justify-items: center;
+    display: grid;
+    margin: 1rem;
+    text-align: center;
+
+    .title-saving {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--background-title-color);
+    }
+}
