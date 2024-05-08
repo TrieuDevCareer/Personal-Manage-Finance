@@ -20,7 +20,7 @@ function Income() {
     <div className="income-container">
       <div className="title-income">DANH SÁCH CÁC KHOẢN THU</div>
       <div>
-        <Table oData={oData} aTitle={aTitle} colorTitle={"#0ecb74"} />
+        <Table oData={oData} aTitle={aTitle} rowsPerPage={14} colorTitle={"#0ecb74"} />
       </div>
     </div>
   );

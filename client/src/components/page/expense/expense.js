@@ -47,13 +47,13 @@ function Expense() {
       date: "07/5/2024",
       listIncome: "SO-Lương",
       typeIncome: "SO",
-      content: "Ăn sáng",
+      content: "Ăn sáng111",
       Money: x.toLocaleString("it-IT", { style: "currency", currency: "VND" }),
     },
     {
       date: "07/5/2024",
       listIncome: "SO-Lương",
-      typeIncome: "SO",
+      typeIncome: "SO111",
       content: "Ăn sáng",
       Money: x.toLocaleString("it-IT", { style: "currency", currency: "VND" }),
     },
@@ -159,7 +159,7 @@ function Expense() {
   return (
     <div className="expense-container">
       <div className="title-expense">DANH SÁCH CÁC KHOẢN CHI</div>
-      <Table oData={oData} aTitle={aTitle} colorTitle={"#ff007f"} />
+      <Table oData={oData} aTitle={aTitle} rowsPerPage={14} colorTitle={"#ff007f"} />
     </div>
   );
 }

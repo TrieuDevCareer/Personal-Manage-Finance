@@ -6,6 +6,7 @@
     display: grid;
     margin: 1rem;
     text-align: center;
+    grid-auto-rows: max-content auto;
 
     .title-income {
         text-align: center;

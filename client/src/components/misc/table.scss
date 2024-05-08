@@ -16,7 +16,7 @@
 // }
 
 .table-root {
-    width: 68rem;
+    width: auto;
     height: auto;
     margin-top: 1.5rem;
     overflow-x: auto;
@@ -34,8 +34,9 @@
                 height: 2rem;
                 text-align: center;
                 font-weight: bold;
-                // background-color: var(--background-green-color);
                 border: 1px solid var(--background-title-color);
+                position: sticky;
+                top: 0;
             }
 
             .stt-style {
@@ -51,6 +52,23 @@
                 height: 2rem;
                 font-size: 0.9rem;
             }
+        }
+    }
+
+    .foot-table {
+        display: flex;
+        justify-content: end;
+        margin-top: 1rem;
+
+        .btn-style {
+            margin-left: 1rem;
+            cursor: pointer;
+
+        }
+
+        .btn-style:hover {
+            color: var(--background-title-color);
+            color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }
     }
 }

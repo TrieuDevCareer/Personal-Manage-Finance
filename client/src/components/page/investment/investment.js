@@ -47,7 +47,7 @@ function Investment() {
         </div>
       </div>
       <div className="title-invest">DANH SÁCH ĐẦU TƯ</div>
-      <Table oData={oData} aTitle={aTitle} colorTitle={"#ff0000"} />
+      <Table oData={oData} aTitle={aTitle} rowsPerPage={10} colorTitle={"#ff0000"} />
     </div>
   );
 }

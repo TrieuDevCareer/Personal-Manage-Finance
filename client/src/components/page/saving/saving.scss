@@ -1,6 +1,8 @@
 @import url("../../../style//variables.scss");
 
 .saving-container {
+    grid-auto-rows: max-content auto;
+
     .report-saving {
         display: grid;
         grid-template-rows: auto auto auto auto;

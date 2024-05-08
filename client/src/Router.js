@@ -5,6 +5,8 @@ import Income from "./components/page/income/income";
 import Expense from "./components/page/expense/expense";
 import Saving from "./components/page/saving/saving";
 import Investment from "./components/page/investment/investment";
+import Catalog from "./components/page/catalog/catalog";
+import Generate from "./components/page/generate/generate";
 
 function Router() {
   return (
@@ -14,6 +16,8 @@ function Router() {
       <Route path="/expense" element={<Expense />} />
       <Route path="/saving" element={<Saving />} />
       <Route path="/invest" element={<Investment />} />
+      <Route path="/catalog" element={<Catalog />} />
+      <Route path="/generate" element={<Generate />} />
     </Routes>
   );
 }

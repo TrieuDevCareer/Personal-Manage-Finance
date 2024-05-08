@@ -1,7 +1,7 @@
 import React from "react";
 // import "./ErrorMessage.scss";
 import { Link, useNavigate } from "react-router-dom";
-import Table from "../../misc/table.js";
+import Table from "../../misc/table";
 import "./saving.scss";
 
 function Saving() {
@@ -143,7 +143,7 @@ function Saving() {
         </div>
       </div>
       <div className="title-saving">DANH SÁCH GỬI TIẾT KIỆM</div>
-      <Table oData={oData} aTitle={aTitle} colorTitle={"#0ecb74"} />
+      <Table oData={oData} aTitle={aTitle} rowsPerPage={10} colorTitle={"#0ecb74"} />
     </div>
   );
 }

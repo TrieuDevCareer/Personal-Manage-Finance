@@ -1,0 +1,58 @@
+@import url("../../../style//variables.scss");
+
+.catalog-container {
+    justify-content: center;
+    justify-items: center;
+    display: grid;
+    margin: 1rem;
+    text-align: center;
+    grid-auto-rows: max-content auto;
+
+    .catalog-table-container {
+        display: grid;
+        grid-template-columns: 17rem 17rem auto;
+        width: 68rem;
+
+        .catalog-income {
+            margin-right: 1rem;
+        }
+
+        .catalog-expense {
+            margin-right: 1rem;
+        }
+
+        .catalog-group {
+            display: grid;
+            grid-template-rows: auto auto auto;
+            height: 36rem;
+        }
+
+        .catalog-frs-group {
+            display: grid;
+            grid-template-columns: 17rem 17rem;
+            height: 14rem;
+
+            .catalog-saving {
+                margin-right: 1rem;
+            }
+        }
+
+        .catalog-snd-group {
+            display: grid;
+            grid-template-columns: 17rem 17rem;
+            height: 10rem;
+
+            .catalog-status-saving {
+                margin-right: 1rem;
+            }
+        }
+
+        .catalog-link {
+            .catalog-link-style {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+}

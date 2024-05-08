@@ -107,13 +107,13 @@ function Navbar({ clickPattern, setClickPattern }) {
           </Link>
         </li>
         <li>
-          <Link className={styleContent} to="/invest" onClick={() => onClickHeaderBtn("Content")}>
+          <Link className={styleContent} to="/catalog" onClick={() => onClickHeaderBtn("Content")}>
             <img src={"/images/content.png"} alt="..." className="nav-icon" />
             <p>Danh mục</p>
           </Link>
         </li>
         <li>
-          <Link className={styleTotal} to="/invest" onClick={() => onClickHeaderBtn("Total")}>
+          <Link className={styleTotal} to="/generate" onClick={() => onClickHeaderBtn("Total")}>
             <img src={"/images/total.png"} alt="..." className="nav-icon" />
             <p>Tổng hợp</p>
           </Link>
