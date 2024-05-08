@@ -7,11 +7,14 @@ import Saving from "./components/page/saving/saving";
 import Investment from "./components/page/investment/investment";
 import Catalog from "./components/page/catalog/catalog";
 import Generate from "./components/page/generate/generate";
+import BarChartType from "./components/misc/charts/barChart";
+import AreaChartType from "./components/misc/charts/areaChart";
+import PieChartType from "./components/misc/charts/pieChart";
 
 function Router() {
   return (
     <Routes>
-      <Route exact path="/" element={<Home />} />
+      <Route exact path="/" element={<PieChartType />} />
       <Route path="/income" element={<Income />} />
       <Route path="/expense" element={<Expense />} />
       <Route path="/saving" element={<Saving />} />
