@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Table from "../../misc/table.js";
 import "./expense.scss";
 
-function Expense() {
+function Expense({ isCheck, setIsCheck }) {
   const aTitle = ["NGÀY THÁNG", "DANH MỤC CHI", " QUỸ-TÀI KHOẢN", "NỘI DUNG CHI", "SỐ TIỀN CHI"];
   let x = 35000;
   const oData = [
@@ -159,7 +159,14 @@ function Expense() {
   return (
     <div className="expense-container">
       <div className="title-expense">DANH SÁCH CÁC KHOẢN CHI</div>
-      <Table oData={oData} aTitle={aTitle} rowsPerPage={14} colorTitle={"#ff007f"} />
+      <Table
+        oData={oData}
+        aTitle={aTitle}
+        rowsPerPage={12}
+        isCheck={isCheck}
+        setIsCheck={setIsCheck}
+        colorTitle={"#ff007f"}
+      />
     </div>
   );
 }

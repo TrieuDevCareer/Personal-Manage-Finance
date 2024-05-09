@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Table from "../../misc/table.js";
 import "./investment.scss";
 
-function Investment() {
+function Investment({ isCheck, setIsCheck }) {
   const aTitle = [
     "NGÀY MUA",
     "MÃ COIN",
@@ -47,7 +47,14 @@ function Investment() {
         </div>
       </div>
       <div className="title-invest">DANH SÁCH ĐẦU TƯ</div>
-      <Table oData={oData} aTitle={aTitle} rowsPerPage={10} colorTitle={"#ff0000"} />
+      <Table
+        oData={oData}
+        aTitle={aTitle}
+        rowsPerPage={7}
+        isCheck={isCheck}
+        setIsCheck={setIsCheck}
+        colorTitle={"#ff0000"}
+      />
     </div>
   );
 }

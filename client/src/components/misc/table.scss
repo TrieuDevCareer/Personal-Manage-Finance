@@ -42,6 +42,10 @@
             .stt-style {
                 width: 5rem;
             }
+
+            .edit-style {
+                width: 2rem;
+            }
         }
 
         .table-Item {
@@ -51,6 +55,18 @@
                 text-align: center;
                 height: 2rem;
                 font-size: 0.9rem;
+            }
+
+            .btn-style-edit {
+                height: 2rem;
+                width: 2rem;
+                cursor: pointer;
+                margin-left: 0.5rem;
+            }
+
+            .btn-style-edit:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
             }
         }
     }
@@ -69,6 +85,16 @@
         .btn-style:hover {
             color: var(--background-title-color);
             color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .btn-style-delete {
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-style-delete:hover {
+            color: var(--text-danger-color);
+            color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
         }
     }
 }

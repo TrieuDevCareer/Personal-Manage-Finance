@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import "./ErrorMessage.scss";
 import "./navbar.scss";
 
-function Navbar({ clickPattern, setClickPattern }) {
+function Navbar({ clickPattern, setClickPattern, isCheck, setIsCheck }) {
   let [styleIncome, setStyleIncome] = useState("txt-style default-color");
   let [styleExpense, setStyleExpense] = useState("txt-style default-color");
   let [styleSaving, setStyleSaving] = useState("txt-style default-color");
@@ -14,6 +14,7 @@ function Navbar({ clickPattern, setClickPattern }) {
 
   function onClickHeaderBtn(typeBtn) {
     setClickPattern("navbar");
+    setIsCheck(false);
     switch (typeBtn) {
       case "Income":
         setStyleIncome("txt-style gradient-color");

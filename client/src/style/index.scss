@@ -22,7 +22,7 @@ body {
         .group-left-area {
             display: grid;
             grid-template-columns: 10rem auto;
-            grid-template-rows: 6rem 40rem;
+            grid-template-rows: 6rem 42rem;
             grid-template-areas: 'header header' 'main main';
 
             .header-navbar {

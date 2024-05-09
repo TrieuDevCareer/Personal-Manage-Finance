@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Table from "../../misc/table.js";
 import "./catalog.scss";
 
-function Catalog() {
+function Catalog({ isCheck, setIsCheck }) {
   const aTitleIncome = ["DANH MỤC THU", "MÃ"];
   const aTitleExpense = ["DANH MỤC CHI", "MÃ"];
   const aTitleInvest = ["DANH MỤC COIN"];
@@ -14,6 +14,50 @@ function Catalog() {
   const aTitleLink = ["DANH MỤC LINK"];
 
   const oDataIncome = [
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
+    {
+      income: "Lương",
+      code: "SO",
+    },
     {
       income: "Lương",
       code: "SO",
@@ -53,7 +97,9 @@ function Catalog() {
           <Table
             oData={oDataIncome}
             aTitle={aTitleIncome}
-            rowsPerPage={14}
+            rowsPerPage={11}
+            isCheck={isCheck}
+            setIsCheck={setIsCheck}
             colorTitle={"#f87c8b"}
           />
         </div>
@@ -61,7 +107,9 @@ function Catalog() {
           <Table
             oData={oDataIncome}
             aTitle={aTitleExpense}
-            rowsPerPage={14}
+            rowsPerPage={11}
+            isCheck={isCheck}
+            setIsCheck={setIsCheck}
             colorTitle={"#0ecb74"}
           />
         </div>
@@ -71,7 +119,9 @@ function Catalog() {
               <Table
                 oData={oDataGenerate}
                 aTitle={aTitleSaving}
-                rowsPerPage={4}
+                rowsPerPage={3}
+                isCheck={isCheck}
+                setIsCheck={setIsCheck}
                 colorTitle={"#21a0ff"}
               />
             </div>
@@ -79,7 +129,9 @@ function Catalog() {
               <Table
                 oData={oDataGenerate}
                 aTitle={aTitleInvest}
-                rowsPerPage={4}
+                rowsPerPage={3}
+                isCheck={isCheck}
+                setIsCheck={setIsCheck}
                 colorTitle={"#ffd966"}
               />
             </div>
@@ -90,6 +142,8 @@ function Catalog() {
                 oData={oDataGenerate}
                 aTitle={aTitleSavingSta}
                 rowsPerPage={2}
+                isCheck={isCheck}
+                setIsCheck={setIsCheck}
                 colorTitle={"#21a0ff"}
               />
             </div>
@@ -98,6 +152,8 @@ function Catalog() {
                 oData={oDataGenerate}
                 aTitle={aTitleInvestSta}
                 rowsPerPage={2}
+                isCheck={isCheck}
+                setIsCheck={setIsCheck}
                 colorTitle={"#ffd966"}
               />
             </div>
@@ -108,6 +164,8 @@ function Catalog() {
                 oData={oDataGenerate}
                 aTitle={aTitleLink}
                 rowsPerPage={3}
+                isCheck={isCheck}
+                setIsCheck={setIsCheck}
                 colorTitle={"#70ad47"}
               />
             </div>
