@@ -9,7 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import "./table.scss";
 
-function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, colorTitle }) {
+function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, colorTitle }) {
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
   const maxPage = Math.ceil(oData.length / rowsPerPage);
@@ -75,7 +75,7 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, colorTitle }) 
             );
           })}
           <td className="item-value">
-            <EditNoteIcon className="btn-style-edit" />
+            <EditNoteIcon className="btn-style-edit" onClick={() => editIncome(item)} />
           </td>
         </tr>
       );
@@ -114,7 +114,7 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, colorTitle }) 
         {isCheck ? (
           <DeleteIcon className="btn-style-delete" />
         ) : (
-          <AddCircleIcon className="btn-style" />
+          <AddCircleIcon className="btn-style" onClick={() => editIncome(null)} />
         )}
         <ArrowForwardIosIcon
           className="btn-style"
