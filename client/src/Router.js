@@ -11,17 +11,19 @@ import BarChartType from "./components/misc/charts/barChart";
 import AreaChartType from "./components/misc/charts/areaChart";
 import PieChartType from "./components/misc/charts/pieChart";
 import IncomeEditor from "./components/page/income/incomeEditor";
+import Register from "./components/auth/register";
 
 function Router({ isCheck, setIsCheck }) {
   return (
     <Routes>
-      <Route exact path="/" element={<IncomeEditor isCheck={isCheck} setIsCheck={setIsCheck} />} />
+      <Route exact path="/" element={<Home isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/income" element={<Income isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/expense" element={<Expense isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/saving" element={<Saving isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/invest" element={<Investment isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/catalog" element={<Catalog isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/generate" element={<Generate />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
