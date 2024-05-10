@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -7,31 +10,45 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import domain from "../../util/domain";
 import "./table.scss";
 
-function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, colorTitle }) {
+function Table({
+  oData,
+  aKeyItem,
+  aTitle,
+  rowsPerPage,
+  isCheck,
+  setIsCheck,
+  editModel,
+  oRouter,
+  colorTitle,
+}) {
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
+
+  const navigate = useNavigate();
+
   const maxPage = Math.ceil(oData.length / rowsPerPage);
-  const handleArrowBackPage = (event, newPage) => {
+  const handleArrowBackPage = (_event, newPage) => {
     setPage(newPage > 0 ? newPage - 1 : 0);
   };
 
-  const handleArrowForwardPage = (event, newPage) => {
+  const handleArrowForwardPage = (_event, newPage) => {
     setPage(newPage < maxPage ? newPage + 1 : maxPage);
   };
-  const handleArrowBackMaxPage = (event) => {
+  const handleArrowBackMaxPage = () => {
     setPage(0);
   };
 
-  const handleArrowForwardMaxPage = (event) => {
+  const handleArrowForwardMaxPage = () => {
     setPage(maxPage);
   };
 
   function renderHeaderTable() {
     return aTitle.map((titleItem, i) => {
       return (
-        <th className={"table-title"} style={{ backgroundColor: colorTitle }}>
+        <th className={"table-title"} style={{ backgroundColor: colorTitle }} key={i}>
           {titleItem}
         </th>
       );
@@ -40,9 +57,9 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, co
 
   function renderDataTable() {
     let sortedItem = [...oData];
-    // sortedItem = sortedItem.sort((a, b) => {
-    //   return new Date(b.createdAt) - new Date(a.createdAt);
-    // });
+    sortedItem = sortedItem.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
     sortedItem = sortedItem.map((item, i) => {
       return Object.assign({ stt: i + 1 }, item);
     });
@@ -51,7 +68,10 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, co
         ? sortedItem.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : sortedItem;
     return sortedItem.map((item, i) => {
-      let aValue = Object.values(item);
+      const filteredObj = {};
+      aKeyItem.forEach((key) => {
+        filteredObj[key] = item[key];
+      });
       return (
         <tr className="table-Item" key={i}>
           <td className="item-value">
@@ -66,16 +86,15 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, co
               onChange={handleChange}
             />
           </td>
-          {aValue.map((value, i) => {
+          {aKeyItem.map((element, i) => {
             return (
-              <td className="item-value">
-                <span>{value}</span>
-                {/* {aTitle.length === i + 1 && <EditNoteIcon className="btn-style-edit" />} */}
+              <td className="item-value" key={i}>
+                <span>{filteredObj[element]}</span>
               </td>
             );
           })}
           <td className="item-value">
-            <EditNoteIcon className="btn-style-edit" onClick={() => editIncome(item)} />
+            <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
           </td>
         </tr>
       );
@@ -94,7 +113,17 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, co
     }
     setChooseData(aCurrentData);
   }
-  // useEffect(() => {}, [isCheck]);
+  function deleteData() {
+    if (window.confirm(`Bạn muốn xóa những các giá trị của ${oRouter.name} này?`)) {
+      chooseData.forEach(async (i) => {
+        await Axios.delete(`${domain}/${oRouter.router}/${i._id}`);
+      });
+      setIsCheck(false);
+      setChooseData([]);
+      window.location.reload();
+    }
+  }
+  useEffect(() => {}, [chooseData]);
   return (
     <div className="table-root">
       <table className="table-container">
@@ -106,15 +135,16 @@ function Table({ oData, aTitle, rowsPerPage, isCheck, setIsCheck, editIncome, co
           {renderHeaderTable()}
           <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>
         </tr>
-        {oData.length > 0 ? renderDataTable() : <span>Không có dữ liệu để hiện thị</span>}
+        {oData.length > 0 && renderDataTable()}
       </table>
-      <div className="foot-table" colspan="7">
+      {oData.length === 0 && <h2 className="ndata-style">Không có dữ liệu để hiển thị</h2>}
+      <div className="foot-table" colSpan="7">
         <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
         <ArrowBackIosIcon className="btn-style" onClick={() => handleArrowBackPage(Event, page)} />
         {isCheck ? (
-          <DeleteIcon className="btn-style-delete" />
+          <DeleteIcon className="btn-style-delete" onClick={deleteData} />
         ) : (
-          <AddCircleIcon className="btn-style" onClick={() => editIncome(null)} />
+          <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
         )}
         <ArrowForwardIosIcon
           className="btn-style"

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
+import domain from "../../../util/domain.js";
 import "./incomeEditer.scss";
 
 const currencies = [
@@ -21,7 +23,7 @@ const currencies = [
   },
 ];
 
-function IncomeEditor({ setIncomeEditorOpen, editIncomeData }) {
+function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [dicLstCode, setDicLstCode] = useState("");
   const [dicLstContent, setDicLstContent] = useState("");
   const [incDate, setIncDate] = useState(null);
@@ -31,9 +33,30 @@ function IncomeEditor({ setIncomeEditorOpen, editIncomeData }) {
     setIncomeEditorOpen(false);
   }
 
-  function saveInCome(e) {
+  async function saveInCome(e) {
     e.preventDefault();
-    console.log(typeof incMoney);
+    const oIncomeData = {
+      dicLstCode,
+      dicLstContent,
+      incDate,
+      incDetail,
+      incMoney,
+    };
+
+    try {
+      if (!editIncomeData) await Axios.post(`${domain}/income/`, oIncomeData);
+      else await Axios.put(`${domain}/income/${editIncomeData._id}`, oIncomeData);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          console.log(err.response.data);
+        }
+      }
+      return;
+    }
+
+    getIncomes();
+    closeEditor();
   }
   function currencyStringToInt(currencyString) {
     // Remove currency symbol and thousands separator
@@ -43,7 +66,7 @@ function IncomeEditor({ setIncomeEditorOpen, editIncomeData }) {
   }
   useEffect(() => {
     if (editIncomeData) {
-      console.log(editIncomeData.incDate);
+      console.log(editIncomeData._id);
       setDicLstCode(editIncomeData.dicLstCode ? editIncomeData.dicLstCode : "");
       setDicLstContent(editIncomeData.dicLstContent ? editIncomeData.dicLstContent : "");
       setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
@@ -65,6 +88,7 @@ function IncomeEditor({ setIncomeEditorOpen, editIncomeData }) {
       >
         <TextField
           className="popup-text"
+          required
           fullWidth
           label="Ngày nhận thu nhập"
           id="fullWidth"

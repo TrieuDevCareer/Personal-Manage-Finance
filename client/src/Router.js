@@ -12,6 +12,7 @@ import AreaChartType from "./components/misc/charts/areaChart";
 import PieChartType from "./components/misc/charts/pieChart";
 import IncomeEditor from "./components/page/income/incomeEditor";
 import Register from "./components/auth/register";
+import Login from "./components/auth/login";
 
 function Router({ isCheck, setIsCheck }) {
   return (
@@ -24,6 +25,7 @@ function Router({ isCheck, setIsCheck }) {
       <Route path="/catalog" element={<Catalog isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/generate" element={<Generate />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }

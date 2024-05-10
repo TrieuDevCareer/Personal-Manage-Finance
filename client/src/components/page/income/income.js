@@ -1,13 +1,19 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
+import Axios from "axios";
 // import "./ErrorMessage.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Stack, Button } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Table from "../../misc/table.js";
 import IncomeEditor from "./incomeEditor.js";
 import UserContext from "../../../context/UserContext.js";
+import domain from "../../../util/domain.js";
 import "./income.scss";
 
 function Income({ isCheck, setIsCheck }) {
+  const [incomeData, setIncomeData] = useState([]);
   const [incomeEditorOpen, setIncomeEditorOpen] = useState(false);
   const [editIncomeData, setEditIncomeData] = useState(null);
 
@@ -15,31 +21,37 @@ function Income({ isCheck, setIsCheck }) {
   const navigate = useNavigate();
 
   const aTitle = ["NGÀY THÁNG", "DANH MỤC THU", " QUỸ-TÀI KHOẢN", "NỘI DUNG THU", "SỐ TIỀN THU"];
-  let x = 35000;
-  let today = "05/10/2024";
-  today = Date.parse(today);
-  const defaultValue = new Date(today).toISOString().split("T")[0];
-  console.log(defaultValue);
-  const oData = [
-    {
-      incDate: defaultValue,
-      dicLstContent: "SO-Lương",
-      dicLstCode: "SO",
-      incDetail: "Ăn sáng",
-      incMoney: x.toLocaleString("it-IT", { style: "currency", currency: "VND" }),
-    },
-  ];
+  const aKeyItem = ["stt", "incDate", "dicLstContent", "dicLstCode", "incDetail", "incMoney"];
+  const oRouter = {
+    router: "income",
+    name: "Bảng thu nhập",
+  };
 
   function editIncome(incomeData) {
-    console.log(incomeData);
     setEditIncomeData(incomeData);
     setIncomeEditorOpen(true);
   }
 
-  // useEffect(() => {
-  //   if (!user) setSnippets([]);
-  //   else getSnippets();
-  // }, [user]);
+  async function getIncomes() {
+    const incomes = await Axios.get(`${domain}/income/`);
+    incomes.data.map((i) => {
+      i.incMoney = i.incMoney.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      });
+      let today = i.incDate;
+      today = Date.parse(today);
+      i.incDate = new Date(today).toISOString().split("T")[0];
+      // eslint-disable-next-line no-sequences
+      return i.incMoney, i.incDate;
+    });
+    setIncomeData(incomes.data);
+  }
+
+  useEffect(() => {
+    if (!user) setIncomeData([]);
+    else getIncomes();
+  }, [user]);
   return (
     <div>
       {user && (
@@ -48,18 +60,21 @@ function Income({ isCheck, setIsCheck }) {
 
           {incomeEditorOpen ? (
             <IncomeEditor
+              getIncomes={getIncomes}
               setIncomeEditorOpen={setIncomeEditorOpen}
               editIncomeData={editIncomeData}
             />
           ) : (
             <div>
               <Table
-                oData={oData}
+                oData={incomeData}
+                aKeyItem={aKeyItem}
                 aTitle={aTitle}
                 rowsPerPage={10}
                 isCheck={isCheck}
                 setIsCheck={setIsCheck}
-                editIncome={editIncome}
+                editModel={editIncome}
+                oRouter={oRouter}
                 colorTitle={"#0ecb74"}
               />
             </div>
@@ -78,11 +93,17 @@ function Income({ isCheck, setIsCheck }) {
                 variant="contained"
                 color="success"
                 size="medium"
+                startIcon={<LoginIcon />}
                 onClick={() => navigate("/login")}
               >
                 Đăng nhập
               </Button>
-              <Button variant="contained" color="info" onClick={() => navigate("/register")}>
+              <Button
+                variant="contained"
+                color="info"
+                startIcon={<HowToRegIcon />}
+                onClick={() => navigate("/register")}
+              >
                 Đăng ký
               </Button>
             </Stack>
