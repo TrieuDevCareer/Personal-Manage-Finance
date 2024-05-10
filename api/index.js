@@ -30,6 +30,7 @@ app.use("/dictionaryList", require("./routers/distionaryListRouter"));
 app.use("/expense", require("./routers/expenseRouter"));
 app.use("/income", require("./routers/incomeRouter"));
 app.use("/invesment", require("./routers/investmentRouter"));
+app.use("/saving", require("./routers/savingRouter"));
 
 // setup + connect to MongoDB
 try {
