@@ -31,8 +31,7 @@ router.post("/", async (req, res) => {
 
     if (password !== passwordVerify)
       return res.status(400).json({
-        errorMessage:
-          "Mật khẩu xác thực chưa trùng khớp. Hãy nhập giống mật khẩu bạn đã dặt!",
+        errorMessage: "Mật khẩu xác thực chưa trùng khớp. Hãy nhập giống mật khẩu bạn đã dặt!",
       });
     // verify: none account exist for this email
 
@@ -66,6 +65,7 @@ router.post("/", async (req, res) => {
     const token = jwt.sign(
       {
         id: savedUser._id,
+        userName,
       },
       process.env.JWT_SECRET
     );
@@ -109,10 +109,7 @@ router.post("/login", async (req, res) => {
         errorMessage: "Email hoặc mật khẩu sai! Vui lòng thử lại!",
       });
 
-    const correctPassword = await bcrypt.compare(
-      password,
-      existingUser.passwordHash
-    );
+    const correctPassword = await bcrypt.compare(password, existingUser.passwordHash);
 
     if (!correctPassword)
       return res.status(401).json({
@@ -124,6 +121,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       {
         id: existingUser._id,
+        userName: existingUser.userName,
       },
       process.env.JWT_SECRET
     );
@@ -155,8 +153,7 @@ router.get("/loggedIn", (req, res) => {
     if (!token) return res.json(null);
 
     const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
-
-    res.json(validatedUser.id);
+    res.json(validatedUser);
   } catch (err) {
     return res.json(null);
   }

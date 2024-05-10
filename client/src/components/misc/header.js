@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import Axios from "axios";
+import LogoutIcon from "@mui/icons-material/Logout";
 // import "./ErrorMessage.scss";
 import { Link, useNavigate } from "react-router-dom";
+import domain from "../../util/domain";
+import UserContext from "../../context/UserContext";
 import "./header.scss";
 
 function Header({ clickPattern, setClickPattern }) {
@@ -8,6 +12,7 @@ function Header({ clickPattern, setClickPattern }) {
   let [styleExpense, setStyleExpense] = useState("box-bg default-btn");
   let [styleSaving, setStyleSaving] = useState("box-bg default-btn");
   let [styleInvest, setStyleInvest] = useState("box-bg default-btn");
+  const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
     setClickPattern("header");
@@ -39,6 +44,14 @@ function Header({ clickPattern, setClickPattern }) {
     }
     return;
   }
+  async function logOut() {
+    if (window.confirm(`Bạn muốn đăng xuất khỏi tài khoản, ${user.userName}?`)) {
+      if (window.confirm(`Tạm biệt, sớm gặp lại bạn nhé ${user.userName}`)) {
+        await Axios.get(`${domain}/auth/logOut`);
+        window.location.reload();
+      }
+    }
+  }
   useEffect(() => {
     if (clickPattern !== "header") {
       setStyleIncome("box-bg default-btn");
@@ -46,7 +59,7 @@ function Header({ clickPattern, setClickPattern }) {
       setStyleInvest("box-bg default-btn");
       setStyleSaving("box-bg default-btn");
     }
-  }, [clickPattern]);
+  }, [clickPattern, user]);
   return (
     <div className="header-container">
       <div className={styleIncome}>
@@ -73,6 +86,13 @@ function Header({ clickPattern, setClickPattern }) {
           <p>Báo cáo Đầu tư</p>
         </Link>
       </div>
+
+      {user && (
+        <div className="title-root">
+          <div className="tile-userName">Welcome, {user.userName}</div>
+          <LogoutIcon className="btn-style-edit" onClick={() => logOut()} />
+        </div>
+      )}
     </div>
   );
 }

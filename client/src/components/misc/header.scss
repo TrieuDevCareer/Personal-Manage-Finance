@@ -2,7 +2,7 @@
 
 .header-container {
     display: grid;
-    grid-template-columns: 13rem 13rem 13rem 13rem;
+    grid-template-columns: 13rem 13rem 13rem 13rem auto;
     position: relative;
     transform: translate(0%, 70%);
 
@@ -15,13 +15,14 @@
             color: var(--text-light-color);
             text-decoration: none;
             display: flex;
-            width: 22rem;
+            width: 12rem;
 
             p {
                 position: relative;
                 transform: translate(0%, 25%);
                 margin-left: 0.8rem;
             }
+
             .nav-icon {
                 width: 2rem;
                 height: fit-content;
@@ -44,5 +45,28 @@
     .box-bg:hover {
         background: var(--background-title-color);
         background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+    }
+
+    .title-root {
+        display: flex;
+        justify-content: right;
+        margin-right: 1rem;
+        align-items: center;
+
+        .tile-userName {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .btn-style-edit {
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-style-edit:hover {
+            color: var(--background-title-color);
+            color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
     }
 }
