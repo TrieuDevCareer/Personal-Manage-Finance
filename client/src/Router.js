@@ -7,6 +7,7 @@ import Saving from "./components/page/saving/saving";
 import Investment from "./components/page/investment/investment";
 import Catalog from "./components/page/catalog/catalog";
 import Generate from "./components/page/generate/generate";
+import IncomeList from "./components/page/incomeList/incomeList";
 import BarChartType from "./components/misc/charts/barChart";
 import AreaChartType from "./components/misc/charts/areaChart";
 import PieChartType from "./components/misc/charts/pieChart";
@@ -26,6 +27,10 @@ function Router({ isCheck, setIsCheck }) {
       <Route path="/generate" element={<Generate />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route
+        path="/incomelist"
+        element={<IncomeList isCheck={isCheck} setIsCheck={setIsCheck} />}
+      />
     </Routes>
   );
 }

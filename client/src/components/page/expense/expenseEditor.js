@@ -24,8 +24,8 @@ const currencies = [
 ];
 
 function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
-  const [dicLstCode, setDicLstCode] = useState("");
-  const [dicLstContent, setDicLstContent] = useState("");
+  const [exelstCode, setExelstCode] = useState("");
+  const [exeLstContent, setExeLstContent] = useState("");
   const [expDate, setIncDate] = useState(null);
   const [expDetail, setIncDetail] = useState("");
   const [expMoney, setIncMoney] = useState(0);
@@ -36,8 +36,8 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   async function saveInCome(e) {
     e.preventDefault();
     const oExpenseData = {
-      dicLstCode,
-      dicLstContent,
+      exelstCode,
+      exeLstContent,
       expDate,
       expDetail,
       expMoney,
@@ -66,8 +66,8 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   }
   useEffect(() => {
     if (editExpenseData) {
-      setDicLstCode(editExpenseData.dicLstCode ? editExpenseData.dicLstCode : "");
-      setDicLstContent(editExpenseData.dicLstContent ? editExpenseData.dicLstContent : "");
+      setExelstCode(editExpenseData.exelstCode ? editExpenseData.exelstCode : "");
+      setExeLstContent(editExpenseData.exeLstContent ? editExpenseData.exeLstContent : "");
       setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);
       setIncDetail(editExpenseData.expDetail ? editExpenseData.expDetail : "");
       setIncMoney(editExpenseData.expMoney ? currencyStringToInt(editExpenseData.expMoney) : 0);
@@ -102,9 +102,9 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           fullWidth
           select
           label="Danh mục chi tiêu"
-          value={dicLstContent}
+          value={exeLstContent}
           defaultValue="EUR"
-          onChange={(e) => setDicLstContent(e.target.value)}
+          onChange={(e) => setExeLstContent(e.target.value)}
         >
           {currencies.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -118,8 +118,8 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           label="Nguồn quỹ"
           id="fullWidth"
           type="input"
-          value={dicLstCode}
-          onChange={(e) => setDicLstCode(e.target.value)}
+          value={exelstCode}
+          onChange={(e) => setExelstCode(e.target.value)}
         />
         <TextField
           className="popup-text"

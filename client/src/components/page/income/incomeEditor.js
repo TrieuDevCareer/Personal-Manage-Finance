@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import UserContext from "../../../context/UserContext.js";
 import "./incomeEditer.scss";
 
 const currencies = [
@@ -24,11 +25,13 @@ const currencies = [
 ];
 
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
-  const [dicLstCode, setDicLstCode] = useState("");
-  const [dicLstContent, setDicLstContent] = useState("");
+  const [inlstCode, setInlstCode] = useState("");
+  const [inLstContent, setInLstContent] = useState("");
   const [incDate, setIncDate] = useState(null);
   const [incDetail, setIncDetail] = useState("");
   const [incMoney, setIncMoney] = useState(0);
+  const [incomeListData, setIncomeListData] = useState([]);
+  const { user } = useContext(UserContext);
   function closeEditor() {
     setIncomeEditorOpen(false);
   }
@@ -36,8 +39,8 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   async function saveInCome(e) {
     e.preventDefault();
     const oIncomeData = {
-      dicLstCode,
-      dicLstContent,
+      inlstCode,
+      inLstContent: inLstContent.split("-")[1],
       incDate,
       incDetail,
       incMoney,
@@ -64,15 +67,30 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     // Convert to integer
     return parseInt(numberString);
   }
+  function onChange(e) {
+    const dic = e.target.value.split("-");
+    setInlstCode(dic[0]);
+    setInLstContent(e.target.value);
+  }
   useEffect(() => {
+    getIncomeLists();
     if (editIncomeData) {
-      setDicLstCode(editIncomeData.dicLstCode ? editIncomeData.dicLstCode : "");
-      setDicLstContent(editIncomeData.dicLstContent ? editIncomeData.dicLstContent : "");
+      setInlstCode(editIncomeData.inlstCode ? editIncomeData.inlstCode : "");
+      setInLstContent(
+        editIncomeData.inLstContent
+          ? editIncomeData.inlstCode + "-" + editIncomeData.inLstContent
+          : ""
+      );
       setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
       setIncDetail(editIncomeData.incDetail ? editIncomeData.incDetail : "");
       setIncMoney(editIncomeData.incMoney ? currencyStringToInt(editIncomeData.incMoney) : 0);
     }
-  }, [editIncomeData]);
+  }, [editIncomeData, user]);
+
+  async function getIncomeLists() {
+    const incomeLists = await Axios.get(`${domain}/incomelist/`);
+    setIncomeListData(incomeLists.data);
+  }
   return (
     <div className="popup-container">
       <Box
@@ -102,24 +120,27 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
           fullWidth
           select
           label="Danh mục thu nhập"
-          value={dicLstContent}
+          value={inLstContent}
           defaultValue="EUR"
-          onChange={(e) => setDicLstContent(e.target.value)}
+          onChange={onChange}
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {incomeListData.map((option) => (
+            <MenuItem
+              key={option.inLstContent}
+              value={`${option.inlstCode} - ${option.inLstContent}`}
+            >
+              {option.inlstCode} - {option.inLstContent}
             </MenuItem>
           ))}
         </TextField>
         <TextField
+          disabled
           className="popup-text"
           fullWidth
           label="Nguồn quỹ"
           id="fullWidth"
           type="input"
-          value={dicLstCode}
-          onChange={(e) => setDicLstCode(e.target.value)}
+          value={inlstCode}
         />
         <TextField
           className="popup-text"

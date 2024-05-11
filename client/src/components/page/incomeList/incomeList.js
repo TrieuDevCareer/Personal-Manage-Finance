@@ -8,84 +8,74 @@ import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
-import IncomeEditor from "./incomeEditor.js";
+import IncomeListEditor from "./incomeListEditor.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import "./income.scss";
+import "./incomeList.scss";
 
-function Income({ isCheck, setIsCheck }) {
-  const [incomeData, setIncomeData] = useState([]);
-  const [incomeEditorOpen, setIncomeEditorOpen] = useState(false);
-  const [editIncomeData, setEditIncomeData] = useState(null);
+function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
+  const [incomeListData, setIncomeListData] = useState([]);
+  const [incomeListEditorOpen, setIncomeListEditorOpen] = useState(false);
+  const [editIncomeListData, setEditIncomeListData] = useState(null);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const aTitle = ["NGÀY THÁNG", "DANH MỤC THU", " QUỸ-TÀI KHOẢN", "NỘI DUNG THU", "SỐ TIỀN THU"];
-  const aKeyItem = ["stt", "incDate", "inLstContent", "inlstCode", "incDetail", "incMoney"];
+  const aTitle = isCatalogPage ? ["QUỸ", "NỘI DUNG THU NHẬP"] : ["NGUỒN QUỸ", "NỘI DUNG THU NHẬP"];
+  const aKeyItem = ["stt", "inlstCode", "inLstContent"];
   const oRouter = {
-    router: "income",
-    name: "Bảng thu nhập",
+    router: "incomelist",
+    name: "Danh mục thu nhập",
   };
 
-  function editIncome(incomeData) {
-    setEditIncomeData(incomeData);
-    setIncomeEditorOpen(true);
+  function editIncomeList(incomeListData) {
+    setEditIncomeListData(incomeListData);
+    setIncomeListEditorOpen(true);
   }
 
-  async function getIncomes() {
-    const incomes = await Axios.get(`${domain}/income/`);
-    incomes.data.map((i) => {
-      i.incMoney = i.incMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      let today = i.incDate;
-      today = Date.parse(today);
-      i.incDate = new Date(today).toISOString().split("T")[0];
-      // eslint-disable-next-line no-sequences
-      return i.incMoney, i.incDate;
-    });
-    setIncomeData(incomes.data);
+  async function getIncomeLists() {
+    const incomeLists = await Axios.get(`${domain}/incomelist/`);
+    setIncomeListData(incomeLists.data);
   }
 
   useEffect(() => {
-    if (!user) setIncomeData([]);
-    else getIncomes();
+    if (!user) setIncomeListData([]);
+    else getIncomeLists();
   }, [user]);
   return (
     <div>
       {user && (
-        <div className="income-container">
+        <div className="incomeList-container">
           <div className="title-container">
-            <div className="title-income">DANH SÁCH CÁC KHOẢN THU</div>
+            {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}
           </div>
 
-          {incomeEditorOpen ? (
-            <IncomeEditor
-              getIncomes={getIncomes}
-              setIncomeEditorOpen={setIncomeEditorOpen}
-              editIncomeData={editIncomeData}
+          {incomeListEditorOpen ? (
+            <IncomeListEditor
+              getIncomeLists={getIncomeLists}
+              setIncomeListEditorOpen={setIncomeListEditorOpen}
+              editIncomeListData={editIncomeListData}
             />
           ) : (
             <div>
               <Table
-                oData={incomeData}
+                oData={incomeListData}
                 aKeyItem={aKeyItem}
                 aTitle={aTitle}
                 rowsPerPage={10}
                 isCheck={isCheck}
                 setIsCheck={setIsCheck}
-                editModel={editIncome}
+                editModel={editIncomeList}
                 oRouter={oRouter}
+                isCatalogPage={isCatalogPage}
                 colorTitle={"#0ecb74"}
               />
             </div>
           )}
-          {!incomeEditorOpen && (
-            <div className="footer-link" onClick={() => navigate("/incomelist")}>
+          {!incomeListEditorOpen && !isCatalogPage && (
+            <div className="footer-link" onClick={() => navigate("/income")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC THU NHẬP</div>
+              <div className="footer-titel">DANH SÁCH CÁC KHOẢN THU</div>
             </div>
           )}
         </div>
@@ -123,4 +113,4 @@ function Income({ isCheck, setIsCheck }) {
   );
 }
 
-export default Income;
+export default IncomeList;

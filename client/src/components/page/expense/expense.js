@@ -20,7 +20,7 @@ function Expense({ isCheck, setIsCheck }) {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const aKeyItem = ["stt", "expDate", "dicLstContent", "dicLstCode", "expDetail", "expMoney"];
+  const aKeyItem = ["stt", "expDate", "exeLstContent", "exelstCode", "expDetail", "expMoney"];
 
   const oRouter = {
     router: "expense",

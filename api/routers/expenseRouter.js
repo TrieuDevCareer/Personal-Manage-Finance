@@ -11,10 +11,10 @@ router.get("/", auth, async (req, res) => {
 // create data router
 router.post("/", auth, async (req, res) => {
   try {
-    const { dicLstCode, dicLstContent, expDate, expDetail, expMoney } = req.body;
+    const { exelstCode, exeLstContent, expDate, expDetail, expMoney } = req.body;
     const oCreateData = {
-      dicLstCode,
-      dicLstContent,
+      exelstCode,
+      exeLstContent,
       expDate,
       expDetail,
       expMoney,
@@ -28,8 +28,8 @@ router.post("/", auth, async (req, res) => {
 // update data router
 router.put("/:id", auth, async (req, res) => {
   try {
-    const { dicLstCode, dicLstContent, expDate, expDetail, expMoney } = req.body;
-    const oUpdateData = { dicLstCode, dicLstContent, expDate, expDetail, expMoney };
+    const { exelstCode, exeLstContent, expDate, expDetail, expMoney } = req.body;
+    const oUpdateData = { exelstCode, exeLstContent, expDate, expDetail, expMoney };
     const sExpenseId = req.params.id;
     await commonUtil.updateDataCase(req, res, oUpdateData, Expense, sExpenseId, "bảng chi tiêu");
   } catch (error) {

@@ -5,8 +5,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const expenseSchema = new mongoose.Schema(
   {
     user: { type: ObjectId, required: true },
-    dicLstCode: { type: String, require: true, ref: "DictionaryList" },
-    dicLstContent: { type: String, require: true, ref: "DictionaryList" },
+    exelstCode: { type: String, require: true, ref: "ExpenseList" },
+    exeLstContent: { type: String, require: true, ref: "ExpenseList" },
     expDate: { type: Date, require: true },
     expDetail: { type: String, require: true },
     expMoney: { type: Number, require: true },

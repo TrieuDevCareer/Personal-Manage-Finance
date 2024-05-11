@@ -22,6 +22,7 @@ function Table({
   setIsCheck,
   editModel,
   oRouter,
+  isCatalogPage,
   colorTitle,
 }) {
   const [page, setPage] = useState(0);
@@ -74,18 +75,21 @@ function Table({
       });
       return (
         <tr className="table-Item" key={i}>
-          <td className="item-value">
-            <Checkbox
-              value={JSON.stringify(item)}
-              sx={{
-                color: "#ffffff",
-                "&.Mui-checked": {
-                  color: "#00b0f0",
-                },
-              }}
-              onChange={handleChange}
-            />
-          </td>
+          {!isCatalogPage && (
+            <td className="item-value">
+              <Checkbox
+                value={JSON.stringify(item)}
+                sx={{
+                  color: "#ffffff",
+                  "&.Mui-checked": {
+                    color: "#00b0f0",
+                  },
+                }}
+                onChange={handleChange}
+              />
+            </td>
+          )}
+
           {aKeyItem.map((element, i) => {
             return (
               <td className="item-value" key={i}>
@@ -93,15 +97,18 @@ function Table({
               </td>
             );
           })}
-          <td className="item-value">
-            <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
-          </td>
+          {!isCatalogPage && (
+            <td className="item-value">
+              <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
+            </td>
+          )}
         </tr>
       );
     });
   }
 
   function handleChange(event) {
+    console.log(setIsCheck);
     let aCurrentData = [];
     if (event.target.checked) {
       aCurrentData = chooseData;
@@ -129,11 +136,16 @@ function Table({
       <table className="table-container">
         <tr className="table-header">
           <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}></th>
-          <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}>
-            STT
-          </th>
+          {!isCatalogPage && (
+            <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}>
+              STT
+            </th>
+          )}
+
           {renderHeaderTable()}
-          <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>
+          {!isCatalogPage && (
+            <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>
+          )}
         </tr>
         {oData.length > 0 && renderDataTable()}
       </table>
@@ -141,11 +153,13 @@ function Table({
       <div className="foot-table" colSpan="7">
         <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
         <ArrowBackIosIcon className="btn-style" onClick={() => handleArrowBackPage(Event, page)} />
-        {isCheck ? (
-          <DeleteIcon className="btn-style-delete" onClick={deleteData} />
-        ) : (
-          <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
-        )}
+        {!isCatalogPage &&
+          (isCheck ? (
+            <DeleteIcon className="btn-style-delete" onClick={deleteData} />
+          ) : (
+            <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
+          ))}
+
         <ArrowForwardIosIcon
           className="btn-style"
           onClick={() => handleArrowForwardPage(Event, page)}

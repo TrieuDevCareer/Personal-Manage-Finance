@@ -1,0 +1,109 @@
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
+import domain from "../../../util/domain.js";
+import "./incomeListEditor.scss";
+
+const currencies = [
+  {
+    value: "SO",
+    label: "Nguồn sống",
+  },
+  {
+    value: "TK",
+    label: "Tiết kiệm",
+  },
+  {
+    value: "DT",
+    label: "Đầu tư",
+  },
+  {
+    value: "TD",
+    label: "Tự do",
+  },
+];
+
+function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeListData }) {
+  const [inlstCode, setInlstCode] = useState("");
+  const [inLstContent, setInLstContent] = useState("");
+  function closeEditor() {
+    setIncomeListEditorOpen(false);
+  }
+
+  async function saveInCome(e) {
+    e.preventDefault();
+    const oIncomeListData = {
+      inlstCode,
+      inLstContent,
+    };
+
+    try {
+      if (!editIncomeListData) await Axios.post(`${domain}/incomelist/`, oIncomeListData);
+      else await Axios.put(`${domain}/incomelist/${editIncomeListData._id}`, oIncomeListData);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          console.log(err.response.data);
+        }
+      }
+      return;
+    }
+
+    getIncomeLists();
+    closeEditor();
+  }
+  useEffect(() => {
+    if (editIncomeListData) {
+      setInlstCode(editIncomeListData.inlstCode ? editIncomeListData.inlstCode : "");
+      setInLstContent(editIncomeListData.inLstContent ? editIncomeListData.inLstContent : "");
+    }
+  }, [editIncomeListData]);
+  return (
+    <div className="popup-container">
+      <Box
+        className="popup-form"
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "40rem" },
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={saveInCome}
+      >
+        <TextField
+          className="popup-text"
+          id="outlined-select-currency"
+          fullWidth
+          select
+          label="Nguồn quỹ"
+          value={inlstCode}
+          onChange={(e) => setInlstCode(e.target.value)}
+        >
+          {currencies.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          className="popup-text"
+          fullWidth
+          label="Nội dung thu nhập"
+          id="fullWidth"
+          type="input"
+          value={inLstContent}
+          onChange={(e) => setInLstContent(e.target.value)}
+        />
+        <Stack spacing={2} direction="row" justifyContent="right">
+          <Button variant="outlined" color="success" type="submit">
+            Lưu thay đổi
+          </Button>
+          <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+            Hủy thay đổi
+          </Button>
+        </Stack>
+      </Box>
+    </div>
+  );
+}
+export default IncomeListEditor;
