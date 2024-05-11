@@ -67,7 +67,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     // Convert to integer
     return parseInt(numberString);
   }
-  function onChange(e) {
+  function onChangeLstInc(e) {
     const dic = e.target.value.split("-");
     setInlstCode(dic[0]);
     setInLstContent(e.target.value);
@@ -85,7 +85,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
       setIncDetail(editIncomeData.incDetail ? editIncomeData.incDetail : "");
       setIncMoney(editIncomeData.incMoney ? currencyStringToInt(editIncomeData.incMoney) : 0);
     }
-  }, [editIncomeData, user]);
+  }, [editIncomeData]);
 
   async function getIncomeLists() {
     const incomeLists = await Axios.get(`${domain}/incomelist/`);
@@ -122,7 +122,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
           label="Danh mục thu nhập"
           value={inLstContent}
           defaultValue="EUR"
-          onChange={onChange}
+          onChange={onChangeLstInc}
         >
           {incomeListData.map((option) => (
             <MenuItem

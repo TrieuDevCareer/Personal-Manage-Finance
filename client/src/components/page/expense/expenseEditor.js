@@ -4,40 +4,22 @@ import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
 import "./expenseEditor.scss";
 
-const currencies = [
-  {
-    value: "USD",
-    label: "$",
-  },
-  {
-    value: "SO-Lương",
-    label: "Lương",
-  },
-  {
-    value: "BTC",
-    label: "฿",
-  },
-  {
-    value: "JPY",
-    label: "¥",
-  },
-];
-
 function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [exelstCode, setExelstCode] = useState("");
   const [exeLstContent, setExeLstContent] = useState("");
   const [expDate, setIncDate] = useState(null);
   const [expDetail, setIncDetail] = useState("");
   const [expMoney, setIncMoney] = useState(0);
+  const [expenseListData, setExpenseListData] = useState([]);
   function closeEditor() {
     setExpenseEditorOpen(false);
   }
 
-  async function saveInCome(e) {
+  async function saveExpense(e) {
     e.preventDefault();
     const oExpenseData = {
       exelstCode,
-      exeLstContent,
+      exeLstContent: exeLstContent.split("-")[1],
       expDate,
       expDetail,
       expMoney,
@@ -64,10 +46,24 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     // Convert to integer
     return parseInt(numberString);
   }
+  function onChangeLstExe(e) {
+    const dic = e.target.value.split("-");
+    setExelstCode(dic[0]);
+    setExeLstContent(e.target.value);
+  }
+  async function getExpenseLists() {
+    const expenseLists = await Axios.get(`${domain}/expenselist/`);
+    setExpenseListData(expenseLists.data);
+  }
   useEffect(() => {
+    getExpenseLists();
     if (editExpenseData) {
       setExelstCode(editExpenseData.exelstCode ? editExpenseData.exelstCode : "");
-      setExeLstContent(editExpenseData.exeLstContent ? editExpenseData.exeLstContent : "");
+      setExeLstContent(
+        editExpenseData.exeLstContent
+          ? editExpenseData.exelstCode + "-" + editExpenseData.exeLstContent
+          : ""
+      );
       setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);
       setIncDetail(editExpenseData.expDetail ? editExpenseData.expDetail : "");
       setIncMoney(editExpenseData.expMoney ? currencyStringToInt(editExpenseData.expMoney) : 0);
@@ -83,7 +79,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
         }}
         noValidate
         autoComplete="off"
-        onSubmit={saveInCome}
+        onSubmit={saveExpense}
       >
         <TextField
           className="popup-text"
@@ -104,22 +100,25 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           label="Danh mục chi tiêu"
           value={exeLstContent}
           defaultValue="EUR"
-          onChange={(e) => setExeLstContent(e.target.value)}
+          onChange={onChangeLstExe}
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {expenseListData.map((option) => (
+            <MenuItem
+              key={option.exeLstContent}
+              value={`${option.exelstCode} - ${option.exeLstContent}`}
+            >
+              {option.exelstCode} - {option.exeLstContent}
             </MenuItem>
           ))}
         </TextField>
         <TextField
+          disabled
           className="popup-text"
           fullWidth
           label="Nguồn quỹ"
           id="fullWidth"
           type="input"
           value={exelstCode}
-          onChange={(e) => setExelstCode(e.target.value)}
         />
         <TextField
           className="popup-text"

@@ -8,83 +8,74 @@ import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
-import ExpenseEditor from "./expenseEditor.js";
+import ExpenseListEditor from "./expenseListEditor.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import "./expense.scss";
+import "./expenseList.scss";
 
-function Expense({ isCheck, setIsCheck }) {
-  const [expenseData, setExpenseData] = useState([]);
-  const [expenseEditorOpen, setExpenseEditorOpen] = useState(false);
-  const [editExpenseData, setEditExpenseData] = useState(null);
+function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
+  const [expenseListData, setExpenseListData] = useState([]);
+  const [expenseListEditorOpen, setExpenseListEditorOpen] = useState(false);
+  const [editExpenseListData, setEditExpenseListData] = useState(null);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const aKeyItem = ["stt", "expDate", "exeLstContent", "exelstCode", "expDetail", "expMoney"];
-
+  const aTitle = isCatalogPage ? ["QUỸ", "NỘI DUNG CHI TIÊU"] : ["NGUỒN QUỸ", "NỘI DUNG CHI TIÊU"];
+  const aKeyItem = ["stt", "exelstCode", "exeLstContent"];
   const oRouter = {
-    router: "expense",
-    name: "Bảng chi tiêu",
+    router: "expenselist",
+    name: "Danh mục chi tiêu",
   };
 
-  const aTitle = ["NGÀY THÁNG", "DANH MỤC CHI", " QUỸ-TÀI KHOẢN", "NỘI DUNG CHI", "SỐ TIỀN CHI"];
-  function editExpense(expenseData) {
-    setEditExpenseData(expenseData);
-    setExpenseEditorOpen(true);
+  function editExpenseList(expenseListData) {
+    setEditExpenseListData(expenseListData);
+    setExpenseListEditorOpen(true);
   }
 
-  async function getExpenses() {
-    const expenses = await Axios.get(`${domain}/expense/`);
-    expenses.data.map((i) => {
-      i.expMoney = i.expMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      let today = i.expDate;
-      today = Date.parse(today);
-      i.expDate = new Date(today).toISOString().split("T")[0];
-      // eslint-disable-next-line no-sequences
-      return i.expMoney, i.expDate;
-    });
-    setExpenseData(expenses.data);
+  async function getExpenseLists() {
+    const expenseLists = await Axios.get(`${domain}/expenselist/`);
+    setExpenseListData(expenseLists.data);
   }
 
   useEffect(() => {
-    if (!user) setExpenseData([]);
-    else getExpenses();
+    if (!user) setExpenseListData([]);
+    else getExpenseLists();
   }, [user]);
   return (
     <div>
       {user && (
-        <div className="expense-container">
-          <div className="title-expense">DANH SÁCH CÁC KHOẢN CHI</div>
+        <div className="expenseList-container">
+          <div className="title-container">
+            {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}
+          </div>
 
-          {expenseEditorOpen ? (
-            <ExpenseEditor
-              getExpenses={getExpenses}
-              setExpenseEditorOpen={setExpenseEditorOpen}
-              editExpenseData={editExpenseData}
+          {expenseListEditorOpen ? (
+            <ExpenseListEditor
+              getExpenseLists={getExpenseLists}
+              setExpenseListEditorOpen={setExpenseListEditorOpen}
+              editExpenseListData={editExpenseListData}
             />
           ) : (
             <div>
               <Table
-                oData={expenseData}
+                oData={expenseListData}
                 aKeyItem={aKeyItem}
                 aTitle={aTitle}
                 rowsPerPage={10}
                 isCheck={isCheck}
                 setIsCheck={setIsCheck}
-                editModel={editExpense}
+                editModel={editExpenseList}
                 oRouter={oRouter}
+                isCatalogPage={isCatalogPage}
                 colorTitle={"#ff007f"}
               />
             </div>
           )}
-          {!expenseEditorOpen && (
-            <div className="footer-link" onClick={() => navigate("/expenselist")}>
+          {!expenseListEditorOpen && !isCatalogPage && (
+            <div className="footer-link" onClick={() => navigate("/expense")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC CHI TIÊU</div>
+              <div className="footer-titel">DANH SÁCH CÁC KHOẢN CHI</div>
             </div>
           )}
         </div>
@@ -122,4 +113,4 @@ function Expense({ isCheck, setIsCheck }) {
   );
 }
 
-export default Expense;
+export default ExpenseList;

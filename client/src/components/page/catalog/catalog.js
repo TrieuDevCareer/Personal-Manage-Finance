@@ -7,6 +7,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import "./catalog.scss";
 import UserContext from "../../../context/UserContext.js";
 import IncomeList from "../incomeList/incomeList.js";
+import ExpenseList from "../expenseList/expenseList.js";
 
 function Catalog() {
   // const aTitleIncome = ["DANH MỤC THU", "MÃ"];
@@ -27,17 +28,10 @@ function Catalog() {
             <div className="catalog-income">
               <IncomeList isCatalogPage={true} />
             </div>
-            {/* <div className="catalog-expense">
-              <Table
-                oData={oDataIncome}
-                aTitle={aTitleExpense}
-                rowsPerPage={11}
-                isCheck={isCheck}
-                setIsCheck={setIsCheck}
-                colorTitle={"#0ecb74"}
-              />
+            <div className="catalog-expense">
+              <ExpenseList isCatalogPage={true} />
             </div>
-            <div className="catalog-group">
+            {/* <div className="catalog-group">
               <div className="catalog-frs-group">
                 <div className="catalog-saving">
                   <Table

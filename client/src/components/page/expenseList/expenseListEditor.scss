@@ -1,11 +1,12 @@
 @import url("../../../style/mixins.scss");
 
 .popup-container {
+    margin-top: 4rem;
     display: flex;
     /* position: absolute; */
     justify-content: center;
-    align-items: center;
-    height: 38rem;
+    align-items: start;
+    height: 35rem;
 
     .popup-form {
         display: grid;
@@ -27,7 +28,6 @@
                 input {
                     color: var(--text-light-color);
                     text-align: left;
-                    -webkit-text-fill-color: var(--text-light-color);
                 }
 
                 fieldset {
