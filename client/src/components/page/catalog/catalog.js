@@ -12,7 +12,7 @@ function Catalog({ isCheck, setIsCheck }) {
   const aTitleInvestSta = ["TRẠNG THÁI COIN"];
   const aTitleSavingSta = ["TRẠNG THÁI BANK"];
   const aTitleLink = ["DANH MỤC LINK"];
-
+  const aKeyItem = ["stt", "incDate", "dicLstContent"];
   const oDataIncome = [
     {
       income: "Lương",
@@ -89,6 +89,10 @@ function Catalog({ isCheck, setIsCheck }) {
       generate: "VIETINBANk",
     },
   ];
+  const oRouter = {
+    router: "income",
+    name: "Bảng thu nhập",
+  };
   return (
     <div className="catalog-container">
       <div className="title-catalog">DANH MỤC</div>
@@ -96,14 +100,17 @@ function Catalog({ isCheck, setIsCheck }) {
         <div className="catalog-income">
           <Table
             oData={oDataIncome}
-            aTitle={aTitleIncome}
-            rowsPerPage={11}
+            aKeyItem={aKeyItem}
+            aTitle={aKeyItem}
+            rowsPerPage={10}
             isCheck={isCheck}
             setIsCheck={setIsCheck}
+            // editModel={editIncome}
+            oRouter={oRouter}
             colorTitle={"#f87c8b"}
           />
         </div>
-        <div className="catalog-expense">
+        {/* <div className="catalog-expense">
           <Table
             oData={oDataIncome}
             aTitle={aTitleExpense}
@@ -170,7 +177,7 @@ function Catalog({ isCheck, setIsCheck }) {
               />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

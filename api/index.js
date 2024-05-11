@@ -26,10 +26,11 @@ app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 app.use("/auth", require("./routers/userRouter"));
 app.use("/banklist", require("./routers/bankListRouter"));
 app.use("/coinlist", require("./routers/coinListRouter"));
-app.use("/dictionaryList", require("./routers/distionaryListRouter"));
+app.use("/incomelist", require("./routers/incomeListRouter"));
+app.use("/exepenselist", require("./routers/expenseListRouter"));
 app.use("/expense", require("./routers/expenseRouter"));
 app.use("/income", require("./routers/incomeRouter"));
-app.use("/invesment", require("./routers/investmentRouter"));
+app.use("/investment", require("./routers/investmentRouter"));
 app.use("/saving", require("./routers/savingRouter"));
 
 // setup + connect to MongoDB

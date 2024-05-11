@@ -66,7 +66,6 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   }
   useEffect(() => {
     if (editExpenseData) {
-      console.log(editExpenseData._id);
       setDicLstCode(editExpenseData.dicLstCode ? editExpenseData.dicLstCode : "");
       setDicLstContent(editExpenseData.dicLstContent ? editExpenseData.dicLstContent : "");
       setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);

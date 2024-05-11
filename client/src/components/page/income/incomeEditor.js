@@ -66,7 +66,6 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   }
   useEffect(() => {
     if (editIncomeData) {
-      console.log(editIncomeData._id);
       setDicLstCode(editIncomeData.dicLstCode ? editIncomeData.dicLstCode : "");
       setDicLstContent(editIncomeData.dicLstContent ? editIncomeData.dicLstContent : "");
       setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);

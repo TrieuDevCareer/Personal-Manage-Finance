@@ -1,13 +1,15 @@
 @import url("../../../style//variables.scss");
 
-.invest-container {
-    .report-invest {
+.investment-container {
+    grid-auto-rows: max-content auto;
+
+    .report-investment {
         display: grid;
         grid-template-rows: auto auto auto auto;
         grid-template-columns: auto;
         font-size: small;
         margin-bottom: 1rem;
-        grid-auto-rows: max-content auto;
+        justify-content: center;
 
         .report-item {
             display: flex;
@@ -29,7 +31,7 @@
     margin: 1rem;
     text-align: center;
 
-    .title-invest {
+    .title-investment {
         text-align: center;
         font-size: 1.5rem;
         font-weight: 500;

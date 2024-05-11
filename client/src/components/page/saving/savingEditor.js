@@ -85,7 +85,6 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   }
 
   function onChangeMoneySave(e) {
-    console.log(e.target.value);
     setSavMoney(e.target.value);
     calcuvalueRate(e.target.value, savMonth, savInteret);
   }
@@ -124,7 +123,6 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   }
   useEffect(() => {
     if (editSavingData) {
-      console.log(editSavingData.bnkNam);
       setSavDate(editSavingData.savDate ? editSavingData.savDate : null);
       setBnkName(
         editSavingData.bnkName ? editSavingData.bnkLstID + "-" + editSavingData.bnkName : ""
