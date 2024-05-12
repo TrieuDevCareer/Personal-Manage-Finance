@@ -8,6 +8,13 @@
     text-align: center;
     grid-auto-rows: max-content auto;
 
+    .title-catalog {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--background-title-color);
+    }
+
     .catalog-table-container {
         display: grid;
         grid-template-columns: 17rem 17rem auto;

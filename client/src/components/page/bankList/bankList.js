@@ -75,7 +75,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
           {!bankListEditorOpen && !isCatalogPage && (
             <div className="footer-link" onClick={() => navigate("/saving")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH SÁCH ĐẦU TƯ</div>
+              <div className="footer-titel">DANH SÁCH GỬI TIẾT KIỆM</div>
             </div>
           )}
         </div>
