@@ -5,25 +5,6 @@ import domain from "../../../util/domain.js";
 import UserContext from "../../../context/UserContext.js";
 import "./incomeEditer.scss";
 
-const currencies = [
-  {
-    value: "USD",
-    label: "$",
-  },
-  {
-    value: "SO-Lương",
-    label: "Lương",
-  },
-  {
-    value: "BTC",
-    label: "฿",
-  },
-  {
-    value: "JPY",
-    label: "¥",
-  },
-];
-
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [inlstCode, setInlstCode] = useState("");
   const [inLstContent, setInLstContent] = useState("");

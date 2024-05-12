@@ -4,21 +4,6 @@ import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
 import "./savingEditor.scss";
 
-const currencies = [
-  {
-    value: "VBT-VietinBank",
-    label: "VietinBank",
-  },
-  {
-    value: "SCB-Sacombank",
-    label: "Sacombank",
-  },
-  {
-    value: "TPB-TpBank",
-    label: "TpBank",
-  },
-];
-
 const StatusSav = [
   {
     value: false,
@@ -42,6 +27,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   const [savStatus, setSavStatus] = useState(false);
   const [savTRealMoney, setSavTRealMoney] = useState(0);
   const [savRealInterMoney, setSavRealInterMoney] = useState(0);
+  const [bankListData, setBankListData] = useState([]);
   function closeEditor() {
     setSavingEditorOpen(false);
   }
@@ -121,7 +107,12 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     setBnkLstID(aBank[0]);
     setBnkName(e.target.value);
   }
+  async function getBankLists() {
+    const bankLists = await Axios.get(`${domain}/banklist/`);
+    setBankListData(bankLists.data);
+  }
   useEffect(() => {
+    getBankLists();
     if (editSavingData) {
       setSavDate(editSavingData.savDate ? editSavingData.savDate : null);
       setBnkName(
@@ -178,9 +169,9 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
               defaultValue=""
               onChange={onchangeBank}
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {bankListData.map((option) => (
+                <MenuItem key={option.value} value={`${option.bnkLstID} - ${option.bnkName}`}>
+                  {option.bnkLstID} - {option.bnkName}
                 </MenuItem>
               ))}
             </TextField>

@@ -4,7 +4,7 @@ import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
 import "./incomeListEditor.scss";
 
-const currencies = [
+const optionSource = [
   {
     value: "SO",
     label: "Nguồn sống",
@@ -79,7 +79,7 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
           value={inlstCode}
           onChange={(e) => setInlstCode(e.target.value)}
         >
-          {currencies.map((option) => (
+          {optionSource.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>

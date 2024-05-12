@@ -88,6 +88,7 @@ function Investment({ isCheck, setIsCheck }) {
       let today = i.investDate;
       today = Date.parse(today);
       i.investDate = new Date(today).toISOString().split("T")[0];
+      console.log(i.investSeDate);
       today = i.investSeDate;
       today = Date.parse(today);
       i.investSeDate = new Date(today).toISOString().split("T")[0];

@@ -8,6 +8,7 @@ import "./catalog.scss";
 import UserContext from "../../../context/UserContext.js";
 import IncomeList from "../incomeList/incomeList.js";
 import ExpenseList from "../expenseList/expenseList.js";
+import BankList from "../bankList/bankList.js";
 
 function Catalog() {
   // const aTitleIncome = ["DANH MỤC THU", "MÃ"];
@@ -31,19 +32,12 @@ function Catalog() {
             <div className="catalog-expense">
               <ExpenseList isCatalogPage={true} />
             </div>
-            {/* <div className="catalog-group">
+            <div className="catalog-group">
               <div className="catalog-frs-group">
                 <div className="catalog-saving">
-                  <Table
-                    oData={oDataGenerate}
-                    aTitle={aTitleSaving}
-                    rowsPerPage={3}
-                    isCheck={isCheck}
-                    setIsCheck={setIsCheck}
-                    colorTitle={"#21a0ff"}
-                  />
+                  <BankList isCatalogPage={true} />
                 </div>
-                <div className="catalog-invest">
+                {/* <div className="catalog-invest">
                   <Table
                     oData={oDataGenerate}
                     aTitle={aTitleInvest}
@@ -52,9 +46,9 @@ function Catalog() {
                     setIsCheck={setIsCheck}
                     colorTitle={"#ffd966"}
                   />
-                </div>
+                </div> */}
               </div>
-              <div className="catalog-snd-group">
+              {/* <div className="catalog-snd-group">
                 <div className="catalog-status-saving">
                   <Table
                     oData={oDataGenerate}
@@ -87,8 +81,8 @@ function Catalog() {
                     colorTitle={"#70ad47"}
                   />
                 </div>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
           </div>
         </div>
       )}

@@ -145,6 +145,11 @@ function Saving({ isCheck, setIsCheck }) {
               />
             </div>
           )}
+          {!savingEditorOpen && (
+            <div className="footer-link" onClick={() => navigate("/banklist")}>
+              <div className="footer-titel">DANH MỤC NGÂN HÀNG</div>
+            </div>
+          )}
         </div>
       )}
       {user === null && (
