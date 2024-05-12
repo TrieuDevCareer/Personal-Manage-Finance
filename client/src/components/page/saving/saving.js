@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Stack, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import SavingEditor from "./savingEditor.js";
 import UserContext from "../../../context/UserContext.js";
@@ -147,6 +148,7 @@ function Saving({ isCheck, setIsCheck }) {
           )}
           {!savingEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/banklist")}>
+              <OpenInNewIcon />
               <div className="footer-titel">DANH MỤC NGÂN HÀNG</div>
             </div>
           )}
