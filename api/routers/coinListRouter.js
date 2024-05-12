@@ -17,13 +17,7 @@ router.post("/", auth, async (req, res) => {
   try {
     const { coinLstID, coinName } = req.body;
     const oCreateData = { coinLstID, coinName };
-    await commonUtil.createDataCase(
-      req,
-      res,
-      oCreateData,
-      CoinList,
-      "đồng coin"
-    );
+    await commonUtil.createDataCase(req, res, oCreateData, CoinList, "đồng coin");
   } catch (error) {
     res.status(500).send();
   }
@@ -35,14 +29,7 @@ router.put("/:id", auth, async (req, res) => {
     const { coinLstID, coinName } = req.body;
     const oUpdateData = { coinLstID, coinName };
     const sCoinId = req.params.id;
-    await commonUtil.updateDataCase(
-      req,
-      res,
-      oUpdateData,
-      CoinList,
-      sCoinId,
-      "đồng coin"
-    );
+    await commonUtil.updateDataCase(req, res, oUpdateData, CoinList, sCoinId, "đồng coin");
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -52,13 +39,7 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const oCoinId = req.params.id;
-    await commonUtil.deleteDataCase(
-      req,
-      res,
-      DistionaryList,
-      oCoinId,
-      "danh mục tổng hợp"
-    );
+    await commonUtil.deleteDataCase(req, res, CoinList, oCoinId, "danh mục tổng hợp");
   } catch (error) {
     res.status(500).json({ error });
   }

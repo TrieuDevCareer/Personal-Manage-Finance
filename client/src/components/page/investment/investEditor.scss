@@ -1,8 +1,8 @@
 @import url("../../../style/mixins.scss");
 
 .popup-container {
-    display: flex;
-    /* position: absolute; */
+    // display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
     height: 38rem;

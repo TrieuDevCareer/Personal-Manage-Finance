@@ -53,6 +53,10 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     setInlstCode(dic[0]);
     setInLstContent(e.target.value);
   }
+  async function getIncomeLists() {
+    const incomeLists = await Axios.get(`${domain}/incomelist/`);
+    setIncomeListData(incomeLists.data);
+  }
   useEffect(() => {
     getIncomeLists();
     if (editIncomeData) {
@@ -68,10 +72,6 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     }
   }, [editIncomeData]);
 
-  async function getIncomeLists() {
-    const incomeLists = await Axios.get(`${domain}/incomelist/`);
-    setIncomeListData(incomeLists.data);
-  }
   return (
     <div className="popup-container">
       <Box

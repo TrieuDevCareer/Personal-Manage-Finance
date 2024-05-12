@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Stack, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import InvestEditor from "./investEditor.js";
 import UserContext from "../../../context/UserContext.js";
@@ -36,7 +37,7 @@ function Investment({ isCheck, setIsCheck }) {
   const aKeyItem = [
     "stt",
     "investDate",
-    "coinName",
+    "coinLstID",
     "investExRate",
     "investMoney",
     "investNumCoin",
@@ -144,6 +145,12 @@ function Investment({ isCheck, setIsCheck }) {
                 oRouter={oRouter}
                 colorTitle={"#0ecb74"}
               />
+            </div>
+          )}
+          {!investmentEditorOpen && (
+            <div className="footer-link" onClick={() => navigate("/coinlist")}>
+              <OpenInNewIcon />
+              <div className="footer-titel">DANH MỤC ĐỒNG COIN</div>
             </div>
           )}
         </div>

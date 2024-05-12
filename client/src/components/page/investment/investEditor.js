@@ -45,6 +45,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   const [investSeUSDT, setInvestSeUSDT] = useState(0);
   const [investReMoney, setInvestReMoney] = useState(0);
   const [investResult, setInvestResult] = useState(0);
+  const [coinList, setCoinList] = useState([]);
 
   function closeEditor() {
     setInvestmentEditorOpen(false);
@@ -148,7 +149,13 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     }
   }
 
+  async function getCoinLists() {
+    const coinListData = await Axios.get(`${domain}/coinlist/`);
+    setCoinList(coinListData.data);
+  }
+
   useEffect(() => {
+    getCoinLists();
     if (editInvestmentData) {
       setCoinLstID(editInvestmentData.coinLstID ? editInvestmentData.coinLstID : "");
       setCoinName(
@@ -216,9 +223,9 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
               value={coinName}
               onChange={onChangeCoin}
             >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {coinList.map((option) => (
+                <MenuItem key={option.value} value={`${option.coinLstID} - ${option.coinName}`}>
+                  {option.coinLstID} - {option.coinName}
                 </MenuItem>
               ))}
             </TextField>

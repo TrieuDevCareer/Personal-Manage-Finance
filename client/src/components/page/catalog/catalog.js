@@ -9,15 +9,9 @@ import UserContext from "../../../context/UserContext.js";
 import IncomeList from "../incomeList/incomeList.js";
 import ExpenseList from "../expenseList/expenseList.js";
 import BankList from "../bankList/bankList.js";
+import CoinList from "../coinList/coinList.js";
 
 function Catalog() {
-  // const aTitleIncome = ["DANH MỤC THU", "MÃ"];
-  // const aTitleExpense = ["DANH MỤC CHI", "MÃ"];
-  // const aTitleInvest = ["DANH MỤC COIN"];
-  // const aTitleSaving = ["DANH MỤC BANK"];
-  // const aTitleInvestSta = ["TRẠNG THÁI COIN"];
-  // const aTitleSavingSta = ["TRẠNG THÁI BANK"];
-  // const aTitleLink = ["DANH MỤC LINK"];
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   return (
@@ -37,16 +31,9 @@ function Catalog() {
                 <div className="catalog-saving">
                   <BankList isCatalogPage={true} />
                 </div>
-                {/* <div className="catalog-invest">
-                  <Table
-                    oData={oDataGenerate}
-                    aTitle={aTitleInvest}
-                    rowsPerPage={3}
-                    isCheck={isCheck}
-                    setIsCheck={setIsCheck}
-                    colorTitle={"#ffd966"}
-                  />
-                </div> */}
+                <div className="catalog-invest">
+                  <CoinList isCatalogPage={true} />
+                </div>
               </div>
               {/* <div className="catalog-snd-group">
                 <div className="catalog-status-saving">
