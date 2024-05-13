@@ -122,8 +122,8 @@ function Table({
   }
   function deleteData() {
     if (window.confirm(`Bạn muốn xóa những các giá trị của ${oRouter.name} này?`)) {
-      chooseData.forEach(async (i) => {
-        await Axios.delete(`${domain}/${oRouter.router}/${i._id}`);
+      chooseData.forEach(async (data) => {
+        await Axios.delete(`${domain}/${oRouter.router}/${data._id}`, { data: chooseData });
       });
       setIsCheck(false);
       setChooseData([]);

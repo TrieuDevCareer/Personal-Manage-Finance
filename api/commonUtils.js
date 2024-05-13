@@ -3,7 +3,7 @@ async function _validateDataCaseCreate(oValidateData, oValidateEntity, sNameEnti
   const oResultValidate = { status: true, message: "" };
   // validate input all data
   const aGetDataObj = Object.values(oValidateData);
-  const bResultCheck = aGetDataObj.some((item) => item === undefined);
+  const bResultCheck = aGetDataObj.some((item) => item === undefined || item === null);
   if (bResultCheck) {
     oResultValidate.status = false;
     oResultValidate.message = "Vui lòng điền đủ thông tin!";
@@ -155,24 +155,24 @@ async function deleteData(req, res, oEntity, sItemId, sNameEntity) {
   return `${sNameEntity} xóa thành công`;
 }
 //  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseCreate(req, res, oEntity) {
+async function UpdateUserWalletCaseCreate(req, res, iChangeMoney, oEntity) {
   try {
     let oUserData = await oEntity.findById(req.user);
     switch (req.body.inlstCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife + parseInt(req.body.incMoney);
+        oUserData.walletLife = oUserData.walletLife + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving + parseInt(req.body.incMoney);
+        oUserData.walletSaving = oUserData.walletSaving + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletInvest = oUserData.walletInvest + parseInt(req.body.incMoney);
+        oUserData.walletInvest = oUserData.walletInvest + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree + parseInt(req.body.incMoney);
+        oUserData.walletFree = oUserData.walletFree + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       default:
@@ -186,24 +186,24 @@ async function UpdateUserWalletCaseCreate(req, res, oEntity) {
   }
 }
 //  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseUpdate(req, res, oEntity) {
+async function UpdateUserWalletCaseUpdate(req, res, iChangeMoney, oEntity) {
   try {
     let oUserData = await oEntity.findById(req.user);
     switch (req.body.inlstCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife + parseInt(req.body.incDMoney);
+        oUserData.walletLife = oUserData.walletLife + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving + parseInt(req.body.incDMoney);
+        oUserData.walletSaving = oUserData.walletSaving + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletInvest = oUserData.walletInvest + parseInt(req.body.incDMoney);
+        oUserData.walletInvest = oUserData.walletInvest + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree + parseInt(req.body.incDMoney);
+        oUserData.walletFree = oUserData.walletFree + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       default:
@@ -216,25 +216,27 @@ async function UpdateUserWalletCaseUpdate(req, res, oEntity) {
     });
   }
 }
-async function UpdateUserWalletCaseDelete(req, res, oCurrentEntity, oEntity) {
+async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney, oEntity) {
   try {
-    let oUserData = await oEntity.findById(req.user);
-    const getDeleteData = await oCurrentEntity.findById(req.params.id);
-    switch (getDeleteData.inlstCode) {
+    const sSourceCode = data[oCodeDis];
+    const iChangeMoney = currencyStringToInt(data[oChangeMoney]);
+    const oUserData = await oEntity.findById(req.user);
+
+    switch (sSourceCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife - parseInt(getDeleteData.incMoney);
+        oUserData.walletLife = oUserData.walletLife - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving - parseInt(getDeleteData.incMoney);
+        oUserData.walletSaving = oUserData.walletSaving - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletInvest = oUserData.walletInvest - parseInt(getDeleteData.incMoney);
+        oUserData.walletInvest = oUserData.walletInvest - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree - parseInt(getDeleteData.incMoney);
+        oUserData.walletFree = oUserData.walletFree - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       default:
@@ -247,6 +249,35 @@ async function UpdateUserWalletCaseDelete(req, res, oCurrentEntity, oEntity) {
     });
   }
 }
+
+function currencyStringToInt(currencyString) {
+  // Remove currency symbol and thousands separator
+  var numberString = currencyString.replace(/[\.,\s€]/g, "");
+  // Convert to integer
+  return parseInt(numberString);
+}
+
+async function UpdateWalletUser(req, title, iMoney, data, User) {
+  const totals = {
+    SO: 0,
+    DT: 0,
+    TK: 0,
+    TD: 0,
+  };
+
+  data.forEach((element) => {
+    totals[element[title]] -= parseInt(currencyStringToInt(element[iMoney]));
+  });
+
+  const oUserData = await User.findById(req.user);
+  oUserData.walletLife += totals.SO;
+  oUserData.walletSaving += totals.DT;
+  oUserData.walletInvest += totals.TK;
+  oUserData.walletFree += totals.TD;
+
+  await User.findOneAndUpdate({ _id: req.user }, oUserData);
+}
+
 module.exports = {
   getAllResult: getAllDataEntity,
   createDataCase: createData,
@@ -254,5 +285,6 @@ module.exports = {
   deleteDataCase: deleteData,
   UpdateUserWalletNew: UpdateUserWalletCaseCreate,
   UpdateUserWalletUpdate: UpdateUserWalletCaseUpdate,
+  UpdateWalletUser: UpdateWalletUser,
   UpdateUserWalletDelete: UpdateUserWalletCaseDelete,
 };

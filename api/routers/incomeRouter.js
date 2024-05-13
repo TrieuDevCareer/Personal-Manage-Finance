@@ -3,6 +3,7 @@ const Income = require("../models/incomeModel");
 const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
+const commonUtils = require("../commonUtils");
 
 // get data router
 router.get("/", auth, async (req, res) => {
@@ -22,7 +23,8 @@ router.post("/", auth, async (req, res) => {
     };
     const sNotice = await commonUtil.createDataCase(req, res, oCreateData, Income, "bảng thu nhập");
     // update wallet of User
-    const SNoticeUser = await commonUtil.UpdateUserWalletNew(req, res, User);
+    const SNoticeUser = await commonUtil.UpdateUserWalletNew(req, res, req.body.incMoney, User);
+
     res.json(`${sNotice} và ${SNoticeUser}`);
   } catch (error) {
     res.status(500).send();
@@ -43,7 +45,12 @@ router.put("/:id", auth, async (req, res) => {
       sIncomeId,
       "bảng thu nhập"
     );
-    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(req, res, User);
+    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
+      req,
+      res,
+      req.body.incDMoney,
+      User
+    );
     res.json(`${sUpdateEntuty} và ${sUpdateWalletUser}`);
   } catch (error) {
     res.status(500).json({ error });
@@ -51,18 +58,13 @@ router.put("/:id", auth, async (req, res) => {
 });
 
 // delete data router
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id/", auth, async (req, res) => {
   try {
     const sIncomeId = req.params.id;
-    const sUpdateWalletUser = await commonUtil.UpdateUserWalletDelete(req, res, Income, User);
-    const sDeleteCurrentData = await commonUtil.deleteDataCase(
-      req,
-      res,
-      Income,
-      sIncomeId,
-      "bảng thu nhập"
-    );
-    res.json(`${sUpdateWalletUser} và ${sDeleteCurrentData}`);
+    const data = req.body;
+    await commonUtil.UpdateWalletUser(req, "inlstCode", "incMoney", data, User);
+    await commonUtil.deleteDataCase(req, res, Income, sIncomeId, "bảng thu nhập");
+    res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
   } catch (error) {
     res.status(500).json({ error });
   }
