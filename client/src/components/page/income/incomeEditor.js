@@ -12,6 +12,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [incDetail, setIncDetail] = useState("");
   const [incMoney, setIncMoney] = useState(0);
   const [incomeListData, setIncomeListData] = useState([]);
+  const [incDMoney, setIncDMoney] = useState(0);
   const { user } = useContext(UserContext);
   function closeEditor() {
     setIncomeEditorOpen(false);
@@ -21,10 +22,11 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     e.preventDefault();
     const oIncomeData = {
       inlstCode,
-      inLstContent: inLstContent.split("-")[1],
+      inLstContent: inLstContent.split(" - ")[1],
       incDate,
       incDetail,
       incMoney,
+      incDMoney,
     };
 
     try {
@@ -49,7 +51,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     return parseInt(numberString);
   }
   function onChangeLstInc(e) {
-    const dic = e.target.value.split("-");
+    const dic = e.target.value.split(" - ");
     setInlstCode(dic[0]);
     setInLstContent(e.target.value);
   }
@@ -57,13 +59,19 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     const incomeLists = await Axios.get(`${domain}/incomelist/`);
     setIncomeListData(incomeLists.data);
   }
+  function onChangeMoney(e) {
+    if (editIncomeData) {
+      setIncDMoney(parseInt(e.target.value) - currencyStringToInt(editIncomeData.incMoney));
+    }
+    setIncMoney(e.target.value);
+  }
   useEffect(() => {
     getIncomeLists();
     if (editIncomeData) {
       setInlstCode(editIncomeData.inlstCode ? editIncomeData.inlstCode : "");
       setInLstContent(
         editIncomeData.inLstContent
-          ? editIncomeData.inlstCode + "-" + editIncomeData.inLstContent
+          ? editIncomeData.inlstCode + " - " + editIncomeData.inLstContent
           : ""
       );
       setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
@@ -139,7 +147,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
           id="fullWidth"
           type="number"
           value={incMoney}
-          onChange={(e) => setIncMoney(e.target.value)}
+          onChange={onChangeMoney}
         />
         <Stack spacing={2} direction="row" justifyContent="right">
           <Button variant="outlined" color="success" type="submit">

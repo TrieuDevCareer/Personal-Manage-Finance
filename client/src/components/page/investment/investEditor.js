@@ -55,7 +55,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     e.preventDefault();
     const oInvestmentData = {
       coinLstID,
-      coinName: coinName.split("-")[1],
+      coinName: coinName.split(" - ")[1],
       investDate,
       investExRate,
       investMoney,
@@ -113,7 +113,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     calUSTDSell(investMoney, e.target.value, investNumCoin);
   }
   function onChangeCoin(e) {
-    const aCoinValue = e.target.value.split("-");
+    const aCoinValue = e.target.value.split(" - ");
     setCoinLstID(aCoinValue[0]);
     setCoinName(e.target.value);
   }
@@ -160,7 +160,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
       setCoinLstID(editInvestmentData.coinLstID ? editInvestmentData.coinLstID : "");
       setCoinName(
         editInvestmentData.coinName
-          ? editInvestmentData.coinLstID + "-" + editInvestmentData.coinName
+          ? editInvestmentData.coinLstID + " - " + editInvestmentData.coinName
           : ""
       );
       setInvestDate(editInvestmentData.investDate ? editInvestmentData.investDate : null);

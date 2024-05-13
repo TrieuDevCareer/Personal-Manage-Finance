@@ -36,7 +36,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     e.preventDefault();
     const oSavingData = {
       bnkLstID,
-      bnkName: bnkName.split("-")[1],
+      bnkName: bnkName.split(" - ")[1],
       savDate,
       savMoney,
       savMonth,
@@ -103,7 +103,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     }
   }
   function onchangeBank(e) {
-    const aBank = e.target.value.split("-");
+    const aBank = e.target.value.split(" - ");
     setBnkLstID(aBank[0]);
     setBnkName(e.target.value);
   }
@@ -116,7 +116,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     if (editSavingData) {
       setSavDate(editSavingData.savDate ? editSavingData.savDate : null);
       setBnkName(
-        editSavingData.bnkName ? editSavingData.bnkLstID + "-" + editSavingData.bnkName : ""
+        editSavingData.bnkName ? editSavingData.bnkLstID + " - " + editSavingData.bnkName : ""
       );
       setSavMoney(editSavingData.savMoney ? currencyStringToInt(editSavingData.savMoney) : 0);
       setSavMonth(editSavingData.savMonth ? editSavingData.savMonth : 0);

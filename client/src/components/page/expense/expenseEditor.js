@@ -19,7 +19,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     e.preventDefault();
     const oExpenseData = {
       exelstCode,
-      exeLstContent: exeLstContent.split("-")[1],
+      exeLstContent: exeLstContent.split(" - ")[1],
       expDate,
       expDetail,
       expMoney,
@@ -47,7 +47,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     return parseInt(numberString);
   }
   function onChangeLstExe(e) {
-    const dic = e.target.value.split("-");
+    const dic = e.target.value.split(" - ");
     setExelstCode(dic[0]);
     setExeLstContent(e.target.value);
   }
@@ -61,7 +61,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
       setExelstCode(editExpenseData.exelstCode ? editExpenseData.exelstCode : "");
       setExeLstContent(
         editExpenseData.exeLstContent
-          ? editExpenseData.exelstCode + "-" + editExpenseData.exeLstContent
+          ? editExpenseData.exelstCode + " - " + editExpenseData.exeLstContent
           : ""
       );
       setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);
