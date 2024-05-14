@@ -11,6 +11,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [expDetail, setIncDetail] = useState("");
   const [expMoney, setIncMoney] = useState(0);
   const [expenseListData, setExpenseListData] = useState([]);
+  const [expDMoney, setExpDMoney] = useState(0);
   function closeEditor() {
     setExpenseEditorOpen(false);
   }
@@ -23,6 +24,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
       expDate,
       expDetail,
       expMoney,
+      expDMoney,
     };
 
     try {
@@ -54,6 +56,12 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   async function getExpenseLists() {
     const expenseLists = await Axios.get(`${domain}/expenselist/`);
     setExpenseListData(expenseLists.data);
+  }
+  function onChangeMoney(e) {
+    if (editExpenseData) {
+      setExpDMoney(parseInt(e.target.value) - currencyStringToInt(editExpenseData.expMoney));
+    }
+    setIncMoney(e.target.value);
   }
   useEffect(() => {
     getExpenseLists();
@@ -136,7 +144,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           id="fullWidth"
           type="number"
           value={expMoney}
-          onChange={(e) => setIncMoney(e.target.value)}
+          onChange={onChangeMoney}
         />
         <Stack spacing={2} direction="row" justifyContent="right">
           <Button variant="outlined" color="success" type="submit">

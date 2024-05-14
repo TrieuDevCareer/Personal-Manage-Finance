@@ -95,6 +95,13 @@ async function _validateDatacaseDelete(req, oEntity, sItemId, sNameEntity) {
   return oResultValidate;
 }
 
+function _currencyStringToInt(currencyString) {
+  // Remove currency symbol and thousands separator
+  var numberString = currencyString.replace(/[\.,\s€]/g, "");
+  // Convert to integer
+  return parseInt(numberString);
+}
+
 // get all data from Entity
 async function getAllDataEntity(req, res, oEntity) {
   try {
@@ -155,24 +162,24 @@ async function deleteData(req, res, oEntity, sItemId, sNameEntity) {
   return `${sNameEntity} xóa thành công`;
 }
 //  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseCreate(req, res, iChangeMoney, oEntity) {
+async function UpdateUserWalletCaseCreate(req, res, listCode, iChangeMoney, oEntity) {
   try {
     let oUserData = await oEntity.findById(req.user);
-    switch (req.body.inlstCode) {
+    switch (listCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife + parseInt(iChangeMoney);
+        oUserData.walletLife = oUserData.walletLife + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving + parseInt(iChangeMoney);
+        oUserData.walletSaving = oUserData.walletSaving + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletInvest = oUserData.walletInvest + parseInt(iChangeMoney);
+        oUserData.walletInvest = oUserData.walletInvest + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree + parseInt(iChangeMoney);
+        oUserData.walletFree = oUserData.walletFree + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
       default:
@@ -186,10 +193,10 @@ async function UpdateUserWalletCaseCreate(req, res, iChangeMoney, oEntity) {
   }
 }
 //  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseUpdate(req, res, iChangeMoney, oEntity) {
+async function UpdateUserWalletCaseUpdate(req, res, listCode, iChangeMoney, oEntity) {
   try {
     let oUserData = await oEntity.findById(req.user);
-    switch (req.body.inlstCode) {
+    switch (listCode) {
       case "SO":
         oUserData.walletLife = oUserData.walletLife + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
@@ -219,7 +226,7 @@ async function UpdateUserWalletCaseUpdate(req, res, iChangeMoney, oEntity) {
 async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney, oEntity) {
   try {
     const sSourceCode = data[oCodeDis];
-    const iChangeMoney = currencyStringToInt(data[oChangeMoney]);
+    const iChangeMoney = _currencyStringToInt(data[oChangeMoney]);
     const oUserData = await oEntity.findById(req.user);
 
     switch (sSourceCode) {
@@ -250,13 +257,6 @@ async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney
   }
 }
 
-function currencyStringToInt(currencyString) {
-  // Remove currency symbol and thousands separator
-  var numberString = currencyString.replace(/[\.,\s€]/g, "");
-  // Convert to integer
-  return parseInt(numberString);
-}
-
 async function UpdateWalletUser(req, title, iMoney, data, User) {
   const totals = {
     SO: 0,
@@ -264,10 +264,20 @@ async function UpdateWalletUser(req, title, iMoney, data, User) {
     TK: 0,
     TD: 0,
   };
-
-  data.forEach((element) => {
-    totals[element[title]] -= parseInt(currencyStringToInt(element[iMoney]));
-  });
+  switch (title) {
+    case "exelstCode":
+      data.forEach((element) => {
+        totals[element[title]] += parseInt(_currencyStringToInt(element[iMoney]));
+      });
+      break;
+    case "inlstCode":
+      data.forEach((element) => {
+        totals[element[title]] -= parseInt(_currencyStringToInt(element[iMoney]));
+      });
+      break;
+    default:
+      break;
+  }
 
   const oUserData = await User.findById(req.user);
   oUserData.walletLife += totals.SO;
