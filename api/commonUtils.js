@@ -275,14 +275,21 @@ async function UpdateWalletUser(req, title, iMoney, data, User) {
         totals[element[title]] -= parseInt(_currencyStringToInt(element[iMoney]));
       });
       break;
+    case "bnkLstID":
+      data.forEach((element) => {
+        if (!element.savStatus) {
+          totals.TK += parseInt(_currencyStringToInt(element[iMoney]));
+        }
+      });
+      break;
     default:
       break;
   }
 
   const oUserData = await User.findById(req.user);
   oUserData.walletLife += totals.SO;
-  oUserData.walletSaving += totals.DT;
-  oUserData.walletInvest += totals.TK;
+  oUserData.walletSaving += totals.TK;
+  oUserData.walletInvest += totals.DT;
   oUserData.walletFree += totals.TD;
 
   await User.findOneAndUpdate({ _id: req.user }, oUserData);

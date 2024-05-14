@@ -28,6 +28,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   const [savTRealMoney, setSavTRealMoney] = useState(0);
   const [savRealInterMoney, setSavRealInterMoney] = useState(0);
   const [bankListData, setBankListData] = useState([]);
+  const [savDMoney, setSavDMoney] = useState(0);
   function closeEditor() {
     setSavingEditorOpen(false);
   }
@@ -46,6 +47,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
       savStatus,
       savTRealMoney,
       savRealInterMoney,
+      savDMoney,
     };
 
     try {
@@ -73,6 +75,10 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   function onChangeMoneySave(e) {
     setSavMoney(e.target.value);
     calcuvalueRate(e.target.value, savMonth, savInteret);
+    calRelMoney(savTRealMoney, e.target.value);
+    if (editSavingData) {
+      setSavDMoney(parseInt(e.target.value) - currencyStringToInt(editSavingData.savMoney));
+    }
   }
   function onChangeMonthSave(e) {
     setSavMonth(e.target.value);
@@ -115,6 +121,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     getBankLists();
     if (editSavingData) {
       setSavDate(editSavingData.savDate ? editSavingData.savDate : null);
+      setBnkLstID(editSavingData.bnkLstID ? editSavingData.bnkLstID : "");
       setBnkName(
         editSavingData.bnkName ? editSavingData.bnkLstID + " - " + editSavingData.bnkName : ""
       );

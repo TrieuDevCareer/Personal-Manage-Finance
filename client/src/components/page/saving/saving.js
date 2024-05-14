@@ -49,7 +49,10 @@ function Saving({ isCheck, setIsCheck }) {
     router: "saving",
     name: "Bảng tiết kiệm",
   };
-
+  const bStatusSaving = {
+    true: "Đã rút",
+    false: "Đang gửi",
+  };
   function editSaving(savingData) {
     setEditSavingData(savingData);
     setSavingEditorOpen(true);
@@ -142,6 +145,7 @@ function Saving({ isCheck, setIsCheck }) {
                 setIsCheck={setIsCheck}
                 editModel={editSaving}
                 oRouter={oRouter}
+                bStatusSaving={bStatusSaving}
                 colorTitle={"#0ecb74"}
               />
             </div>

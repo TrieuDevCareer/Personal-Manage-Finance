@@ -53,7 +53,8 @@ router.put("/:id", auth, async (req, res) => {
     const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
       req,
       res,
-      req.body.incDMoney,
+      req.body.inlstCode,
+      parseInt(req.body.incDMoney),
       User
     );
     res.json(`${sUpdateEntuty} và ${sUpdateWalletUser}`);

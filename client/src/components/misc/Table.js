@@ -23,6 +23,7 @@ function Table({
   editModel,
   oRouter,
   isCatalogPage,
+  bStatusSaving,
   colorTitle,
 }) {
   const [page, setPage] = useState(0);
@@ -71,7 +72,11 @@ function Table({
     return sortedItem.map((item, i) => {
       const filteredObj = {};
       aKeyItem.forEach((key) => {
-        filteredObj[key] = item[key];
+        if (bStatusSaving && typeof item[key] === "boolean") {
+          filteredObj[key] = item[key] === true ? bStatusSaving.true : bStatusSaving.false;
+        } else {
+          filteredObj[key] = item[key];
+        }
       });
       return (
         <tr className="table-Item" key={i}>
@@ -99,7 +104,11 @@ function Table({
           })}
           {!isCatalogPage && (
             <td className="item-value">
-              <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
+              {bStatusSaving && filteredObj["savStatus"] === "Đã rút" ? (
+                <EditNoteIcon className="btn-style-edit-disable" />
+              ) : (
+                <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
+              )}
             </td>
           )}
         </tr>

@@ -64,6 +64,13 @@
                 margin-left: 0.5rem;
             }
 
+            .btn-style-edit-disable {
+                height: 2rem;
+                width: 2rem;
+                margin-left: 0.5rem;
+                color: #949494;
+            }
+
             .btn-style-edit:hover {
                 color: var(--background-title-color);
                 color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
