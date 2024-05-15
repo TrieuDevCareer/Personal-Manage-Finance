@@ -174,7 +174,7 @@ async function UpdateUserWalletCaseCreate(req, res, listCode, iChangeMoney, oEnt
         oUserData.walletSaving = oUserData.walletSaving + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
-      case "TD":
+      case "DT":
         oUserData.walletInvest = oUserData.walletInvest + iChangeMoney;
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
@@ -205,7 +205,7 @@ async function UpdateUserWalletCaseUpdate(req, res, listCode, iChangeMoney, oEnt
         oUserData.walletSaving = oUserData.walletSaving + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
-      case "TD":
+      case "DT":
         oUserData.walletInvest = oUserData.walletInvest + parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
@@ -238,7 +238,7 @@ async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney
         oUserData.walletSaving = oUserData.walletSaving - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
-      case "TD":
+      case "DT":
         oUserData.walletInvest = oUserData.walletInvest - parseInt(iChangeMoney);
         await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
         break;
@@ -279,6 +279,13 @@ async function UpdateWalletUser(req, title, iMoney, data, User) {
       data.forEach((element) => {
         if (!element.savStatus) {
           totals.TK += parseInt(_currencyStringToInt(element[iMoney]));
+        }
+      });
+      break;
+    case "coinLstID":
+      data.forEach((element) => {
+        if (!element.investStatus) {
+          totals.DT += parseInt(_currencyStringToInt(element[iMoney]));
         }
       });
       break;

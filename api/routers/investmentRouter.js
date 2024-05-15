@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Invesment = require("../models/investmentModel");
+const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
@@ -43,7 +44,21 @@ router.post("/", auth, async (req, res) => {
       investReMoney,
       investResult,
     };
-    await commonUtil.createDataCase(req, res, oCreateData, Invesment, "bảng đầu tư");
+    const sNotice = await commonUtil.createDataCase(
+      req,
+      res,
+      oCreateData,
+      Invesment,
+      "bảng đầu tư"
+    );
+    const SNoticeUser = await commonUtil.UpdateUserWalletNew(
+      req,
+      res,
+      "DT",
+      0 - parseInt(req.body.investMoney),
+      User
+    );
+    res.json(`${sNotice} và ${SNoticeUser}`);
   } catch (error) {
     res.status(500).send();
   }
@@ -85,7 +100,25 @@ router.put("/:id", auth, async (req, res) => {
       investResult,
     };
     const sExpenseId = req.params.id;
-    await commonUtil.updateDataCase(req, res, oUpdateData, Invesment, sExpenseId, "bảng đầu tư");
+    const sUpdateWalletUser = await commonUtil.updateDataCase(
+      req,
+      res,
+      oUpdateData,
+      Invesment,
+      sExpenseId,
+      "bảng đầu tư"
+    );
+    const sUpdateEntity = await commonUtil.UpdateUserWalletUpdate(
+      req,
+      res,
+      "DT",
+      investStatus === true
+        ? parseInt(req.body.investReMoney)
+        : 0 - parseInt(req.body.investDMoney),
+      User
+    );
+
+    res.json(`${sUpdateEntity} và ${sUpdateWalletUser}`);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -95,7 +128,10 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const sExpenseId = req.params.id;
+    const data = req.body;
     await commonUtil.deleteDataCase(req, res, Invesment, sExpenseId, "bảng đầu tư");
+    await commonUtil.UpdateWalletUser(req, "coinLstID", "investMoney", data, User);
+    res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
   } catch (error) {
     res.status(500).json({ error });
   }

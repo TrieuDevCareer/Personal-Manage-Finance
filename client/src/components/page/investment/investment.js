@@ -49,6 +49,11 @@ function Investment({ isCheck, setIsCheck }) {
     "investReMoney",
     "investResult",
   ];
+
+  const bStatusInvest = {
+    true: "Đã rút",
+    false: "Đang gửi",
+  };
   const oRouter = {
     router: "investment",
     name: "Bảng Đầu tư",
@@ -62,6 +67,12 @@ function Investment({ isCheck, setIsCheck }) {
   async function getInvestments() {
     const investments = await Axios.get(`${domain}/investment/`);
     investments.data.map((i) => {
+      i.investExRate = i.investExRate ? i.investExRate : 0;
+      i.investMoney = i.investMoney ? i.investMoney : 0;
+      i.investSeUSDT = i.investSeUSDT ? i.investSeUSDT : 0;
+      i.investSeExRate = i.investSeExRate ? i.investSeExRate : 0;
+      i.investReMoney = i.investReMoney ? i.investReMoney : 0;
+      i.investResult = i.investResult ? i.investResult : 0;
       i.investExRate = i.investExRate.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
@@ -89,7 +100,6 @@ function Investment({ isCheck, setIsCheck }) {
       let today = i.investDate;
       today = Date.parse(today);
       i.investDate = new Date(today).toISOString().split("T")[0];
-      console.log(i.investSeDate);
       today = i.investSeDate;
       today = Date.parse(today);
       i.investSeDate = new Date(today).toISOString().split("T")[0];
@@ -143,6 +153,7 @@ function Investment({ isCheck, setIsCheck }) {
                 setIsCheck={setIsCheck}
                 editModel={editInvestment}
                 oRouter={oRouter}
+                bStatus={bStatusInvest}
                 colorTitle={"#0ecb74"}
               />
             </div>

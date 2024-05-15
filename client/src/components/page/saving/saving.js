@@ -145,7 +145,7 @@ function Saving({ isCheck, setIsCheck }) {
                 setIsCheck={setIsCheck}
                 editModel={editSaving}
                 oRouter={oRouter}
-                bStatusSaving={bStatusSaving}
+                bStatus={bStatusSaving}
                 colorTitle={"#0ecb74"}
               />
             </div>

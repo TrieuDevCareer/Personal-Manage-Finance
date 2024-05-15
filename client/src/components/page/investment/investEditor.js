@@ -46,6 +46,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   const [investReMoney, setInvestReMoney] = useState(0);
   const [investResult, setInvestResult] = useState(0);
   const [coinList, setCoinList] = useState([]);
+  const [investDMoney, setInvestDMoney] = useState(0);
 
   function closeEditor() {
     setInvestmentEditorOpen(false);
@@ -62,12 +63,13 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
       investNumCoin,
       investReUSDT,
       investStatus,
-      investSeDate,
+      investSeDate: investSeDate ? investSeDate : Date.now(),
       investSeMoney,
       investSeExRate,
       investSeUSDT,
       investReMoney,
       investResult,
+      investDMoney,
     };
 
     try {
@@ -90,7 +92,6 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     // Remove currency symbol and thousands separator
     var numberString = currencyString.replace(/[\.,\s€]/g, "");
     // result = parseInt(numberString);
-    console.log(typeof result);
     if (numberString.indexOf("$") > -1) {
       numberString = numberString.split("$")[1];
       result = parseInt(numberString / 100);
@@ -107,6 +108,12 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     setInvestMoney(e.target.value);
     calUSTDReveice(e.target.value);
     // calResult(e.target.value, investReMoney);
+
+    if (editInvestmentData) {
+      setInvestDMoney(
+        parseInt(e.target.value) - currencyStringToInt(editInvestmentData.investMoney)
+      );
+    }
   }
   function onchangeUSDSell(e) {
     setInvestSeExRate(e.target.value);

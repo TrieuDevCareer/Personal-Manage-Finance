@@ -23,7 +23,7 @@ function Table({
   editModel,
   oRouter,
   isCatalogPage,
-  bStatusSaving,
+  bStatus,
   colorTitle,
 }) {
   const [page, setPage] = useState(0);
@@ -72,8 +72,8 @@ function Table({
     return sortedItem.map((item, i) => {
       const filteredObj = {};
       aKeyItem.forEach((key) => {
-        if (bStatusSaving && typeof item[key] === "boolean") {
-          filteredObj[key] = item[key] === true ? bStatusSaving.true : bStatusSaving.false;
+        if (bStatus && typeof item[key] === "boolean") {
+          filteredObj[key] = item[key] === true ? bStatus.true : bStatus.false;
         } else {
           filteredObj[key] = item[key];
         }
@@ -104,7 +104,9 @@ function Table({
           })}
           {!isCatalogPage && (
             <td className="item-value">
-              {bStatusSaving && filteredObj["savStatus"] === "Đã rút" ? (
+              {bStatus &&
+              (filteredObj["savStatus"] === "Đã rút" || filteredObj["investStatus"]) ===
+                "Đã rút" ? (
                 <EditNoteIcon className="btn-style-edit-disable" />
               ) : (
                 <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
@@ -117,7 +119,6 @@ function Table({
   }
 
   function handleChange(event) {
-    console.log(setIsCheck);
     let aCurrentData = [];
     if (event.target.checked) {
       aCurrentData = chooseData;
