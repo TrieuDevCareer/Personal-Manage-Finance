@@ -114,6 +114,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
         parseInt(e.target.value) - currencyStringToInt(editInvestmentData.investMoney)
       );
     }
+    calResult(e.target.value, investReMoney);
   }
   function onchangeUSDSell(e) {
     setInvestSeExRate(e.target.value);
@@ -150,10 +151,8 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     }
   }
   function calResult(investMoney, investReMoney) {
-    if (investMoney !== 0 && investReMoney !== 0) {
-      const resultInvest = investReMoney - investMoney;
-      setInvestResult(resultInvest);
-    }
+    const resultInvest = investReMoney - investMoney;
+    setInvestResult(resultInvest);
   }
 
   async function getCoinLists() {

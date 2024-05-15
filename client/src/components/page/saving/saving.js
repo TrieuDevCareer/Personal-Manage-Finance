@@ -17,7 +17,6 @@ function Saving({ isCheck, setIsCheck }) {
   const [savingData, setSavingData] = useState([]);
   const [savingEditorOpen, setSavingEditorOpen] = useState(false);
   const [editSavingData, setEditSavingData] = useState(null);
-  const [userData, setUserData] = useState([]);
   const [iReportStartMon, setIReportStartMon] = useState(0); //Số tiền tiết kiệm ban đầu:
   const [iReportTotalMon, setIReportTotalMon] = useState(0); //Tổng số tiền nếu rút hết TKTK:
   const [iUnsavedAmount, setIUnsavedAmount] = useState(0); //Tổng số tiền chưa gửi tiết kiệm
@@ -163,13 +162,6 @@ function Saving({ isCheck, setIsCheck }) {
         currency: "VND",
       })
     );
-    // setIAmountOfInterest(
-    //   iAmountOfInterest.toLocaleString("it-IT", {
-    //     style: "currency",
-    //     currency: "VND",
-    //   })
-    // );
-    setUserData(usersData.data);
   }
 
   useEffect(() => {
