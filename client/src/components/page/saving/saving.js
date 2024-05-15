@@ -17,6 +17,12 @@ function Saving({ isCheck, setIsCheck }) {
   const [savingData, setSavingData] = useState([]);
   const [savingEditorOpen, setSavingEditorOpen] = useState(false);
   const [editSavingData, setEditSavingData] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [iReportStartMon, setIReportStartMon] = useState(0); //Số tiền tiết kiệm ban đầu:
+  const [iReportTotalMon, setIReportTotalMon] = useState(0); //Tổng số tiền nếu rút hết TKTK:
+  const [iUnsavedAmount, setIUnsavedAmount] = useState(0); //Tổng số tiền chưa gửi tiết kiệm
+  const [iSavingAmount, setISavingAmount] = useState(0); //Tổng số tiền đang gửi tiết kiệm
+  const [iAmountOfInterest, setIAmountOfInterest] = useState(0); //Tổng số
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -60,7 +66,15 @@ function Saving({ isCheck, setIsCheck }) {
 
   async function getSavings() {
     const savings = await Axios.get(`${domain}/saving/`);
+    let iSaved = 0;
+    let iInterest = 0;
+    let iTotalMon = 0;
     savings.data.map((i) => {
+      if (!i.savStatus) {
+        iSaved += i.savMoney;
+        iInterest += i.savInteretMoney;
+        iTotalMon += i.savTRealMoney;
+      }
       i.savMoney = i.savMoney.toLocaleString("it-IT", {
         style: "currency",
         currency: "VND",
@@ -94,12 +108,75 @@ function Saving({ isCheck, setIsCheck }) {
         i.savDate
       );
     });
+    setIAmountOfInterest(
+      iInterest.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      })
+    );
     setSavingData(savings.data);
+    getUserData(iSaved, iTotalMon);
+  }
+
+  async function getUserData(iSaved, iTotalMon) {
+    const usersData = await Axios.get(`${domain}/auth`);
+    let a = iSaved + usersData.data.walletSaving;
+    let b = usersData.data.walletSaving;
+    let c = iTotalMon + usersData.data.walletSaving;
+    usersData.data.walletLife = usersData.data.walletLife.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    usersData.data.walletInvest = usersData.data.walletInvest.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    usersData.data.walletSaving = usersData.data.walletSaving.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    usersData.data.walletFree = usersData.data.walletFree.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    setIReportStartMon(
+      a.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      })
+    );
+    setIReportTotalMon(
+      c.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      })
+    );
+    setIUnsavedAmount(
+      b.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      })
+    );
+    setISavingAmount(
+      iSaved.toLocaleString("it-IT", {
+        style: "currency",
+        currency: "VND",
+      })
+    );
+    // setIAmountOfInterest(
+    //   iAmountOfInterest.toLocaleString("it-IT", {
+    //     style: "currency",
+    //     currency: "VND",
+    //   })
+    // );
+    setUserData(usersData.data);
   }
 
   useEffect(() => {
     if (!user) setSavingData([]);
-    else getSavings();
+    else {
+      getSavings();
+    }
   }, [user]);
   return (
     <div>
@@ -117,23 +194,23 @@ function Saving({ isCheck, setIsCheck }) {
               <div className="report-saving">
                 <div className="report-item">
                   <p>Số tiền tiết kiệm ban đầu:</p>
-                  <span>xyz</span>
+                  <span>{iReportStartMon}</span>
                 </div>
                 <div className="report-item">
                   <p>Tổng số tiền nếu rút hết TKTK:</p>
-                  <span>xyz</span>
+                  <span>{iReportTotalMon}</span>
                 </div>
                 <div className="report-item">
                   <p>Tổng số tiền chưa gửi tiết kiệm</p>
-                  <span>xyz</span>
+                  <span>{iUnsavedAmount}</span>
                 </div>
                 <div className="report-item">
                   <p>Tổng số tiền đang gửi tiết kiệm:</p>
-                  <span>xyz</span>
+                  <span>{iSavingAmount}</span>
                 </div>
                 <div className="report-item">
                   <p>Tổng số tiền lãi có thể nhận được :</p>
-                  <span>xyz</span>
+                  <span>{iAmountOfInterest}</span>
                 </div>
               </div>
               <Table

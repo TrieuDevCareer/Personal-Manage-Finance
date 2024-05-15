@@ -70,6 +70,10 @@ router.post("/", async (req, res) => {
       {
         id: savedUser._id,
         userName,
+        walletLife,
+        walletInvest,
+        walletSaving,
+        walletFree,
       },
       process.env.JWT_SECRET
     );
@@ -126,6 +130,10 @@ router.post("/login", async (req, res) => {
       {
         id: existingUser._id,
         userName: existingUser.userName,
+        walletLife: existingUser.walletLife,
+        walletInvest: existingUser.walletInvest,
+        walletSaving: existingUser.walletSaving,
+        walletFree: existingUser.walletFree,
       },
       process.env.JWT_SECRET
     );

@@ -105,8 +105,8 @@ function Table({
           {!isCatalogPage && (
             <td className="item-value">
               {bStatus &&
-              (filteredObj["savStatus"] === "Đã rút" || filteredObj["investStatus"]) ===
-                "Đã rút" ? (
+              (filteredObj["savStatus"] === "Đã rút" ||
+                filteredObj["investStatus"] === "Đã rút") ? (
                 <EditNoteIcon className="btn-style-edit-disable" />
               ) : (
                 <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />
