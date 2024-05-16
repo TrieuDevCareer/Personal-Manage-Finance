@@ -63,7 +63,7 @@ function Header({ clickPattern, setClickPattern }) {
   return (
     <div className="header-container">
       <div className={styleIncome}>
-        <Link className="txt-style" to="/income" onClick={() => onClickHeaderBtn("Income")}>
+        <Link className="txt-style" to="/incomereport" onClick={() => onClickHeaderBtn("Income")}>
           <img src={"/images/income.png"} alt="..." className="nav-icon" />
           <p>Báo cáo thu</p>
         </Link>

@@ -1,0 +1,51 @@
+@import url("../../style//variables.scss");
+
+.multidrp-container {
+    .multidrp-form {
+        .multidrp-lable {
+            color: var(--background-light-color);
+            top: -0.7rem
+        }
+
+        .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+            -webkit-transform: translate(12px, -1px) scale(0.75);
+        }
+
+        .multidrp-select {
+            height: 2rem;
+
+            div {
+                color: var(--text-light-color);
+                // height: 3rem;
+                font-size: 1rem;
+            }
+
+            svg {
+                color: var(--text-title-color);
+            }
+
+            fieldset {
+                border-bottom-color: var(--text-title-color);
+                border-top-color: var(--background-rdcolor);
+                border-left-color: var(--background-rdcolor);
+                border-right-color: var(--background-rdcolor);
+            }
+        }
+
+        .multidrp-select:hover {
+            div {
+                color: var(--text-light-color);
+            }
+
+            svg {
+                color: var(--text-danger-color);
+            }
+
+            fieldset {
+                border-bottom-color: var(--text-danger-color);
+                border-left-color: var(--background-rdcolor);
+                border-right-color: var(--background-rdcolor);
+            }
+        }
+    }
+}

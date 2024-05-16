@@ -1,0 +1,61 @@
+.table-report {
+
+    thead {
+        th {
+            height: 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--text-title-color);
+        }
+    }
+
+    tbody {
+        .item-table-income {
+            color: var(--text-green-color);
+            font-weight: 450;
+            text-align: left;
+        }
+
+        .item-table-expense {
+            color: var(--text-danger-color);
+            font-weight: 450;
+            text-align: left;
+        }
+
+        .item-table-different {
+            color: var(--text-title-color);
+            font-weight: 450;
+            text-align: right;
+        }
+    }
+
+    tfoot {
+        td {
+            height: 3rem;
+            border-top: 1px solid var(--text-title-color);
+            font-weight: 500;
+            color: var(--text-warning-color);
+        }
+    }
+
+    td {
+        height: 2.2rem;
+        text-align: center;
+    }
+
+    .table-month {
+        text-align: right;
+        width: 2.7rem;
+    }
+
+    .table-income {
+        width: 8.5rem;
+    }
+
+    .table-expense {
+        width: 8.5rem;
+    }
+
+    .table-disting {
+        width: 7rem;
+    }
+}
