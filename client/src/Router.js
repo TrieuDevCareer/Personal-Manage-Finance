@@ -17,6 +17,7 @@ import PieChartType from "./components/misc/charts/pieChart";
 import IncomeEditor from "./components/page/income/incomeEditor";
 import Register from "./components/auth/register";
 import IncomeReport from "./components/page/income/incomeReport";
+import ExpenseReport from "./components/page/expense/expenseReport";
 import Login from "./components/auth/login";
 
 function Router({ isCheck, setIsCheck }) {
@@ -44,6 +45,10 @@ function Router({ isCheck, setIsCheck }) {
       <Route
         path="/incomereport"
         element={<IncomeReport isCheck={isCheck} setIsCheck={setIsCheck} />}
+      />
+      <Route
+        path="/expensereport"
+        element={<ExpenseReport isCheck={isCheck} setIsCheck={setIsCheck} />}
       />
     </Routes>
   );
