@@ -8,6 +8,15 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, IncomeList);
 });
 
+// get content by capital
+router.post("/content", auth, async (req, res) => {
+  let { data } = req.body;
+  data = data[0] === "All" ? ["SO", "TK", "DT", "TD"] : data;
+  const aResultData = await IncomeList.find({ user: req.user, inlstCode: { $in: data } });
+
+  res.json(aResultData);
+});
+
 // create data router
 router.post("/", auth, async (req, res) => {
   try {

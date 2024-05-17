@@ -3,7 +3,9 @@ async function _validateDataCaseCreate(oValidateData, oValidateEntity, sNameEnti
   const oResultValidate = { status: true, message: "" };
   // validate input all data
   const aGetDataObj = Object.values(oValidateData);
-  const bResultCheck = aGetDataObj.some((item) => item === undefined || item === null);
+  const bResultCheck = aGetDataObj.some(
+    (item) => item === undefined || item === null || item === ""
+  );
   if (bResultCheck) {
     oResultValidate.status = false;
     oResultValidate.message = "Vui lòng điền đủ thông tin!";
