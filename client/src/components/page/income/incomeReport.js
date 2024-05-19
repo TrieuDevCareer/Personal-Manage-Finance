@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Stack, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MultiDropdown from "../../misc/multiDropdown";
 import TableReport from "../../misc/tableReport";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./incomeReport.scss";
-import BarChartType from "../../misc/charts/barChart.js";
 
 function IncomeReport() {
   const [incomeReportData, setIncomeReportData] = useState([]);
@@ -73,7 +72,6 @@ function IncomeReport() {
       capitalSource: capitalCondition,
       contentData: contentCondition,
     });
-    console.log(result);
     setIncomeReportData(result.data);
   }
   useEffect(() => {
@@ -115,7 +113,9 @@ function IncomeReport() {
                 title={"Danh mục thu"}
                 handleChange={handleChangeContent}
               />
-              <button onClick={handleGetIncomeReport}>Cập nhật</button>
+              <div className="btn-style-edit" onClick={handleGetIncomeReport}>
+                <SearchOutlinedIcon /> Thống kê
+              </div>
             </div>
           </div>
           <div className="incomeRp-root">
@@ -126,61 +126,21 @@ function IncomeReport() {
             <div className="incomeRp-chart-container">
               <div className="incomeRp-title">Biểu đồ thể hiện các khoản thu</div>
               <div className="incomeRp-chart">
-                {/* <BarChartType /> */}
-                {incomeReportData.reducedSOData &&
-                  incomeReportData.reducedTDData &&
-                  incomeReportData.reducedTDData &&
-                  incomeReportData.reducedDTData &&
-                  incomeReportData.reducedSOData.length === 0 &&
-                  incomeReportData.reducedTDData.length === 0 &&
-                  incomeReportData.reducedTDData.length === 0 &&
-                  incomeReportData.reducedDTData.length === 0 && (
-                    <div className="incomeRp-chart-element">
-                      <AreaChartType data={[]} />
-                    </div>
-                  )}
-                {incomeReportData.reducedSOData && incomeReportData.reducedSOData.length > 0 && (
+                {incomeReportData &&
+                incomeReportData.resultData &&
+                incomeReportData.resultData.length > 0 ? (
                   <div className="incomeRp-chart-element">
                     <AreaChartType
-                      data={incomeReportData.reducedSOData}
+                      data={incomeReportData.resultData}
                       contentKey={"inLstContent"}
                       moneyKey={"incMoney"}
                       nameKey={"Nguồn sống"}
                       color={"#0ecb74"}
                     />
                   </div>
-                )}
-                {incomeReportData.reducedTDData && incomeReportData.reducedTDData.length > 0 && (
+                ) : (
                   <div className="incomeRp-chart-element">
-                    <AreaChartType
-                      data={incomeReportData.reducedTDData}
-                      contentKey={"inLstContent"}
-                      moneyKey={"incMoney"}
-                      nameKey={"Tự do"}
-                      color={"#ff007f"}
-                    />
-                  </div>
-                )}
-                {incomeReportData.reducedTKData && incomeReportData.reducedTKData.length > 0 && (
-                  <div className="incomeRp-chart-element">
-                    <AreaChartType
-                      data={incomeReportData.reducedTKData}
-                      contentKey={"inLstContent"}
-                      moneyKey={"incMoney"}
-                      nameKey={"Tiết kiệm"}
-                      color={"#00b0f0"}
-                    />
-                  </div>
-                )}
-                {incomeReportData.reducedDTData && incomeReportData.reducedDTData.length > 0 && (
-                  <div className="incomeRp-chart-element">
-                    <AreaChartType
-                      data={incomeReportData.reducedDTData}
-                      contentKey={"inLstContent"}
-                      moneyKey={"incMoney"}
-                      nameKey={"Đầu tư"}
-                      color={"#FDDE55"}
-                    />
+                    <AreaChartType data={[]} />
                   </div>
                 )}
               </div>

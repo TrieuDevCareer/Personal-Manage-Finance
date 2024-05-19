@@ -30,111 +30,84 @@ router.get("/reporttotal", auth, async (req, res) => {
 router.post("/reportincome", auth, async (req, res) => {
   const { date, month, capitalSource, contentData } = req.body;
   const aIncomeData = await Income.find({ user: req.user });
-  const aSOIncomeData = [];
-  const aTKIncomeData = [];
-  const aDTIncomeData = [];
-  const aTDIncomeData = [];
-  const filteredData = aIncomeData.filter((item) => {
-    const itemDate = item.incDate.getDate().toString();
-    const itemMonth = (item.incDate.getMonth() + 1).toString();
-    let dateMatch = true;
-    let monthMatch = true;
-    let capitalSourceMatch = true;
-    let contentDataMatch = true;
-    if (date && date.length > 0) {
-      dateMatch = date.includes(itemDate);
-    }
-    if (month && month.length > 0) {
-      monthMatch = month.includes(itemMonth);
-    }
-    if (capitalSource && capitalSource.length > 0) {
-      capitalSourceMatch = capitalSource.includes(item.inlstCode);
-    }
-    if (contentData && contentData.length > 0) {
-      contentDataMatch = contentData.some((keyword) => item.inLstContent.includes(keyword));
-    }
-    return dateMatch && monthMatch && capitalSourceMatch && contentDataMatch;
-  });
+
+  // Hàm để kiểm tra điều kiện
+  const matches = (item, field, values, transform = (v) => v) => {
+    return !values || values.length === 0 || values.includes(transform(item[field]));
+  };
+
+  // Hàm để lọc dữ liệu
+  const filterData = (item) => {
+    return (
+      matches(item, "incDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "incDate", month, (m) => (m.getMonth() + 1).toString()) &&
+      matches(item, "inlstCode", capitalSource) &&
+      matches(item, "inLstContent", contentData, (c) =>
+        contentData.some((keyword) => c.includes(keyword))
+      )
+    );
+  };
+
+  const filteredData = aIncomeData.filter(filterData);
+
+  // Tách dữ liệu theo inlstCode
+  const dataByCode = {
+    SO: [],
+    TD: [],
+    DT: [],
+    TK: [],
+  };
+
   filteredData.forEach((item) => {
-    if (item.inlstCode === "SO") {
-      aSOIncomeData.push(item);
-    }
-    if (item.inlstCode === "TD") {
-      aTDIncomeData.push(item);
-    }
-    if (item.inlstCode === "DT") {
-      aDTIncomeData.push(item);
-    }
-    if (item.inlstCode === "TK") {
-      aTKIncomeData.push(item);
+    if (dataByCode[item.inlstCode]) {
+      dataByCode[item.inlstCode].push(item);
     }
   });
-  const reducedSOData = aSOIncomeData.reduce((acc, current) => {
-    // Tìm mục đã tồn tại trong acc có cùng inlstCode và inLstContent
-    const existing = acc.find(
-      (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
-    );
 
-    if (existing) {
-      // Nếu tồn tại, cộng dồn incMoney
-      existing.incMoney += current.incMoney;
-    } else {
-      // Nếu không tồn tại, thêm mục mới vào acc
-      acc.push({ ...current._doc });
-    }
+  // Hàm để giảm dữ liệu
+  const reduceData = (data) => {
+    return data.reduce((acc, current) => {
+      const existing = acc.find(
+        (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
+      );
 
-    return acc;
-  }, []);
-  const reducedTDData = aTDIncomeData.reduce((acc, current) => {
-    // Tìm mục đã tồn tại trong acc có cùng inlstCode và inLstContent
-    const existing = acc.find(
-      (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
-    );
+      if (existing) {
+        existing.incMoney += current.incMoney;
+      } else {
+        acc.push({ ...current._doc });
+      }
 
-    if (existing) {
-      // Nếu tồn tại, cộng dồn incMoney
-      existing.incMoney += current.incMoney;
-    } else {
-      // Nếu không tồn tại, thêm mục mới vào acc
-      acc.push({ ...current._doc });
-    }
+      return acc;
+    }, []);
+  };
 
-    return acc;
-  }, []);
-  const reducedTKData = aTKIncomeData.reduce((acc, current) => {
-    // Tìm mục đã tồn tại trong acc có cùng inlstCode và inLstContent
-    const existing = acc.find(
-      (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
-    );
+  const reducedData = {
+    SO: reduceData(dataByCode.SO),
+    TD: reduceData(dataByCode.TD),
+    DT: reduceData(dataByCode.DT),
+    TK: reduceData(dataByCode.TK),
+  };
 
-    if (existing) {
-      // Nếu tồn tại, cộng dồn incMoney
-      existing.incMoney += current.incMoney;
-    } else {
-      // Nếu không tồn tại, thêm mục mới vào acc
-      acc.push({ ...current._doc });
-    }
+  const maxLengthArr = Math.max(
+    reducedData.SO.length,
+    reducedData.TD.length,
+    reducedData.TK.length,
+    reducedData.DT.length
+  );
 
-    return acc;
-  }, []);
-  const reducedDTData = aDTIncomeData.reduce((acc, current) => {
-    // Tìm mục đã tồn tại trong acc có cùng inlstCode và inLstContent
-    const existing = acc.find(
-      (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
-    );
+  let resultData = new Array(maxLengthArr).fill().map((_, i) => ({
+    name: i + 1,
+    [`Nguồn sống`]: reducedData.SO[i]?.incMoney || 0,
+    [`Tiết kiệm`]: reducedData.TK[i]?.incMoney || 0,
+    [`Đầu tư`]: reducedData.DT[i]?.incMoney || 0,
+    [`Tự do`]: reducedData.TD[i]?.incMoney || 0,
+    [`SOContent`]: reducedData.SO[i]?.inLstContent || "",
+    [`TKContent`]: reducedData.TK[i]?.inLstContent || "",
+    [`DTContent`]: reducedData.DT[i]?.inLstContent || "",
+    [`TDContent`]: reducedData.TD[i]?.inLstContent || "",
+  }));
 
-    if (existing) {
-      // Nếu tồn tại, cộng dồn incMoney
-      existing.incMoney += current.incMoney;
-    } else {
-      // Nếu không tồn tại, thêm mục mới vào acc
-      acc.push({ ...current._doc });
-    }
-
-    return acc;
-  }, []);
-
-  res.json({ reducedSOData, reducedTDData, reducedTKData, reducedDTData });
+  res.json({ resultData });
 });
 
 // create data router

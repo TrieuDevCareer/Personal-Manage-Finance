@@ -1,0 +1,38 @@
+@import url("../../../style//variables.scss");
+
+tspan {
+    font-size: 0.7rem;
+    fill: var(--text-light-color);
+}
+
+.custom-tooltip {
+    background-color: var(--background-rdcolor);
+    border-radius: 1rem;
+    color: black;
+    font-size: 1rem;
+    box-shadow: var(--box-shadow);
+    height: 8rem;
+    align-items: center;
+
+    .desc {
+        margin: 1rem;
+        height: 1rem;
+        font-weight: 400;
+    }
+
+    .SO {
+        color: #8884d8;
+    }
+
+    .TK {
+        color: #82ca9d;
+    }
+
+    .DT {
+        color: #ffc658;
+    }
+
+    .TD {
+        color: #ff007f;
+    }
+}
