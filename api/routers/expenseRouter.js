@@ -9,6 +9,77 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, Expense);
 });
 
+// get Expense Data report list
+router.post("/reportexpense", auth, async (req, res) => {
+  const { date, month, capitalSource, contentData } = req.body;
+  const aExpenseData = await Expense.find({ user: req.user });
+
+  // Hàm để kiểm tra điều kiện
+  const matches = (item, field, values, transform = (v) => v) => {
+    return !values || values.length === 0 || values.includes(transform(item[field]));
+  };
+
+  // Hàm để lọc dữ liệu
+  const filterData = (item) => {
+    return (
+      matches(item, "expDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "expDate", month, (m) => (m.getMonth() + 1).toString()) &&
+      matches(item, "exelstCode", capitalSource) &&
+      (!contentData ||
+        contentData.length === 0 ||
+        contentData.some((keyword) => keyword.includes(item.exelstCode)))
+    );
+  };
+
+  const filteredData = aExpenseData.filter(filterData);
+
+  // Tách dữ liệu theo exelstCode
+  const dataByCode = {
+    SO: [],
+    TD: [],
+  };
+
+  filteredData.forEach((item) => {
+    if (dataByCode[item.exelstCode]) {
+      dataByCode[item.exelstCode].push(item);
+    }
+  });
+
+  // Hàm để giảm dữ liệu
+  const reduceData = (data) => {
+    return data.reduce((acc, current) => {
+      const existing = acc.find(
+        (item) =>
+          item.exelstCode === current.exelstCode && item.exeLstContent === current.exeLstContent
+      );
+
+      if (existing) {
+        existing.expMoney += current.expMoney;
+      } else {
+        acc.push({ ...current._doc });
+      }
+
+      return acc;
+    }, []);
+  };
+
+  const reducedData = {
+    SO: reduceData(dataByCode.SO),
+    TD: reduceData(dataByCode.TD),
+  };
+
+  const maxLengthArr = Math.max(reducedData.SO.length, reducedData.TD.length);
+
+  let resultData = new Array(maxLengthArr).fill().map((_, i) => ({
+    name: i + 1,
+    [`Nguồn sống`]: reducedData.SO[i]?.expMoney || 0,
+    [`Tự do`]: reducedData.TD[i]?.expMoney || 0,
+    [`SOContent`]: reducedData.SO[i]?.exeLstContent || "",
+    [`TDContent`]: reducedData.TD[i]?.exeLstContent || "",
+  }));
+
+  res.json({ resultData });
+});
 // create data router
 router.post("/", auth, async (req, res) => {
   try {

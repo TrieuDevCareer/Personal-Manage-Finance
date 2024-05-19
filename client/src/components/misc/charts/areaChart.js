@@ -11,7 +11,8 @@ import {
 
 import "./areaChart.scss";
 
-function AreaChartType({ data }) {
+function AreaChartType({ data, pageChart }) {
+  console.log(data);
   data = [
     {
       name: 0,
@@ -43,30 +44,35 @@ function AreaChartType({ data }) {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
+          {pageChart !== "expense" && (
+            <>
+              {" "}
+              <div className="desc TK">
+                {payload[3].dataKey +
+                  " - " +
+                  data[label].TKContent +
+                  ": " +
+                  payload[3].value.toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+              </div>
+              <div className="desc DT">
+                {payload[2].dataKey +
+                  "  - " +
+                  data[label].DTContent +
+                  ": " +
+                  payload[2].value.toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+              </div>
+            </>
+          )}
           <div className="desc TD">
-            {payload[3].dataKey +
-              " - " +
-              data[label].SOContent +
-              ": " +
-              payload[3].value.toLocaleString("it-IT", {
-                style: "currency",
-                currency: "VND",
-              })}
-          </div>
-          <div className="desc DT">
-            {payload[2].dataKey +
-              "  - " +
-              data[label].TKContent +
-              ": " +
-              payload[2].value.toLocaleString("it-IT", {
-                style: "currency",
-                currency: "VND",
-              })}
-          </div>
-          <div className="desc TK">
             {payload[1].dataKey +
               " - " +
-              data[label].DTContent +
+              data[label].TDContent +
               ": " +
               payload[1].value.toLocaleString("it-IT", {
                 style: "currency",
@@ -76,7 +82,7 @@ function AreaChartType({ data }) {
           <div className="desc SO">
             {payload[0].dataKey +
               " - " +
-              data[label].TDContent +
+              data[label].SOContent +
               ": " +
               payload[0].value.toLocaleString("it-IT", {
                 style: "currency",
@@ -102,9 +108,14 @@ function AreaChartType({ data }) {
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Area type="monotone" dataKey="Nguồn sống" stackId="2" stroke="#8884d8" fill="#8884d8" />;
-        <Area type="monotone" dataKey="Tiết kiệm" stackId="2" stroke="#82ca9d" fill="#82ca9d" />;
         <Area type="monotone" dataKey="Tự do" stackId="2" stroke="#ffc658" fill="#ffc658" />;
-        <Area type="monotone" dataKey="Đầu tư" stackId="2" stroke="#ff007f" fill="#ff007f" />;
+        {pageChart !== "expense" && (
+          <>
+            <Area type="monotone" dataKey="Đầu tư" stackId="2" stroke="#ff007f" fill="#ff007f" />;
+            <Area type="monotone" dataKey="Tiết kiệm" stackId="2" stroke="#82ca9d" fill="#82ca9d" />
+            ;
+          </>
+        )}
       </AreaChart>
     </ResponsiveContainer>
   );

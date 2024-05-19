@@ -23,15 +23,24 @@
         .expenseRp-filter-group {
             margin-top: 0.8rem;
             display: grid;
-            grid-template-columns: auto auto auto auto;
+            grid-template-columns: auto auto auto auto auto;
+
+            .btn-style-edit {
+                cursor: pointer;
+            }
+
+            .btn-style-edit:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            }
         }
     }
 
     .expenseRp-root {
         display: grid;
-        grid-template-columns: 27rem 44.6rem;
+        grid-template-columns: 24rem 49.6rem;
         margin-top: 1.2rem;
-        height: 32rem;
+        height: 30rem;
 
         .expenseRp-table {
             font-size: 0.8rem;
@@ -51,8 +60,8 @@
         .expenseRp-chart-container {
             border-radius: 1rem;
             background-color: var(--background-rdcolor);
-            margin-left: 1rem;
-            width: 41.6rem;
+            margin-left: 0.8rem;
+            width: 45rem;
 
             .expenseRp-title {
                 font-size: 1rem;
@@ -61,13 +70,38 @@
                 margin-bottom: 0.5rem;
                 color: var(--text-title-color);
                 height: 0.5rem;
-                margin-bottom: 1rem;
+                margin-bottom: 1.2rem;
             }
 
             .expenseRp-chart {
                 height: 32rem;
+                display: grid;
+                grid-template-rows: auto auto auto auto;
             }
         }
     }
 
+}
+
+.auth-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 42rem;
+
+    .auth-style {
+        text-align: center;
+
+        .auth-ele {
+            margin-bottom: 1rem;
+        }
+
+        .auth-title {
+            // color: var(--text-title-color);
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            background-clip: text;
+            color: transparent;
+        }
+    }
 }

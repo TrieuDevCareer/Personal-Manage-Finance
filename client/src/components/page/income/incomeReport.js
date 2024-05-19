@@ -45,10 +45,12 @@ function IncomeReport() {
     setMonthCondition(typeof value === "string" ? value.split(",") : value);
   }
   async function handleChangeCapital(event) {
+    // console.log(event.target.value);
     const {
       target: { value },
     } = event;
     setCapitalCondition(typeof value === "string" ? value.split(",") : value);
+    setContentCondition([]);
     handleGetDataContent(value);
   }
   function handleChangeContent(event) {
@@ -58,10 +60,12 @@ function IncomeReport() {
     setContentCondition(typeof value === "string" ? value.split(",") : value);
   }
   async function handleGetDataContent(data) {
-    const result = await Axios.post(`${domain}/incomelist/content`, { data: data });
+    const result = await Axios.post(`${domain}/incomelist/content`, {
+      data: data.length > 0 ? data : ["All"],
+    });
     let a = [];
     result.data.forEach((i) => {
-      a.push(`${i.inLstContent}`);
+      a.push(`${i.inlstCode}-${i.inLstContent}`);
     });
     setContentData(a);
   }

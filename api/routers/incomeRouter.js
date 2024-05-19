@@ -42,9 +42,9 @@ router.post("/reportincome", auth, async (req, res) => {
       matches(item, "incDate", date, (d) => d.getDate().toString()) &&
       matches(item, "incDate", month, (m) => (m.getMonth() + 1).toString()) &&
       matches(item, "inlstCode", capitalSource) &&
-      matches(item, "inLstContent", contentData, (c) =>
-        contentData.some((keyword) => c.includes(keyword))
-      )
+      (!contentData ||
+        contentData.length === 0 ||
+        contentData.some((keyword) => keyword.includes(item.inLstContent)))
     );
   };
 
@@ -106,7 +106,6 @@ router.post("/reportincome", auth, async (req, res) => {
     [`DTContent`]: reducedData.DT[i]?.inLstContent || "",
     [`TDContent`]: reducedData.TD[i]?.inLstContent || "",
   }));
-
   res.json({ resultData });
 });
 

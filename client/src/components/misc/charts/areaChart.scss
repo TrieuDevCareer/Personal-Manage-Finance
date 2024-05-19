@@ -11,12 +11,16 @@ tspan {
     color: black;
     font-size: 1rem;
     box-shadow: var(--box-shadow);
-    height: 8rem;
+    height: auto;
     align-items: center;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: auto auto auto auto;
 
     .desc {
-        margin: 1rem;
-        height: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        height: 2rem;
         font-weight: 400;
     }
 
@@ -29,10 +33,10 @@ tspan {
     }
 
     .DT {
-        color: #ffc658;
+        color: #ff007f;
     }
 
     .TD {
-        color: #ff007f;
+        color: #ffc658;
     }
 }
