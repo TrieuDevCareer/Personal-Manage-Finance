@@ -47,7 +47,7 @@ function Register() {
     }
 
     await getUser();
-    navigate("/income");
+    navigate("/");
   }
   return (
     <div className="auth-container">

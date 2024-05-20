@@ -35,7 +35,7 @@ function Login() {
     }
 
     await getUser();
-    navigate("/income");
+    navigate("/");
   }
   return (
     <div className="auth-container">

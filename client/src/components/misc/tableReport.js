@@ -4,7 +4,7 @@ import UserContext from "../../context/UserContext";
 import domain from "../../util/domain.js";
 import "./tableReport.scss";
 
-function TableReport() {
+function TableReport({ page }) {
   const [resultData, setResultData] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
@@ -14,10 +14,16 @@ function TableReport() {
     return resultData.map((item, i) => {
       return (
         <tr key={i}>
-          <td>{i + 1}</td>
-          <td className="item-table-income">{item.incomeSite}</td>
-          <td className="item-table-expense">{item.expenseSite}</td>
-          <td className="item-table-different">{item.different}</td>
+          <td id={page}>{i + 1}</td>
+          <td id={page} className="item-table-income">
+            {item.incomeSite}
+          </td>
+          <td id={page} className="item-table-expense">
+            {item.expenseSite}
+          </td>
+          <td id={page} className="item-table-different">
+            {item.different}
+          </td>
         </tr>
       );
     });
