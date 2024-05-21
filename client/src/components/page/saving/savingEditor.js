@@ -45,7 +45,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
       savInteretMoney,
       savTotalMoney,
       savStatus,
-      savTRealMoney,
+      savTRealMoney: savTRealMoney > 0 ? savTRealMoney : savTotalMoney,
       savRealInterMoney,
       savDMoney,
     };
