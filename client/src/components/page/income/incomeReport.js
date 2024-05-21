@@ -45,7 +45,6 @@ function IncomeReport() {
     setMonthCondition(typeof value === "string" ? value.split(",") : value);
   }
   async function handleChangeCapital(event) {
-    // console.log(event.target.value);
     const {
       target: { value },
     } = event;

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import LogoutIcon from "@mui/icons-material/Logout";
 // import "./ErrorMessage.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import domain from "../../util/domain";
 import UserContext from "../../context/UserContext";
 import "./header.scss";

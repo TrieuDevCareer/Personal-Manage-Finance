@@ -12,7 +12,6 @@ import {
 import "./areaChart.scss";
 
 function AreaChartType({ data, pageChart }) {
-  console.log(data);
   data = [
     {
       name: 0,

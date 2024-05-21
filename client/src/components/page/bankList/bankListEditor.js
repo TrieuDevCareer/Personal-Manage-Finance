@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
+import { Box, TextField, Stack, Button } from "@mui/material";
 import domain from "../../../util/domain.js";
 import "./bankListEditor.scss";
 

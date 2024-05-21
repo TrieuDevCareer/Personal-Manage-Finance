@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/page/home/home";
 import Income from "./components/page/income/income";
@@ -11,10 +11,6 @@ import IncomeList from "./components/page/incomeList/incomeList";
 import ExpenseList from "./components/page/expenseList/expenseList";
 import BankList from "./components/page/bankList/bankList";
 import CoinList from "./components/page/coinList/coinList";
-import BarChartType from "./components/misc/charts/barChart";
-import AreaChartType from "./components/misc/charts/areaChart";
-import PieChartType from "./components/misc/charts/pieChart";
-import IncomeEditor from "./components/page/income/incomeEditor";
 import Register from "./components/auth/register";
 import IncomeReport from "./components/page/income/incomeReport";
 import ExpenseReport from "./components/page/expense/expenseReport";

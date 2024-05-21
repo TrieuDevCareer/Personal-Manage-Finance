@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
-import UserContext from "../../../context/UserContext.js";
 import "./incomeEditer.scss";
 
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
@@ -13,7 +12,6 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [incMoney, setIncMoney] = useState(0);
   const [incomeListData, setIncomeListData] = useState([]);
   const [incDMoney, setIncDMoney] = useState(0);
-  const { user } = useContext(UserContext);
   function closeEditor() {
     setIncomeEditorOpen(false);
   }

@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Axios from "axios";
 import Box from "@mui/material/Box";
 import { Stack, Button, TextField } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import domain from "../../util/domain";
 import UserContext from "../../context/UserContext";
 import "./auth.scss";
