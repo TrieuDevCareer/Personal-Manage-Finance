@@ -22,7 +22,14 @@ router.post("/", auth, async (req, res) => {
   try {
     const { exelstCode, exeLstContent } = req.body;
     const oCreateData = { exelstCode, exeLstContent };
-    await commonUtil.createDataCase(req, res, oCreateData, ExpenseList, "danh mục tiêu dùng");
+    const result = await commonUtil.createDataCase(
+      req,
+      res,
+      oCreateData,
+      ExpenseList,
+      "danh mục tiêu dùng"
+    );
+    res.json(result);
   } catch (error) {
     res.status(500).send();
   }
@@ -34,7 +41,7 @@ router.put("/:id", auth, async (req, res) => {
     const { exelstCode, exeLstContent } = req.body;
     const oUpdateData = { exelstCode, exeLstContent };
     const oExeId = req.params.id;
-    await commonUtil.updateDataCase(
+    const result = await commonUtil.updateDataCase(
       req,
       res,
       oUpdateData,
@@ -42,6 +49,7 @@ router.put("/:id", auth, async (req, res) => {
       oExeId,
       "danh mục tiêu dùng"
     );
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -51,7 +59,14 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const oExeId = req.params.id;
-    await commonUtil.deleteDataCase(req, res, ExpenseList, oExeId, "danh mục tiêu dùng");
+    const result = await commonUtil.deleteDataCase(
+      req,
+      res,
+      ExpenseList,
+      oExeId,
+      "danh mục tiêu dùng"
+    );
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }

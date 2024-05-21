@@ -22,7 +22,14 @@ router.post("/", auth, async (req, res) => {
   try {
     const { inlstCode, inLstContent } = req.body;
     const oCreateData = { inlstCode, inLstContent };
-    await commonUtil.createDataCase(req, res, oCreateData, IncomeList, "danh mục thu nhập");
+    const result = await commonUtil.createDataCase(
+      req,
+      res,
+      oCreateData,
+      IncomeList,
+      "danh mục thu nhập"
+    );
+    res.json(result);
   } catch (error) {
     res.status(500).send();
   }
@@ -34,7 +41,15 @@ router.put("/:id", auth, async (req, res) => {
     const { inlstCode, inLstContent } = req.body;
     const oUpdateData = { inlstCode, inLstContent };
     const oIncId = req.params.id;
-    await commonUtil.updateDataCase(req, res, oUpdateData, IncomeList, oIncId, "danh mục thu nhập");
+    const result = await commonUtil.updateDataCase(
+      req,
+      res,
+      oUpdateData,
+      IncomeList,
+      oIncId,
+      "danh mục thu nhập"
+    );
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -44,7 +59,14 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const oIncId = req.params.id;
-    await commonUtil.deleteDataCase(req, res, IncomeList, oIncId, "danh mục thu nhập");
+    const result = await commonUtil.deleteDataCase(
+      req,
+      res,
+      IncomeList,
+      oIncId,
+      "danh mục thu nhập"
+    );
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }

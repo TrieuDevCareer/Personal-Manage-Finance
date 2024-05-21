@@ -13,13 +13,8 @@ router.post("/", auth, async (req, res) => {
   try {
     const { bnkLstID, bnkName } = req.body;
     const oCreateData = { bnkLstID, bnkName };
-    await commonUtil.createDataCase(
-      req,
-      res,
-      oCreateData,
-      BankList,
-      "Ngân hàng"
-    );
+    const result = await commonUtil.createDataCase(req, res, oCreateData, BankList, "Ngân hàng");
+    res.json(result);
   } catch (error) {
     res.status(500).send();
   }
@@ -31,7 +26,7 @@ router.put("/:id", auth, async (req, res) => {
     const { bnkLstID, bnkName } = req.body;
     const oUpdateData = { bnkLstID, bnkName };
     const sBankId = req.params.id;
-    await commonUtil.updateDataCase(
+    const result = await commonUtil.updateDataCase(
       req,
       res,
       oUpdateData,
@@ -39,6 +34,7 @@ router.put("/:id", auth, async (req, res) => {
       sBankId,
       "ngân hàng"
     );
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -48,7 +44,8 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const oBankId = req.params.id;
-    await commonUtil.deleteDataCase(req, res, BankList, oBankId, "ngân hàng");
+    const result = await commonUtil.deleteDataCase(req, res, BankList, oBankId, "ngân hàng");
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error });
   }
