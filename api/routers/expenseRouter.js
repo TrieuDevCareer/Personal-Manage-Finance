@@ -77,8 +77,30 @@ router.post("/reportexpense", auth, async (req, res) => {
     [`SOContent`]: reducedData.SO[i]?.exeLstContent || "",
     [`TDContent`]: reducedData.TD[i]?.exeLstContent || "",
   }));
-
-  res.json({ resultData });
+  let percentData = [];
+  const colorBackground = [
+    "#0088FE",
+    "#00C49F",
+    "#FFBB28",
+    "#FF8042",
+    "#0ecb74",
+    "#ff007f",
+    "#FDDE55",
+  ];
+  percentData.push(...reducedData.SO);
+  percentData.push(...reducedData.TD);
+  let pieChartData = [];
+  percentData.forEach((item, i) => {
+    item.label = item.exelstCode + "-" + item.exeLstContent;
+    item.value = item.expMoney;
+    item.color = colorBackground[(i + 1) % colorBackground.length];
+    pieChartData.push({
+      label: item.label,
+      value: item.value,
+      color: item.color,
+    });
+  });
+  res.json({ resultData, pieChartData });
 });
 // create data router
 router.post("/", auth, async (req, res) => {

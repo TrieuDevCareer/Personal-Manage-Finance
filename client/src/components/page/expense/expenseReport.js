@@ -73,8 +73,7 @@ function ExpenseReport() {
       capitalSource: capitalCondition,
       contentData: contentCondition,
     });
-    console.log(result.data);
-    setExpenseReportData(result.data);
+    setExpenseReportData(result.data.resultData);
   }
   useEffect(() => {
     if (!user) setContentData([]);
@@ -128,11 +127,9 @@ function ExpenseReport() {
             <div className="expenseRp-chart-container">
               <div className="expenseRp-title">Biểu đồ thể hiện các khoản thu</div>
               <div className="expenseRp-chart">
-                {expenseReportData &&
-                expenseReportData.resultData &&
-                expenseReportData.resultData.length > 0 ? (
+                {expenseReportData && expenseReportData && expenseReportData.length > 0 ? (
                   <div className="expenseRp-chart-element">
-                    <AreaChartType data={expenseReportData.resultData} pageChart={"expense"} />
+                    <AreaChartType data={expenseReportData} pageChart={"expense"} />
                   </div>
                 ) : (
                   <div className="expenseRp-chart-element">

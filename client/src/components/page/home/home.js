@@ -10,25 +10,30 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import { useNavigate } from "react-router-dom";
 import "./home.scss";
-const data = [
-  { label: "Group A", value: 400, color: "#0088FE" },
-  { label: "Group B", value: 300, color: "#00C49F" },
-  { label: "Group C", value: 300, color: "#FFBB28" },
-  { label: "Group D", value: 200, color: "#FF8042" },
-];
 
-const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
+const data = [{ label: "Không có dữ liệu", value: 0, color: "#0088FE" }];
 
-const getArcLabel = (params) => {
-  const percent = params.value / TOTAL;
-  return `${(percent * 100).toFixed(0)}%`;
-};
 function Home() {
   const [userData, setUserData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  function getArcLabel(params) {
+    const TOTAL =
+      pieChartData.length > 0
+        ? pieChartData.map((item) => item.value).reduce((a, b) => a + b, 0)
+        : data.map((item) => item.value).reduce((a, b) => a + b, 0);
+    const percent = params.value / TOTAL;
+    return `${(percent * 100).toFixed(0)}%`;
+  }
+  async function handleGetExpenseReport() {
+    const result = await Axios.post(`${domain}/expense/reportexpense`, {
+      month: `${new Date().getMonth() + 1}`,
+    });
+    setPieChartData(result.data.pieChartData);
+  }
   async function getUserData() {
     const incomes = await Axios.get(`${domain}/auth`);
     incomes.data.walletLife = incomes.data.walletLife.toLocaleString("it-IT", {
@@ -51,7 +56,10 @@ function Home() {
   }
   useEffect(() => {
     if (!user) setUserData([]);
-    else getUserData();
+    else {
+      getUserData();
+      handleGetExpenseReport();
+    }
   }, [user]);
   return (
     <div>
@@ -83,33 +91,63 @@ function Home() {
             </div>
           </div>
           <div className="top-right-container">
-            <div className="title-container top-left">Phần trăm phân bổ theo danh mục chi</div>
+            <div className="title-container top-left">
+              Phần trăm phân bổ theo danh mục Chi tháng {new Date().getMonth() + 1}
+            </div>
             <div className="distance-box"></div>
-            <PieChart
-              className="pieChart"
-              series={[
-                {
-                  data,
-                  highlightScope: { faded: "global", highlighted: "item" },
-                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-                  innerRadius: 30,
-                  outerRadius: 95,
-                  paddingAngle: 2,
-                  cornerRadius: 3,
-                  startAngle: -180,
-                  endAngle: 180,
-                  cx: 170,
-                  cy: 100,
-                  arcLabel: getArcLabel,
-                },
-              ]}
-              sx={{
-                [`& .${pieArcLabelClasses.root}`]: {
-                  fill: "white",
-                  fontSize: 14,
-                },
-              }}
-            />
+            {pieChartData.length > 0 ? (
+              <PieChart
+                className="pieChart"
+                series={[
+                  {
+                    data: pieChartData,
+                    highlightScope: { faded: "global", highlighted: "item" },
+                    faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                    innerRadius: 30,
+                    outerRadius: 95,
+                    paddingAngle: 2,
+                    cornerRadius: 3,
+                    startAngle: -180,
+                    endAngle: 180,
+                    cx: 170,
+                    cy: 100,
+                    arcLabel: getArcLabel,
+                  },
+                ]}
+                sx={{
+                  [`& .${pieArcLabelClasses.root}`]: {
+                    fill: "white",
+                    fontSize: 14,
+                  },
+                }}
+              />
+            ) : (
+              <PieChart
+                className="pieChart"
+                series={[
+                  {
+                    data,
+                    highlightScope: { faded: "global", highlighted: "item" },
+                    faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                    innerRadius: 30,
+                    outerRadius: 95,
+                    paddingAngle: 2,
+                    cornerRadius: 3,
+                    startAngle: -180,
+                    endAngle: 180,
+                    cx: 170,
+                    cy: 100,
+                    arcLabel: getArcLabel,
+                  },
+                ]}
+                sx={{
+                  [`& .${pieArcLabelClasses.root}`]: {
+                    fill: "white",
+                    fontSize: 14,
+                  },
+                }}
+              />
+            )}
           </div>
           <div className="bottom-left-container">
             <div className="title-container top-left">Bảng thống kê Thu - Chi qua các tháng</div>
