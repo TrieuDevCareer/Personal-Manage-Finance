@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Axios from "axios";
 import Checkbox from "@mui/material/Checkbox";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -27,6 +27,7 @@ function Table({
 }) {
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
+  const navigate = useNavigate();
 
   const maxPage = Math.ceil(oData.length / rowsPerPage);
   const handleArrowBackPage = (_event, newPage) => {
@@ -134,7 +135,7 @@ function Table({
       });
       setIsCheck(false);
       setChooseData([]);
-      window.location.reload();
+      navigate(0);
     }
   }
   useEffect(() => {}, [chooseData]);
