@@ -9,6 +9,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import ExpenseEditor from "./expenseEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./expense.scss";
@@ -56,7 +57,8 @@ function Expense({ isCheck, setIsCheck }) {
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && expenseData.length === 0 && <LoadingProgess />}
+      {user && expenseData.length > 0 && (
         <div className="expense-container">
           <div className="title-expense">DANH SÁCH CÁC KHOẢN CHI</div>
 

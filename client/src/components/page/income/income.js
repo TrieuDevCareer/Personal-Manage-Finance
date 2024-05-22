@@ -9,6 +9,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import IncomeEditor from "./incomeEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./income.scss";
@@ -55,12 +56,12 @@ function Income({ isCheck, setIsCheck }) {
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && incomeData.length === 0 && <LoadingProgess />}
+      {user && incomeData.length > 0 && (
         <div className="income-container">
           <div className="title-container">
             <div className="title-income">DANH SÁCH CÁC KHOẢN THU</div>
           </div>
-
           {incomeEditorOpen ? (
             <IncomeEditor
               getIncomes={getIncomes}
