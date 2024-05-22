@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Income = require("../models/incomeModel");
 const Expense = require("../models/expenseModel");
+const Saving = require("../models/savingModel");
+const Invest = require("../models/investmentModel");
 const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
@@ -15,6 +17,8 @@ router.get("/reporttotal", auth, async (req, res) => {
   const resultData = new Array(12).fill().map(() => ({ incomeSite: 0, expenseSite: 0 }));
   const aIncomeData = await Income.find({ user: req.user });
   const aExpenseData = await Expense.find({ user: req.user });
+  const aSavingData = await Saving.find({ user: req.user, savStatus: false });
+  const aInvestData = await Saving.find({ user: req.user, investStatus: false });
   aIncomeData.forEach((income) => {
     const month = income.incDate.getMonth();
     resultData[month].incomeSite += income.incMoney;
@@ -22,6 +26,14 @@ router.get("/reporttotal", auth, async (req, res) => {
   aExpenseData.forEach((expense) => {
     const month = expense.expDate.getMonth();
     resultData[month].expenseSite += expense.expMoney;
+  });
+  aSavingData.forEach((saving) => {
+    const month = saving.savDate.getMonth();
+    resultData[month].expenseSite += saving.savMoney;
+  });
+  aInvestData.forEach((invest) => {
+    const month = invest.investDate.getMonth();
+    resultData[month].expenseSite += invest.investMoney;
   });
   res.json(resultData);
 });

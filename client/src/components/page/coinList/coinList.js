@@ -45,7 +45,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   }, [user]);
   return (
     <div>
-      {user && !coinListData && <LoadingProgess />}
+      {user && !isCatalogPage && !coinListData && <LoadingProgess />}
       {user && coinListData && (
         <div className="coinList-container">
           <div className="title-container">

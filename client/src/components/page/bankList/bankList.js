@@ -45,7 +45,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   }, [user]);
   return (
     <div>
-      {user && !bankListData && <LoadingProgess />}
+      {user && !isCatalogPage && !bankListData && <LoadingProgess />}
       {user && bankListData && (
         <div className="bankList-container">
           <div className="title-container">

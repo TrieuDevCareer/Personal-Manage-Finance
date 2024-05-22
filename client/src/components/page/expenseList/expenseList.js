@@ -45,7 +45,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   }, [user]);
   return (
     <div>
-      {user && !expenseListData && <LoadingProgess />}
+      {user && !isCatalogPage && !expenseListData && <LoadingProgess />}
       {user && expenseListData && (
         <div className="expenseList-container">
           <div className="title-container">

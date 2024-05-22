@@ -45,7 +45,7 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   }, [user]);
   return (
     <div>
-      {user && !incomeListData && <LoadingProgess />}
+      {user && !incomeListData && !isCatalogPage && <LoadingProgess />}
       {user && incomeListData && (
         <div className="incomeList-container">
           <div className="title-container">
