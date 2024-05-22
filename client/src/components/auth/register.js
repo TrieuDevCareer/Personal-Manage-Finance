@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Box from "@mui/material/Box";
 import { Stack, Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import domain from "../../util/domain";
 import UserContext from "../../context/UserContext";
+import ErrorMessage from "../misc/ErrorMessage";
 import "./auth.scss";
 
 function Register() {
@@ -16,6 +17,7 @@ function Register() {
   const [walletInvest, setWalletInvest] = useState(0);
   const [walletSaving, setWalletSaving] = useState(0);
   const [walletFree, setWalletFree] = useState(0);
+  const [message, setMessage] = useState("");
 
   const { getUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -39,8 +41,7 @@ function Register() {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          // setErrorMessage(err.response.data.errorMessage);
-          console.log(err.response.data.errorMessage);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -63,6 +64,7 @@ function Register() {
           autoComplete="off"
           onSubmit={register}
         >
+          <ErrorMessage message={message} setMessage={setMessage} />
           <TextField
             className="auth-text"
             fullWidth
@@ -144,7 +146,7 @@ function Register() {
             value={walletFree}
             onChange={(e) => setWalletFree(e.target.value)}
           />
-          <Stack spacing={2} direction="row" justifyContent="right">
+          <Stack spacing={2} direction="row" justifyContent="right" className="btn-control">
             <Button variant="contained" color="success" size="medium" type="submit">
               Đăng ký
             </Button>

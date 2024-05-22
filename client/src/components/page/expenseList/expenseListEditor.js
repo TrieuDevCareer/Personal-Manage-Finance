@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseListEditor.scss";
 
 const currencies = [
@@ -18,6 +19,7 @@ const currencies = [
 function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpenseListData }) {
   const [exelstCode, setExelstCode] = useState("");
   const [exeLstContent, setExeLstContent] = useState("");
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setExpenseListEditorOpen(false);
   }
@@ -35,7 +37,7 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -62,6 +64,7 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
         autoComplete="off"
         onSubmit={saveExpenseListEditor}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           id="outlined-select-currency"

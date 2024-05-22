@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./incomeListEditor.scss";
 
 const optionSource = [
@@ -26,6 +27,7 @@ const optionSource = [
 function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeListData }) {
   const [inlstCode, setInlstCode] = useState("");
   const [inLstContent, setInLstContent] = useState("");
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setIncomeListEditorOpen(false);
   }
@@ -43,7 +45,7 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -70,6 +72,7 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           id="outlined-select-currency"

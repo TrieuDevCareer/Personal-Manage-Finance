@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./incomeEditer.scss";
 
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
@@ -12,6 +13,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [incMoney, setIncMoney] = useState(0);
   const [incomeListData, setIncomeListData] = useState([]);
   const [incDMoney, setIncDMoney] = useState(0);
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setIncomeEditorOpen(false);
   }
@@ -33,7 +35,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -90,6 +92,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           required

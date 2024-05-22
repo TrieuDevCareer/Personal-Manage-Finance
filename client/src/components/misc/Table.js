@@ -10,6 +10,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import domain from "../../util/domain";
+import ErrorMessage from "./ErrorMessage";
 import "./table.scss";
 
 function Table({
@@ -27,6 +28,8 @@ function Table({
 }) {
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
+  const [message, setMessage] = useState("");
+
   const navigate = useNavigate();
 
   const maxPage = Math.ceil(oData.length / rowsPerPage);
@@ -129,18 +132,28 @@ function Table({
     setChooseData(aCurrentData);
   }
   function deleteData() {
-    if (window.confirm(`Bạn muốn xóa những các giá trị của ${oRouter.name} này?`)) {
-      chooseData.forEach(async (data) => {
-        await Axios.delete(`${domain}/${oRouter.router}/${data._id}`, { data: chooseData });
-      });
-      setIsCheck(false);
-      setChooseData([]);
-      navigate(0);
+    try {
+      if (window.confirm(`Bạn muốn xóa những các giá trị của ${oRouter.name} này?`)) {
+        chooseData.forEach(async (data) => {
+          await Axios.delete(`${domain}/${oRouter.router}/${data._id}`, { data: chooseData });
+        });
+        setIsCheck(false);
+        setChooseData([]);
+        navigate(0);
+      }
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          setMessage(err.response.data.errorMessage);
+        }
+      }
+      return;
     }
   }
   useEffect(() => {}, [chooseData]);
   return (
     <div className="table-root">
+      <ErrorMessage message={message} setMessage={setMessage} />
       <table className="table-container">
         <tr className="table-header">
           <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}></th>
@@ -149,7 +162,6 @@ function Table({
               STT
             </th>
           )}
-
           {renderHeaderTable()}
           {!isCatalogPage && (
             <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>

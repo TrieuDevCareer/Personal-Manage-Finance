@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./coinListEditor.scss";
 
 function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData }) {
   const [coinLstID, setCoinLstID] = useState("");
   const [coinName, setCoinName] = useState("");
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setCoinListEditorOpen(false);
   }
@@ -24,7 +26,7 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -51,6 +53,7 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           fullWidth

@@ -1,19 +1,23 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container {
-    // display: flex;
+.popup-container-invest {
+    display: flex;
     position: absolute;
     justify-content: center;
     align-items: center;
-    height: 38rem;
+    height: 42rem;
 
-    .popup-form {
+    .popup-form-invest {
         display: grid;
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 2rem;
+        padding-left: 2rem;
+        padding-top: 0.5rem;
+        padding-right: 2rem;
+        padding-bottom: 0.5rem;
         border-radius: 1rem;
+        justify-items: center;
 
         .text-container {
             display: grid;
@@ -80,6 +84,11 @@
                     }
                 }
             }
+        }
+
+        .btn-control {
+            position: relative;
+            top: -1rem
         }
     }
 }

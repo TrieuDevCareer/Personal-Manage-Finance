@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseEditor.scss";
 
 function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
@@ -12,6 +13,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [expMoney, setIncMoney] = useState(0);
   const [expenseListData, setExpenseListData] = useState([]);
   const [expDMoney, setExpDMoney] = useState(0);
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setExpenseEditorOpen(false);
   }
@@ -33,7 +35,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -89,6 +91,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
         autoComplete="off"
         onSubmit={saveExpense}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           required

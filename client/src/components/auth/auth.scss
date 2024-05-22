@@ -20,7 +20,10 @@
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 2rem;
+        padding-left: 2rem;
+        padding-top: 0.5rem;
+        padding-right: 2rem;
+        padding-bottom: 0.5rem;
         border-radius: 1rem;
 
         .auth-text {

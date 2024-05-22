@@ -2,23 +2,8 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./investEditor.scss";
-
-const currencies = [
-  {
-    value: "BTC-Bitcoin",
-    label: "Bitcoin",
-  },
-  {
-    value: "FPT-FPT software",
-    label: "FPT software",
-  },
-  {
-    value: "VT-Viettel",
-    label: "Viettel",
-  },
-];
-
 const StatusSav = [
   {
     value: false,
@@ -47,6 +32,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   const [investResult, setInvestResult] = useState(0);
   const [coinList, setCoinList] = useState([]);
   const [investDMoney, setInvestDMoney] = useState(0);
+  const [message, setMessage] = useState("");
 
   function closeEditor() {
     setInvestmentEditorOpen(false);
@@ -78,7 +64,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -198,9 +184,9 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
     }
   }, [editInvestmentData]);
   return (
-    <div className="popup-container">
+    <div className="popup-container-invest">
       <Box
-        className="popup-form"
+        className="popup-form-invest"
         component="form"
         sx={{
           "& > :not(style)": { m: 1, width: "40rem" },
@@ -209,6 +195,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <div className="text-container">
           <div className="left-group-input">
             <TextField
@@ -329,7 +316,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
             />
           </div>
         </div>
-        <Stack spacing={2} direction="row" justifyContent="right">
+        <Stack className="btn-control" spacing={2} direction="row" justifyContent="right">
           <Button variant="outlined" color="success" type="submit">
             Lưu thay đổi
           </Button>

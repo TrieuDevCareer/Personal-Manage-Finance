@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./savingEditor.scss";
 
 const StatusSav = [
@@ -29,6 +30,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   const [savRealInterMoney, setSavRealInterMoney] = useState(0);
   const [bankListData, setBankListData] = useState([]);
   const [savDMoney, setSavDMoney] = useState(0);
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setSavingEditorOpen(false);
   }
@@ -56,7 +58,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -155,6 +157,8 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
+
         <div className="text-container">
           <div className="left-group-input">
             <TextField

@@ -10,6 +10,7 @@ import TableReport from "../../misc/tableReport";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseReport.scss";
 
 function ExpenseReport() {
@@ -19,6 +20,7 @@ function ExpenseReport() {
   const [capitalCondition, setCapitalCondition] = useState([]);
   const [contentCondition, setContentCondition] = useState([]);
   const [contentData, setContentData] = useState([]);
+  const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -59,12 +61,21 @@ function ExpenseReport() {
     setContentCondition(typeof value === "string" ? value.split(",") : value);
   }
   async function handleGetDataContent(data) {
-    const result = await Axios.post(`${domain}/expenselist/content`, { data: data });
-    let a = [];
-    result.data.forEach((i) => {
-      a.push(`${i.exelstCode}-${i.exeLstContent}`);
-    });
-    setContentData(a);
+    try {
+      const result = await Axios.post(`${domain}/expenselist/content`, { data: data });
+      let a = [];
+      result.data.forEach((i) => {
+        a.push(`${i.exelstCode}-${i.exeLstContent}`);
+      });
+      setContentData(a);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          setMessage(err.response.data.errorMessage);
+        }
+      }
+      return;
+    }
   }
   async function handleGetExpenseReport() {
     const result = await Axios.post(`${domain}/expense/reportexpense`, {
@@ -87,6 +98,8 @@ function ExpenseReport() {
     <div>
       {user && (
         <div className="expenseRp-container">
+          <ErrorMessage message={message} setMessage={setMessage} />
+
           <div className="expenseRp-ctrl-gr">
             <div className="expenseRp-title">Bảng điều khiển chọn lọc</div>
             <div className="expenseRp-filter-group">

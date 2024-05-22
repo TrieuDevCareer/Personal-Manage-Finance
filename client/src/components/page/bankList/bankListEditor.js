@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button } from "@mui/material";
 import domain from "../../../util/domain.js";
+import ErrorMessage from "../../misc/ErrorMessage";
 import "./bankListEditor.scss";
 
 function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData }) {
   const [bnkLstID, setBnkLstID] = useState("");
   const [bnkName, setBnkName] = useState("");
+  const [message, setMessage] = useState("");
   function closeEditor() {
     setBankListEditorOpen(false);
   }
@@ -24,7 +26,7 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          console.log(err.response.data);
+          setMessage(err.response.data.errorMessage);
         }
       }
       return;
@@ -51,6 +53,7 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
         autoComplete="off"
         onSubmit={saveInCome}
       >
+        <ErrorMessage message={message} setMessage={setMessage} />
         <TextField
           className="popup-text"
           fullWidth
