@@ -142,7 +142,7 @@ function ExpenseReport() {
             <div className="expenseRp-chart-container">
               <div className="expenseRp-title">Biểu đồ thể hiện các khoản thu</div>
               <div className="expenseRp-chart">
-                {expenseReportData && expenseReportData && expenseReportData.length > 0 ? (
+                {expenseReportData && expenseReportData.length > 0 ? (
                   <div className="expenseRp-chart-element">
                     <AreaChartType data={expenseReportData} pageChart={"expense"} />
                   </div>
