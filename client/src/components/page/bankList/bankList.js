@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import BankListEditor from "./bankListEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./bankList.scss";
 
 function BankList({ isCheck, setIsCheck, isCatalogPage }) {
-  const [bankListData, setBankListData] = useState([]);
+  const [bankListData, setBankListData] = useState();
   const [bankListEditorOpen, setBankListEditorOpen] = useState(false);
   const [editBankListData, setEditBankListData] = useState(null);
 
@@ -39,12 +40,13 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   }
 
   useEffect(() => {
-    if (!user) setBankListData([]);
+    if (!user) setBankListData();
     else getBankLists();
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !bankListData && <LoadingProgess />}
+      {user && bankListData && (
         <div className="bankList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-bankList">DANH MỤC NGÂN HÀNG</div>}

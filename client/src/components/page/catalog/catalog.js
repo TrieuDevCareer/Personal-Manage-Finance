@@ -35,40 +35,6 @@ function Catalog() {
                   <CoinList isCatalogPage={true} />
                 </div>
               </div>
-              {/* <div className="catalog-snd-group">
-                <div className="catalog-status-saving">
-                  <Table
-                    oData={oDataGenerate}
-                    aTitle={aTitleSavingSta}
-                    rowsPerPage={2}
-                    isCheck={isCheck}
-                    setIsCheck={setIsCheck}
-                    colorTitle={"#21a0ff"}
-                  />
-                </div>
-                <div className="catalog-status-invest">
-                  <Table
-                    oData={oDataGenerate}
-                    aTitle={aTitleInvestSta}
-                    rowsPerPage={2}
-                    isCheck={isCheck}
-                    setIsCheck={setIsCheck}
-                    colorTitle={"#ffd966"}
-                  />
-                </div>
-              </div>
-              <div className="catalog-link">
-                <div className="catalog-link-style">
-                  <Table
-                    oData={oDataGenerate}
-                    aTitle={aTitleLink}
-                    rowsPerPage={3}
-                    isCheck={isCheck}
-                    setIsCheck={setIsCheck}
-                    colorTitle={"#70ad47"}
-                  />
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

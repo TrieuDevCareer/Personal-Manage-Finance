@@ -15,7 +15,7 @@ import domain from "../../../util/domain.js";
 import "./expense.scss";
 
 function Expense({ isCheck, setIsCheck }) {
-  const [expenseData, setExpenseData] = useState([]);
+  const [expenseData, setExpenseData] = useState();
   const [expenseEditorOpen, setExpenseEditorOpen] = useState(false);
   const [editExpenseData, setEditExpenseData] = useState(null);
 
@@ -52,13 +52,13 @@ function Expense({ isCheck, setIsCheck }) {
   }
 
   useEffect(() => {
-    if (!user) setExpenseData([]);
+    if (!user) setExpenseData();
     else getExpenses();
   }, [user]);
   return (
     <div>
-      {user && expenseData.length === 0 && <LoadingProgess />}
-      {user && expenseData.length > 0 && (
+      {user && !expenseData && <LoadingProgess />}
+      {user && expenseData && (
         <div className="expense-container">
           <div className="title-expense">DANH SÁCH CÁC KHOẢN CHI</div>
 

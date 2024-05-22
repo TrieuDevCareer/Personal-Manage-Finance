@@ -8,13 +8,14 @@ import { Stack, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import { useNavigate } from "react-router-dom";
 import "./home.scss";
 
 const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 
 function Home() {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState();
   const [pieChartData, setPieChartData] = useState([]);
   const [iReportTotalMon, setIReportTotalMon] = useState(0); //Tổng số tiền nếu rút hết TKTK:
   const [iUnsavedAmount, setIUnsavedAmount] = useState(0); //Tổng số tiền chưa gửi tiết kiệm
@@ -131,7 +132,7 @@ function Home() {
     );
   }
   useEffect(() => {
-    if (!user) setUserData([]);
+    if (!user) setUserData();
     else {
       getSavings();
       handleGetExpensePie();
@@ -139,7 +140,8 @@ function Home() {
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !userData && <LoadingProgess />}
+      {user && userData && (
         <div className="home-container">
           <div className="top-left-container">
             <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>

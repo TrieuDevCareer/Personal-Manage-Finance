@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import SavingEditor from "./savingEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./saving.scss";
 
 function Saving({ isCheck, setIsCheck }) {
-  const [savingData, setSavingData] = useState([]);
+  const [savingData, setSavingData] = useState();
   const [savingEditorOpen, setSavingEditorOpen] = useState(false);
   const [editSavingData, setEditSavingData] = useState(null);
   const [iReportStartMon, setIReportStartMon] = useState(0); //Số tiền tiết kiệm ban đầu:
@@ -165,14 +166,15 @@ function Saving({ isCheck, setIsCheck }) {
   }
 
   useEffect(() => {
-    if (!user) setSavingData([]);
+    if (!user) setSavingData();
     else {
       getSavings();
     }
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !savingData && <LoadingProgess />}
+      {user && savingData && (
         <div className="saving-container">
           <div className="title-saving">DANH SÁCH GỬI TIẾT KIỆM</div>
           {savingEditorOpen ? (

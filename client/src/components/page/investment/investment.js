@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import InvestEditor from "./investEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./investment.scss";
 
 function Investment({ isCheck, setIsCheck }) {
-  const [investmentData, setInvestmentData] = useState([]);
+  const [investmentData, setInvestmentData] = useState();
   const [investmentEditorOpen, setInvestmentEditorOpen] = useState(false);
   const [editInvestmentData, setEditInvestmentData] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState(0); //Số tiền đầu tư có thể có
@@ -146,12 +147,13 @@ function Investment({ isCheck, setIsCheck }) {
   }
 
   useEffect(() => {
-    if (!user) setInvestmentData([]);
+    if (!user) setInvestmentData();
     else getInvestments();
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !investmentData && <LoadingProgess />}
+      {user && investmentData && (
         <div className="investment-container">
           <div className="title-investment">DANH SÁCH ĐẦU TƯ</div>
           {investmentEditorOpen ? (

@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import CoinListEditor from "./coinListEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./coinList.scss";
 
 function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
-  const [coinListData, setCoinListData] = useState([]);
+  const [coinListData, setCoinListData] = useState();
   const [coinListEditorOpen, setCoinListEditorOpen] = useState(false);
   const [editCoinListData, setEditCoinListData] = useState(null);
 
@@ -39,12 +40,13 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   }
 
   useEffect(() => {
-    if (!user) setCoinListData([]);
+    if (!user) setCoinListData();
     else getCoinLists();
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !coinListData && <LoadingProgess />}
+      {user && coinListData && (
         <div className="coinList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-coinList">DANH MỤC ĐỒNG COIN</div>}

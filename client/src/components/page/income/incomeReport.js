@@ -7,13 +7,14 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MultiDropdown from "../../misc/multiDropdown";
 import TableReport from "../../misc/tableReport";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./incomeReport.scss";
 
 function IncomeReport() {
-  const [incomeReportData, setIncomeReportData] = useState([]);
+  const [incomeReportData, setIncomeReportData] = useState();
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
   const [capitalCondition, setCapitalCondition] = useState([]);
@@ -87,7 +88,8 @@ function IncomeReport() {
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !incomeReportData && <LoadingProgess />}
+      {user && incomeReportData && (
         <div className="incomeRp-container">
           <div className="incomeRp-ctrl-gr">
             <div className="incomeRp-title">Bảng điều khiển chọn lọc</div>

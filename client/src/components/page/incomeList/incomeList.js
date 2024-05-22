@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import IncomeListEditor from "./incomeListEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./incomeList.scss";
 
 function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
-  const [incomeListData, setIncomeListData] = useState([]);
+  const [incomeListData, setIncomeListData] = useState();
   const [incomeListEditorOpen, setIncomeListEditorOpen] = useState(false);
   const [editIncomeListData, setEditIncomeListData] = useState(null);
 
@@ -39,12 +40,13 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   }
 
   useEffect(() => {
-    if (!user) setIncomeListData([]);
+    if (!user) setIncomeListData();
     else getIncomeLists();
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !incomeListData && <LoadingProgess />}
+      {user && incomeListData && (
         <div className="incomeList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}

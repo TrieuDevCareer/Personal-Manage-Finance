@@ -7,6 +7,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MultiDropdown from "../../misc/multiDropdown";
 import TableReport from "../../misc/tableReport";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
@@ -14,7 +15,7 @@ import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseReport.scss";
 
 function ExpenseReport() {
-  const [expenseReportData, setExpenseReportData] = useState([]);
+  const [expenseReportData, setExpenseReportData] = useState();
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
   const [capitalCondition, setCapitalCondition] = useState([]);
@@ -96,7 +97,8 @@ function ExpenseReport() {
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !expenseReportData && <LoadingProgess />}
+      {user && expenseReportData && (
         <div className="expenseRp-container">
           <ErrorMessage message={message} setMessage={setMessage} />
 

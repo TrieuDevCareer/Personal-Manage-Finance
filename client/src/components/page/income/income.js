@@ -15,7 +15,7 @@ import domain from "../../../util/domain.js";
 import "./income.scss";
 
 function Income({ isCheck, setIsCheck }) {
-  const [incomeData, setIncomeData] = useState([]);
+  const [incomeData, setIncomeData] = useState();
   const [incomeEditorOpen, setIncomeEditorOpen] = useState(false);
   const [editIncomeData, setEditIncomeData] = useState(null);
 
@@ -51,13 +51,13 @@ function Income({ isCheck, setIsCheck }) {
   }
 
   useEffect(() => {
-    if (!user) setIncomeData([]);
+    if (!user) setIncomeData();
     else getIncomes();
   }, [user]);
   return (
     <div>
-      {user && incomeData.length === 0 && <LoadingProgess />}
-      {user && incomeData.length > 0 && (
+      {user && !incomeData && <LoadingProgess />}
+      {user && incomeData && (
         <div className="income-container">
           <div className="title-container">
             <div className="title-income">DANH SÁCH CÁC KHOẢN THU</div>

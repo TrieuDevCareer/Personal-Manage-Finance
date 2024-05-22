@@ -9,12 +9,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import ExpenseListEditor from "./expenseListEditor.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./expenseList.scss";
 
 function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
-  const [expenseListData, setExpenseListData] = useState([]);
+  const [expenseListData, setExpenseListData] = useState();
   const [expenseListEditorOpen, setExpenseListEditorOpen] = useState(false);
   const [editExpenseListData, setEditExpenseListData] = useState(null);
 
@@ -39,12 +40,13 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   }
 
   useEffect(() => {
-    if (!user) setExpenseListData([]);
+    if (!user) setExpenseListData();
     else getExpenseLists();
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !expenseListData && <LoadingProgess />}
+      {user && expenseListData && (
         <div className="expenseList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}

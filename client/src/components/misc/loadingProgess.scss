@@ -1,5 +1,10 @@
-.linear-progress {
-    position: relative;
-    align-content: center;
+.progess-container {
+    width: 70.5rem;
+    display: flex;
     justify-content: center;
+
+    .linear-progress {
+        position: relative;
+        align-content: center;
+    }
 }

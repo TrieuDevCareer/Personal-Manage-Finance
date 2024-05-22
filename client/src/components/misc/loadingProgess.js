@@ -5,9 +5,11 @@ import "./loadingProgess.scss";
 
 function LoadingProgess() {
   return (
-    <Box className="linear-progress" sx={{ width: "100%", height: "38rem" }}>
-      <LinearProgress />
-    </Box>
+    <div className="progess-container">
+      <Box className="linear-progress" sx={{ width: "90%", height: "38rem" }}>
+        <LinearProgress />
+      </Box>
+    </div>
   );
 }
 export default LoadingProgess;
