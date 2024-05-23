@@ -1,18 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import MultiDropdown from "../../misc/multiDropdown";
+import MultiDropdown from "../../misc/multiDropdown.js";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import SavingsIcon from "@mui/icons-material/Savings";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import AreaChartType from "../../misc/charts/areaChart";
+import AreaChartType from "../../misc/charts/areaChart.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import ErrorMessage from "../../misc/ErrorMessage";
-import "./savingReport.scss";
+import ErrorMessage from "../../misc/ErrorMessage.js";
+import "./investReport.scss";
 
 const data = [
   { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
@@ -25,7 +24,7 @@ const data = [
   { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
 ];
 
-function SavingReport() {
+function InvestReport() {
   const [pieChartData, setPieChartData] = useState([]);
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
@@ -39,7 +38,7 @@ function SavingReport() {
 
   const date = [];
   const month = [];
-  const statusSource = ["Đang gửi tiết kiệm", "Đã rút tiết kiệm"];
+  const statusSource = ["Đang giữ", "Đã bán"];
   for (let i = 0; i <= 30; i++) {
     date.push(i < 9 ? `0${i + 1}` : `${i + 1}`);
     if (i < 12) {
@@ -81,7 +80,7 @@ function SavingReport() {
   }
   async function handleGetDataContent(data) {
     try {
-      const result = await Axios.get(`${domain}/banklist`, { data: data });
+      const result = await Axios.get(`${domain}/coinlist`, { data: data });
       let a = [];
       result.data.forEach((i) => {
         a.push(`${i.bnkName}`);
@@ -104,10 +103,10 @@ function SavingReport() {
     }
   }, [user]);
   return (
-    <div className="savingRp-container">
-      <div className="savingRp-ctrl-gr">
-        <div className="title-container savingRp-title">Bảng điều khiển chọn lọc</div>
-        <div className="savingRp-filter-group">
+    <div className="investRp-container">
+      <div className="investRp-ctrl-gr">
+        <div className="title-container investRp-title"> Bảng điều khiển chọn lọc</div>
+        <div className="investRp-filter-group">
           <MultiDropdown
             personName={dateCondition}
             data={date}
@@ -123,7 +122,7 @@ function SavingReport() {
           <MultiDropdown
             personName={bankCondition}
             data={bankData}
-            title={"Ngân hàng"}
+            title={"Mã Coin"}
             handleChange={handleChangeBank}
           />
           <MultiDropdown
@@ -137,9 +136,9 @@ function SavingReport() {
           </div>
         </div>
       </div>
-      <div className="savingRp-root">
-        <div className="savingRp-left-container">
-          <div className="savingRp-left-top">
+      <div className="investRp-root">
+        <div className="investRp-left-container">
+          <div className="investRp-left-top">
             <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
             <div className="box">
               <div className="first-box item-box">
@@ -147,7 +146,7 @@ function SavingReport() {
                   <AccountBalanceIcon className="icon" />
                 </div>
                 <div className="box-title">
-                  <div className="money-title">Tổng số tiền nếu rút hết Tài Khoản Tiết Kiệm</div>
+                  <div className="money-title">Số tiền đầu tư có thể có</div>
                   <div className="money-value">20.000.000 VND</div>
                 </div>
               </div>
@@ -156,7 +155,7 @@ function SavingReport() {
                   <PaidOutlinedIcon className="icon" />
                 </div>
                 <div className="box-title">
-                  <div className="money-title">Tổng số tiền chưa gửi Tiết Kiệm</div>
+                  <div className="money-title">Tổng số tiền chưa đem đi</div>
                   <div className="money-value">20.000.000 VND</div>
                 </div>
               </div>
@@ -165,25 +164,14 @@ function SavingReport() {
                   <SavingsIcon className="icon" />
                 </div>
                 <div className="box-title">
-                  <div className="money-title">Tổng số tiền đang gửi Tiết Kiệm</div>
-                  <div className="money-value">20.000.000 VND</div>
-                </div>
-              </div>
-              <div className="forth-box item-box">
-                <div className="icon-container">
-                  <AddShoppingCartIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền lãi có thể nhận được</div>
+                  <div className="money-title">Tổng số tiền có thể lãi lỗ</div>
                   <div className="money-value">20.000.000 VND</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="savingRp-left-bottom">
-            <div className="title-container top-left">
-              Biểu đồ % gửi tiết kiệm vào các ngân hàng
-            </div>
+          <div className="investRp-left-bottom">
+            <div className="title-container top-left">Biểu đồ % nắm giữ đồng COIN theo số tiền</div>
             <PieChart
               className="pieChart"
               series={[
@@ -211,12 +199,12 @@ function SavingReport() {
             />
           </div>
         </div>
-        <div className="savingRp-right-container">
+        <div className="investRp-right-container">
           <div className="title-container top-left">
-            Biểu đồ thể hiện các khoản GTK theo ngân hàng
+            Bảng thống kê số tiền đầu tư vào các đồng COIN
           </div>
-          <div className="savingRp-chart">
-            <div className="savingRp-chart-element">
+          <div className="investRp-chart">
+            <div className="investRp-chart-element">
               <AreaChartType data={[]} pageChart={"expense"} />
             </div>
           </div>
@@ -225,4 +213,4 @@ function SavingReport() {
     </div>
   );
 }
-export default SavingReport;
+export default InvestReport;

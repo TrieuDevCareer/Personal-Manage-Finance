@@ -9,7 +9,10 @@
         font-weight: 500;
         font-size: 1rem;
         margin-left: 1rem;
-        color: var(--text-title-color);
+        background: rgb(0, 136, 255);
+        background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
+        background-clip: text;
+        color: transparent;
         z-index: 100;
         position: absolute;
     }
@@ -130,6 +133,7 @@
                     display: flex;
 
                     .icon-container {
+                        background-color: #e3b393;
                         margin-left: 1rem;
                         border: solid 0.2rem var(--text-light-color);
                         border-radius: 50%;
@@ -141,8 +145,8 @@
 
                         .icon {
                             color: var(--text-light-color);
-                            width: 2.3rem;
-                            height: 2.3rem;
+                            width: 2.2rem;
+                            height: 2.2rem;
                         }
                     }
 

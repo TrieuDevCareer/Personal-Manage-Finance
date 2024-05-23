@@ -4,6 +4,9 @@ import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import TableReport from "../../misc/tableReport.js";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import SavingsIcon from "@mui/icons-material/Savings";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Stack, Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -248,7 +251,7 @@ function Home() {
                 </div>
                 <div className="second-box item-box">
                   <div className="icon-container">
-                    <AccountBalanceIcon className="icon" />
+                    <PaidOutlinedIcon className="icon" />
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền chưa gửi tiết kiệm</div>
@@ -257,7 +260,7 @@ function Home() {
                 </div>
                 <div className="third-box item-box">
                   <div className="icon-container">
-                    <AccountBalanceIcon className="icon" />
+                    <SavingsIcon className="icon" />
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền đang gửi tiết kiệm</div>
@@ -266,7 +269,7 @@ function Home() {
                 </div>
                 <div className="forth-box item-box">
                   <div className="icon-container">
-                    <AccountBalanceIcon className="icon" />
+                    <AddShoppingCartIcon className="icon" />
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền lãi có thể nhận được</div>

@@ -81,7 +81,7 @@ function Header({ clickPattern, setClickPattern }) {
         </Link>
       </div>
       <div className={styleInvest}>
-        <Link className="txt-style" to="/invest" onClick={() => onClickHeaderBtn("Invest")}>
+        <Link className="txt-style" to="/investreport" onClick={() => onClickHeaderBtn("Invest")}>
           <img src={"/images/invest.png"} alt="..." className="nav-icon" />
           <p>Báo cáo Đầu tư</p>
         </Link>

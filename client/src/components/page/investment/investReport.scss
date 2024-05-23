@@ -1,6 +1,6 @@
 @import url("../../../style/variables.scss");
 
-.savingRp-container {
+.investRp-container {
     position: relative;
     width: 69.5rem;
     border-radius: 1rem;
@@ -14,17 +14,21 @@
         margin-left: 1rem;
     }
 
-    .savingRp-ctrl-gr {
+    .title-icon {
+        color: var(--text-warning-color);
+    }
+
+    .investRp-ctrl-gr {
         background-color: var(--background-rdcolor);
         padding: 1rem;
         border-radius: 1rem;
 
-        .savingRp-title {
+        .investRp-title {
             margin-top: -1.1rem;
             margin-left: 0rem;
         }
 
-        .savingRp-filter-group {
+        .investRp-filter-group {
             margin-top: 0.8rem;
             display: grid;
             grid-template-columns: auto auto auto auto auto;
@@ -40,17 +44,17 @@
         }
     }
 
-    .savingRp-root {
+    .investRp-root {
         display: grid;
         grid-template-columns: 24rem 45.6rem;
         margin-top: 1.2rem;
         height: 30rem;
 
-        .savingRp-left-container {
+        .investRp-left-container {
             display: grid;
             grid-template-rows: 17rem 17rem;
 
-            .savingRp-left-top {
+            .investRp-left-top {
                 background-color: var(--background-rdcolor);
                 margin-bottom: 0.8rem;
                 border-radius: 1rem;
@@ -59,7 +63,7 @@
                     margin-top: 0.5rem;
                     margin-left: 0.8rem;
                     display: grid;
-                    grid-template-rows: 3.6rem 3.6rem 3.6rem 3.6rem;
+                    grid-template-rows: 4.7rem 4.7rem 4.7rem 4.7rem;
 
                     .item-box {
                         border-radius: 1rem;
@@ -89,19 +93,19 @@
 
                         .box-title {
                             display: grid;
-                            grid-template-rows: 1rem 1.5rem;
+                            grid-template-rows: 0.5rem 3rem;
                             margin-left: 0.5rem;
 
                             .money-title {
                                 font-weight: 500;
-                                font-size: 0.7rem;
+                                font-size: 0.9rem;
                                 color: var(--text-dark-color);
                             }
 
                             .money-value {
                                 align-self: end;
-                                font-weight: 700;
-                                font-size: 1rem;
+                                font-weight: 650;
+                                font-size: 1.1rem;
                                 color: var(--text-ndtitle-color);
                             }
                         }
@@ -129,23 +133,23 @@
                 }
             }
 
-            .savingRp-left-bottom {
+            .investRp-left-bottom {
                 background-color: var(--background-rdcolor);
                 border-radius: 1rem;
             }
         }
 
-        .savingRp-right-container {
+        .investRp-right-container {
             margin-left: 1rem;
             background-color: var(--background-rdcolor);
             border-radius: 1rem;
 
-            .savingRp-chart {
+            .investRp-chart {
                 height: 32rem;
                 display: grid;
                 grid-template-rows: auto auto auto auto;
 
-                .savingRp-chart-element {
+                .investRp-chart-element {
                     height: 33rem;
                 }
             }
