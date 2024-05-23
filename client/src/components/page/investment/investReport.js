@@ -8,6 +8,7 @@ import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import AreaChartType from "../../misc/charts/areaChart.js";
+import AuthPage from "../../auth/authPage.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage.js";
@@ -103,113 +104,120 @@ function InvestReport() {
     }
   }, [user]);
   return (
-    <div className="investRp-container">
-      <div className="investRp-ctrl-gr">
-        <div className="title-container investRp-title"> Bảng điều khiển chọn lọc</div>
-        <div className="investRp-filter-group">
-          <MultiDropdown
-            personName={dateCondition}
-            data={date}
-            title={"Ngày"}
-            handleChange={handleChangeDate}
-          />
-          <MultiDropdown
-            personName={monthCodition}
-            data={month}
-            title={"Tháng"}
-            handleChange={handleChangeMonth}
-          />
-          <MultiDropdown
-            personName={bankCondition}
-            data={bankData}
-            title={"Mã Coin"}
-            handleChange={handleChangeBank}
-          />
-          <MultiDropdown
-            personName={statusCondition}
-            data={statusSource}
-            title={"Tình trạng gửi"}
-            handleChange={handleChangeStatus}
-          />
-          <div className="btn-style-edit">
-            <SearchOutlinedIcon /> Thống kê
+    <div>
+      {user && (
+        <div className="investRp-container">
+          <div className="investRp-ctrl-gr">
+            <div className="title-container investRp-title"> Bảng điều khiển chọn lọc</div>
+            <div className="investRp-filter-group">
+              <MultiDropdown
+                personName={dateCondition}
+                data={date}
+                title={"Ngày"}
+                handleChange={handleChangeDate}
+              />
+              <MultiDropdown
+                personName={monthCodition}
+                data={month}
+                title={"Tháng"}
+                handleChange={handleChangeMonth}
+              />
+              <MultiDropdown
+                personName={bankCondition}
+                data={bankData}
+                title={"Mã Coin"}
+                handleChange={handleChangeBank}
+              />
+              <MultiDropdown
+                personName={statusCondition}
+                data={statusSource}
+                title={"Tình trạng gửi"}
+                handleChange={handleChangeStatus}
+              />
+              <div className="btn-style-edit">
+                <SearchOutlinedIcon /> Thống kê
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="investRp-root">
-        <div className="investRp-left-container">
-          <div className="investRp-left-top">
-            <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
-            <div className="box">
-              <div className="first-box item-box">
-                <div className="icon-container">
-                  <AccountBalanceIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Số tiền đầu tư có thể có</div>
-                  <div className="money-value">20.000.000 VND</div>
+          <div className="investRp-root">
+            <div className="investRp-left-container">
+              <div className="investRp-left-top">
+                <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
+                <div className="box">
+                  <div className="first-box item-box">
+                    <div className="icon-container">
+                      <AccountBalanceIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Số tiền đầu tư có thể có</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
+                  <div className="second-box item-box">
+                    <div className="icon-container">
+                      <PaidOutlinedIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Tổng số tiền chưa đem đi</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
+                  <div className="third-box item-box">
+                    <div className="icon-container">
+                      <SavingsIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Tổng số tiền có thể lãi lỗ</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="second-box item-box">
-                <div className="icon-container">
-                  <PaidOutlinedIcon className="icon" />
+              <div className="investRp-left-bottom">
+                <div className="title-container top-left">
+                  Biểu đồ % nắm giữ đồng COIN theo số tiền
                 </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền chưa đem đi</div>
-                  <div className="money-value">20.000.000 VND</div>
-                </div>
+                <PieChart
+                  className="pieChart"
+                  series={[
+                    {
+                      data,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                      innerRadius: 30,
+                      outerRadius: 100,
+                      paddingAngle: 1.5,
+                      cornerRadius: 2,
+                      startAngle: -180,
+                      endAngle: 180,
+                      cx: 103,
+                      cy: 120,
+                      arcLabel: getArcLabel,
+                    },
+                  ]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fill: "white",
+                      fontSize: 14,
+                    },
+                  }}
+                />
               </div>
-              <div className="third-box item-box">
-                <div className="icon-container">
-                  <SavingsIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền có thể lãi lỗ</div>
-                  <div className="money-value">20.000.000 VND</div>
+            </div>
+            <div className="investRp-right-container">
+              <div className="title-container top-left">
+                Bảng thống kê số tiền đầu tư vào các đồng COIN
+              </div>
+              <div className="investRp-chart">
+                <div className="investRp-chart-element">
+                  <AreaChartType data={[]} pageChart={"expense"} />
                 </div>
               </div>
             </div>
           </div>
-          <div className="investRp-left-bottom">
-            <div className="title-container top-left">Biểu đồ % nắm giữ đồng COIN theo số tiền</div>
-            <PieChart
-              className="pieChart"
-              series={[
-                {
-                  data,
-                  highlightScope: { faded: "global", highlighted: "item" },
-                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-                  innerRadius: 30,
-                  outerRadius: 100,
-                  paddingAngle: 1.5,
-                  cornerRadius: 2,
-                  startAngle: -180,
-                  endAngle: 180,
-                  cx: 103,
-                  cy: 120,
-                  arcLabel: getArcLabel,
-                },
-              ]}
-              sx={{
-                [`& .${pieArcLabelClasses.root}`]: {
-                  fill: "white",
-                  fontSize: 14,
-                },
-              }}
-            />
-          </div>
         </div>
-        <div className="investRp-right-container">
-          <div className="title-container top-left">
-            Bảng thống kê số tiền đầu tư vào các đồng COIN
-          </div>
-          <div className="investRp-chart">
-            <div className="investRp-chart-element">
-              <AreaChartType data={[]} pageChart={"expense"} />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
+      {user === null && <AuthPage />}
     </div>
   );
 }

@@ -3,12 +3,10 @@ import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 // import "./ErrorMessage.scss";
 import { useNavigate } from "react-router-dom";
-import { Stack, Button } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import InvestEditor from "./investEditor.js";
+import AuthPage from "../../auth/authPage.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
@@ -202,34 +200,7 @@ function Investment({ isCheck, setIsCheck }) {
           )}
         </div>
       )}
-      {user === null && (
-        <div className="auth-container">
-          <div className="auth-style">
-            <h1 className="auth-ele auth-title">HỆ THỐNG QUẢN LÝ TÀI CHÍNH CÁ NHÂN</h1>
-            <h3 className="auth-ele auth-desc">Quản lý theo cách bạn muốn</h3>
-
-            <Stack spacing={2} direction="row" justifyContent="center">
-              <Button
-                variant="contained"
-                color="success"
-                size="medium"
-                startIcon={<LoginIcon />}
-                onClick={() => navigate("/login")}
-              >
-                Đăng nhập
-              </Button>
-              <Button
-                variant="contained"
-                color="info"
-                startIcon={<HowToRegIcon />}
-                onClick={() => navigate("/register")}
-              >
-                Đăng ký
-              </Button>
-            </Stack>
-          </div>
-        </div>
-      )}
+      {user === null && <AuthPage />}
     </div>
   );
 }

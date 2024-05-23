@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 // import "./ErrorMessage.scss";
 import { useNavigate } from "react-router-dom";
-import { Stack, Button } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import "./catalog.scss";
 import UserContext from "../../../context/UserContext.js";
 import IncomeList from "../incomeList/incomeList.js";
 import ExpenseList from "../expenseList/expenseList.js";
 import BankList from "../bankList/bankList.js";
 import CoinList from "../coinList/coinList.js";
+import AuthPage from "../../auth/authPage.js";
 
 function Catalog() {
   const { user } = useContext(UserContext);
@@ -39,34 +37,7 @@ function Catalog() {
           </div>
         </div>
       )}
-      {user === null && (
-        <div className="auth-container">
-          <div className="auth-style">
-            <h1 className="auth-ele auth-title">HỆ THỐNG QUẢN LÝ TÀI CHÍNH CÁ NHÂN</h1>
-            <h3 className="auth-ele auth-desc">Quản lý theo cách bạn muốn</h3>
-
-            <Stack spacing={2} direction="row" justifyContent="center">
-              <Button
-                variant="contained"
-                color="success"
-                size="medium"
-                startIcon={<LoginIcon />}
-                onClick={() => navigate("/login")}
-              >
-                Đăng nhập
-              </Button>
-              <Button
-                variant="contained"
-                color="info"
-                startIcon={<HowToRegIcon />}
-                onClick={() => navigate("/register")}
-              >
-                Đăng ký
-              </Button>
-            </Stack>
-          </div>
-        </div>
-      )}
+      {user === null && <AuthPage />}
     </div>
   );
 }

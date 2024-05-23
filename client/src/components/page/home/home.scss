@@ -266,29 +266,3 @@
         }
     }
 }
-
-.auth-container {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    width: auto;
-    height: 42rem;
-
-    .auth-style {
-        text-align: center;
-
-        .auth-ele {
-            margin-bottom: 1rem;
-        }
-
-        .auth-title {
-            // color: var(--text-title-color);
-            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-            background-clip: text;
-            color: transparent;
-        }
-
-
-        .auth-desc {}
-    }
-}

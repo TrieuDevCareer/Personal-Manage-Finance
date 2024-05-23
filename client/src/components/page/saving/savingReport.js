@@ -8,6 +8,7 @@ import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import SavingsIcon from "@mui/icons-material/Savings";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
+import AuthPage from "../../auth/authPage.js";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
@@ -104,124 +105,131 @@ function SavingReport() {
     }
   }, [user]);
   return (
-    <div className="savingRp-container">
-      <div className="savingRp-ctrl-gr">
-        <div className="title-container savingRp-title">Bảng điều khiển chọn lọc</div>
-        <div className="savingRp-filter-group">
-          <MultiDropdown
-            personName={dateCondition}
-            data={date}
-            title={"Ngày"}
-            handleChange={handleChangeDate}
-          />
-          <MultiDropdown
-            personName={monthCodition}
-            data={month}
-            title={"Tháng"}
-            handleChange={handleChangeMonth}
-          />
-          <MultiDropdown
-            personName={bankCondition}
-            data={bankData}
-            title={"Ngân hàng"}
-            handleChange={handleChangeBank}
-          />
-          <MultiDropdown
-            personName={statusCondition}
-            data={statusSource}
-            title={"Tình trạng gửi"}
-            handleChange={handleChangeStatus}
-          />
-          <div className="btn-style-edit">
-            <SearchOutlinedIcon /> Thống kê
+    <div>
+      {user && (
+        <div className="savingRp-container">
+          <div className="savingRp-ctrl-gr">
+            <div className="title-container savingRp-title">Bảng điều khiển chọn lọc</div>
+            <div className="savingRp-filter-group">
+              <MultiDropdown
+                personName={dateCondition}
+                data={date}
+                title={"Ngày"}
+                handleChange={handleChangeDate}
+              />
+              <MultiDropdown
+                personName={monthCodition}
+                data={month}
+                title={"Tháng"}
+                handleChange={handleChangeMonth}
+              />
+              <MultiDropdown
+                personName={bankCondition}
+                data={bankData}
+                title={"Ngân hàng"}
+                handleChange={handleChangeBank}
+              />
+              <MultiDropdown
+                personName={statusCondition}
+                data={statusSource}
+                title={"Tình trạng gửi"}
+                handleChange={handleChangeStatus}
+              />
+              <div className="btn-style-edit">
+                <SearchOutlinedIcon /> Thống kê
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="savingRp-root">
-        <div className="savingRp-left-container">
-          <div className="savingRp-left-top">
-            <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
-            <div className="box">
-              <div className="first-box item-box">
-                <div className="icon-container">
-                  <AccountBalanceIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền nếu rút hết Tài Khoản Tiết Kiệm</div>
-                  <div className="money-value">20.000.000 VND</div>
+          <div className="savingRp-root">
+            <div className="savingRp-left-container">
+              <div className="savingRp-left-top">
+                <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
+                <div className="box">
+                  <div className="first-box item-box">
+                    <div className="icon-container">
+                      <AccountBalanceIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">
+                        Tổng số tiền nếu rút hết Tài Khoản Tiết Kiệm
+                      </div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
+                  <div className="second-box item-box">
+                    <div className="icon-container">
+                      <PaidOutlinedIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Tổng số tiền chưa gửi Tiết Kiệm</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
+                  <div className="third-box item-box">
+                    <div className="icon-container">
+                      <SavingsIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Tổng số tiền đang gửi Tiết Kiệm</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
+                  <div className="forth-box item-box">
+                    <div className="icon-container">
+                      <AddShoppingCartIcon className="icon" />
+                    </div>
+                    <div className="box-title">
+                      <div className="money-title">Tổng số tiền lãi có thể nhận được</div>
+                      <div className="money-value">20.000.000 VND</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="second-box item-box">
-                <div className="icon-container">
-                  <PaidOutlinedIcon className="icon" />
+              <div className="savingRp-left-bottom">
+                <div className="title-container top-left">
+                  Biểu đồ % gửi tiết kiệm vào các ngân hàng
                 </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền chưa gửi Tiết Kiệm</div>
-                  <div className="money-value">20.000.000 VND</div>
-                </div>
+                <PieChart
+                  className="pieChart"
+                  series={[
+                    {
+                      data,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                      innerRadius: 30,
+                      outerRadius: 100,
+                      paddingAngle: 1.5,
+                      cornerRadius: 2,
+                      startAngle: -180,
+                      endAngle: 180,
+                      cx: 103,
+                      cy: 120,
+                      arcLabel: getArcLabel,
+                    },
+                  ]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fill: "white",
+                      fontSize: 14,
+                    },
+                  }}
+                />
               </div>
-              <div className="third-box item-box">
-                <div className="icon-container">
-                  <SavingsIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền đang gửi Tiết Kiệm</div>
-                  <div className="money-value">20.000.000 VND</div>
-                </div>
+            </div>
+            <div className="savingRp-right-container">
+              <div className="title-container top-left">
+                Biểu đồ thể hiện các khoản GTK theo ngân hàng
               </div>
-              <div className="forth-box item-box">
-                <div className="icon-container">
-                  <AddShoppingCartIcon className="icon" />
-                </div>
-                <div className="box-title">
-                  <div className="money-title">Tổng số tiền lãi có thể nhận được</div>
-                  <div className="money-value">20.000.000 VND</div>
+              <div className="savingRp-chart">
+                <div className="savingRp-chart-element">
+                  <AreaChartType data={[]} pageChart={"expense"} />
                 </div>
               </div>
             </div>
           </div>
-          <div className="savingRp-left-bottom">
-            <div className="title-container top-left">
-              Biểu đồ % gửi tiết kiệm vào các ngân hàng
-            </div>
-            <PieChart
-              className="pieChart"
-              series={[
-                {
-                  data,
-                  highlightScope: { faded: "global", highlighted: "item" },
-                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-                  innerRadius: 30,
-                  outerRadius: 100,
-                  paddingAngle: 1.5,
-                  cornerRadius: 2,
-                  startAngle: -180,
-                  endAngle: 180,
-                  cx: 103,
-                  cy: 120,
-                  arcLabel: getArcLabel,
-                },
-              ]}
-              sx={{
-                [`& .${pieArcLabelClasses.root}`]: {
-                  fill: "white",
-                  fontSize: 14,
-                },
-              }}
-            />
-          </div>
         </div>
-        <div className="savingRp-right-container">
-          <div className="title-container top-left">
-            Biểu đồ thể hiện các khoản GTK theo ngân hàng
-          </div>
-          <div className="savingRp-chart">
-            <div className="savingRp-chart-element">
-              <AreaChartType data={[]} pageChart={"expense"} />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
+      {user === null && <AuthPage />}
     </div>
   );
 }
