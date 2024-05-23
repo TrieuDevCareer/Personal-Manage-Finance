@@ -50,16 +50,16 @@ router.post("/reportincome", auth, async (req, res) => {
 
   // Hàm để lọc dữ liệu
   const filterData = (item) => {
-    return matches(item, "incDate", date, (d) => d.getDate().toString()) &&
-      matches(item, "incDate", month, (m) => (m.getMonth() + 1).toString()) &&
-      capitalSource.length > 0
-      ? matches(item, "inlstCode", capitalSource)
-      : (!contentData ||
-          contentData.length === 0 ||
-          contentData.some((keyword) => keyword.includes(item.inlstCode))) &&
-          (!contentData ||
-            contentData.length === 0 ||
-            contentData.some((keyword) => keyword.includes(item.inLstContent)));
+    return (
+      matches(item, "incDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "incDate", month, (d) => (d.getMonth() + 1).toString()) &&
+      matches(item, "inlstCode", capitalSource) &&
+      (!contentData ||
+        contentData.length === 0 ||
+        contentData.some(
+          (keyword) => keyword.includes(item.inlstCode) && keyword.includes(item.inLstContent)
+        ))
+    );
   };
 
   const filteredData = aIncomeData.filter(filterData);

@@ -21,16 +21,16 @@ router.post("/reportexpense", auth, async (req, res) => {
 
   // Hàm để lọc dữ liệu
   const filterData = (item) => {
-    return matches(item, "expDate", date, (d) => d.getDate().toString()) &&
-      matches(item, "expDate", month, (m) => (m.getMonth() + 1).toString()) &&
-      capitalSource.length > 0
-      ? matches(item, "exelstCode", capitalSource)
-      : (!contentData ||
-          contentData.length === 0 ||
-          contentData.some((keyword) => keyword.includes(item.exelstCode))) &&
-          (!contentData ||
-            contentData.length === 0 ||
-            contentData.some((keyword) => keyword.includes(item.exeLstContent)));
+    return (
+      matches(item, "expDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "expDate", month, (d) => (d.getMonth() + 1).toString()) &&
+      matches(item, "exelstCode", capitalSource) &&
+      (!contentData ||
+        contentData.length === 0 ||
+        contentData.some(
+          (keyword) => keyword.includes(item.exelstCode) && keyword.includes(item.exeLstContent)
+        ))
+    );
   };
 
   const filteredData = aExpenseData.filter(filterData);
