@@ -55,6 +55,91 @@
                 color: var(--text-title-color);
                 height: 0.5rem;
             }
+
+            .box {
+                margin-top: 1.5rem;
+                margin-left: 0.8rem;
+                display: grid;
+                grid-template-rows: 5.3rem 5.3rem 5.3rem 5.3rem 5.3rem 5.3rem;
+
+                .item-box {
+                    border-radius: 1rem;
+                    margin-bottom: 1rem;
+                    margin-right: 1rem;
+                    padding-top: 0.5rem;
+                    padding-bottom: 0.5rem;
+                    justify-items: center;
+                    align-items: center;
+                    display: flex;
+
+                    .icon-container {
+                        background-color: #e3b393;
+                        margin-left: 1rem;
+                        border: solid 0.2rem var(--text-light-color);
+                        border-radius: 50%;
+                        height: 3.5rem;
+                        width: 3.5rem;
+                        justify-content: center;
+                        align-items: center;
+                        display: flex;
+
+                        .icon {
+                            color: var(--text-light-color);
+                            width: 2.2rem;
+                            height: 2.2rem;
+                        }
+                    }
+
+                    .box-title {
+                        display: grid;
+                        grid-template-rows: 1rem 2.5rem;
+                        margin-left: 0.5rem;
+
+                        .money-title {
+                            font-weight: 600;
+                            font-size: 0.9rem;
+                            color: var(--text-dark-color);
+                        }
+
+                        .money-value {
+                            align-self: end;
+                            font-weight: 700;
+                            font-size: 1.4rem;
+                            color: var(--text-ndtitle-color);
+                        }
+                    }
+                }
+
+                .first-box {
+                    background: rgb(28, 210, 44);
+                    background: linear-gradient(90deg, rgba(28, 210, 44, 1) 0%, rgba(95, 204, 104, 1) 50%, rgba(173, 223, 176, 1) 100%);
+                }
+
+                .second-box {
+                    background: rgb(19, 221, 199);
+                    background: linear-gradient(90deg, rgba(19, 221, 199, 1) 0%, rgba(121, 236, 223, 1) 50%, rgba(197, 242, 237, 1) 100%);
+                }
+
+                .third-box {
+                    background: rgb(255, 228, 105);
+                    background: linear-gradient(90deg, rgba(255, 228, 105, 1) 0%, rgba(255, 238, 163, 1) 50%, rgba(255, 246, 205, 1) 100%);
+                }
+
+                .forth-box {
+                    background: rgb(236, 183, 40);
+                    background: linear-gradient(90deg, rgba(236, 183, 40, 1) 0%, rgba(227, 187, 81, 1) 50%, rgba(236, 215, 159, 1) 100%);
+                }
+
+                .fifth-box {
+                    background: rgb(199, 130, 29);
+                    background: linear-gradient(90deg, rgba(199, 130, 29, 1) 0%, rgba(196, 157, 98, 1) 50%, rgba(195, 177, 149, 1) 100%);
+                }
+
+                .sixth-box {
+                    background: rgb(232, 36, 151);
+                    background: linear-gradient(90deg, rgba(232, 36, 151, 1) 0%, rgba(233, 94, 176, 1) 50%, rgba(230, 131, 189, 1) 100%);
+                }
+            }
         }
 
         .expenseRp-chart-container {

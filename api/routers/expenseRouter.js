@@ -9,6 +9,56 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, Expense);
 });
 
+// get Report day by day
+router.get("/byday", auth, async (req, res) => {
+  const resultData = {
+    SO: 0,
+    TD: 0,
+  };
+  const day = new Date().getDate();
+  const month = new Date().getMonth() + 1;
+  const year = new Date().getFullYear();
+  let aResultData = await Expense.find({ user: req.user });
+  let userData = await User.findById(req.user);
+  aResultData = aResultData.filter((item) => item.expDate.getMonth() === new Date().getMonth());
+  aResultData.forEach((item) => {
+    if (day === item.expDate.getDate()) {
+      resultData.SO += item.exelstCode === "SO" ? item.expMoney : 0;
+      resultData.TD += item.exelstCode === "TD" ? item.expMoney : 0;
+    }
+  });
+  res.json({
+    SoDay: Math.round(
+      userData.walletLife / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
+    ).toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+    TdDay: Math.round(
+      userData.walletFree / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
+    ).toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+    SO: resultData.SO.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+    TD: resultData.TD.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+    walletLife: userData.walletLife.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+    walletFree: userData.walletFree.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    }),
+  });
+});
+
 // get Expense Data report list
 router.post("/reportexpense", auth, async (req, res) => {
   const { date, month, capitalSource, contentData } = req.body;

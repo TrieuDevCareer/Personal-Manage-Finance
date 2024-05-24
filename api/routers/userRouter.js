@@ -16,6 +16,7 @@ router.post("/", async (req, res) => {
       userName,
       password,
       passwordVerify,
+      salaryDate,
       walletLife,
       walletInvest,
       walletSaving,
@@ -23,9 +24,13 @@ router.post("/", async (req, res) => {
     } = req.body;
     // validation
 
-    if (!email || !userName || !password || !passwordVerify)
+    if (!email || !userName || !password || !passwordVerify || !salaryDate)
       return res.status(400).json({
         errorMessage: "Vui lòng điền đủ thông tin!",
+      });
+    if (parseInt(salaryDate) < 0 || parseInt(salaryDate) > 31)
+      return res.status(400).json({
+        errorMessage: "Ngày nhận lương phải nằm trong tháng, vui lòng nhập lại!",
       });
 
     if (password.length < 6)
@@ -56,6 +61,7 @@ router.post("/", async (req, res) => {
       email,
       userName,
       passwordHash,
+      salaryDate: parseInt(salaryDate),
       walletLife: walletLife ? walletLife : 0,
       walletInvest: walletInvest ? walletInvest : 0,
       walletSaving: walletSaving ? walletSaving : 0,
@@ -70,6 +76,7 @@ router.post("/", async (req, res) => {
       {
         id: savedUser._id,
         userName,
+        salaryDate,
         walletLife,
         walletInvest,
         walletSaving,
@@ -130,6 +137,7 @@ router.post("/login", async (req, res) => {
       {
         id: existingUser._id,
         userName: existingUser.userName,
+        salaryDate: existingUser.salaryDate,
         walletLife: existingUser.walletLife,
         walletInvest: existingUser.walletInvest,
         walletSaving: existingUser.walletSaving,

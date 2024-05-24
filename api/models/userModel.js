@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     walletInvest: { type: Number, required: true },
     walletSaving: { type: Number, required: true },
     walletFree: { type: Number, required: true },
+    salaryDate: { type: Number, required: true },
   },
   {
     timestamps: true,

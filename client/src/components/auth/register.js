@@ -13,6 +13,7 @@ function Register() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
+  const [salaryDate, setSalaryDate] = useState(0);
   const [walletLife, setWalletLife] = useState(0);
   const [walletInvest, setWalletInvest] = useState(0);
   const [walletSaving, setWalletSaving] = useState(0);
@@ -30,6 +31,7 @@ function Register() {
       userName,
       password,
       passwordVerify,
+      salaryDate,
       walletLife,
       walletInvest,
       walletSaving,
@@ -50,6 +52,7 @@ function Register() {
     await getUser();
     navigate("/");
   }
+
   return (
     <div className="auth-container">
       <div>
@@ -105,6 +108,16 @@ function Register() {
             size="small"
             value={passwordVerify}
             onChange={(e) => setPasswordVerify(e.target.value)}
+          />
+          <TextField
+            className="auth-text"
+            fullWidth
+            label="Ngày nhận lương chính"
+            id="fullWidth"
+            type="number"
+            size="small"
+            value={salaryDate}
+            onChange={(e) => setSalaryDate(e.target.value)}
           />
           <TextField
             className="auth-text"
