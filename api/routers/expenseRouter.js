@@ -9,7 +9,7 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, Expense);
 });
 
-// get Report day by day
+// get Report day by day Expense
 router.get("/byday", auth, async (req, res) => {
   const resultData = {
     SO: 0,
@@ -27,6 +27,7 @@ router.get("/byday", auth, async (req, res) => {
       resultData.TD += item.exelstCode === "TD" ? item.expMoney : 0;
     }
   });
+
   res.json({
     SoDay: Math.round(
       userData.walletLife / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
