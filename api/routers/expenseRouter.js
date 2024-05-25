@@ -10,7 +10,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // get Report day by day Expense
-router.post("/reporttotal", auth, async (req, res) => {
+router.get("/reporttotal", auth, async (req, res) => {
   const resultData = {
     SO: 0,
     TD: 0,
@@ -28,7 +28,7 @@ router.post("/reporttotal", auth, async (req, res) => {
     }
   });
 
-  res.json({
+  const oResultData = {
     SoDay: Math.round(
       userData.walletLife / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
     ).toLocaleString("it-IT", {
@@ -57,7 +57,9 @@ router.post("/reporttotal", auth, async (req, res) => {
       style: "currency",
       currency: "VND",
     }),
-  });
+  };
+
+  res.json(oResultData);
 });
 
 // get Expense Data report list
