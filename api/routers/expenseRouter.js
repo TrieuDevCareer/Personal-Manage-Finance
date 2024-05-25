@@ -10,7 +10,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // get Report day by day Expense
-router.get("/reporttotal", auth, async (req, res) => {
+router.get("/byday", auth, async (req, res) => {
   const resultData = {
     SO: 0,
     TD: 0,
