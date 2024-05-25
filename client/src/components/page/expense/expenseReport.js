@@ -91,7 +91,6 @@ function ExpenseReport() {
       contentData: contentCondition,
     });
     const resultDay = await Axios.get(`${domain}/expense/byday`);
-
     setResultByDay(resultDay.data);
     setExpenseReportData(result.data.resultData);
   }
