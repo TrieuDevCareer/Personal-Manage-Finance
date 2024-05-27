@@ -133,13 +133,7 @@ function IncomeReport() {
                 incomeReportData.resultData &&
                 incomeReportData.resultData.length > 0 ? (
                   <div className="incomeRp-chart-element">
-                    <AreaChartType
-                      data={incomeReportData.resultData}
-                      contentKey={"inLstContent"}
-                      moneyKey={"incMoney"}
-                      nameKey={"Nguồn sống"}
-                      color={"#0ecb74"}
-                    />
+                    <AreaChartType data={incomeReportData.resultData} pageChart={"income"} />
                   </div>
                 ) : (
                   <div className="incomeRp-chart-element">

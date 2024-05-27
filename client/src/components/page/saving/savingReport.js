@@ -15,18 +15,10 @@ import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage";
 import "./savingReport.scss";
 
-const data = [
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-];
+const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 
 function SavingReport() {
+  const [savingReportData, setSavingReportData] = useState();
   const [pieChartData, setPieChartData] = useState([]);
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
@@ -80,9 +72,9 @@ function SavingReport() {
     } = event;
     setStatusCondition(typeof value === "string" ? value.split(",") : value);
   }
-  async function handleGetDataContent(data) {
+  async function handleGetDataContent() {
     try {
-      const result = await Axios.get(`${domain}/banklist`, { data: data });
+      const result = await Axios.get(`${domain}/banklist`);
       let a = [];
       result.data.forEach((i) => {
         a.push(`${i.bnkName}`);
@@ -97,11 +89,21 @@ function SavingReport() {
       return;
     }
   }
+  async function handleGetSavingReport() {
+    const result = await Axios.post(`${domain}/saving/reportsaving`, {
+      date: dateCondition,
+      month: monthCodition,
+      bank: bankCondition,
+      status: statusCondition,
+    });
+    setSavingReportData(result.data.resultData);
+    setPieChartData(result.data.pieResultData);
+  }
   useEffect(() => {
     if (!user) setBankData([]);
     else {
       handleGetDataContent();
-      // handleGetExpenseReport();
+      handleGetSavingReport();
     }
   }, [user]);
   return (
@@ -135,7 +137,7 @@ function SavingReport() {
                 title={"Tình trạng gửi"}
                 handleChange={handleChangeStatus}
               />
-              <div className="btn-style-edit">
+              <div className="btn-style-edit" onClick={handleGetSavingReport}>
                 <SearchOutlinedIcon /> Thống kê
               </div>
             </div>
@@ -193,7 +195,7 @@ function SavingReport() {
                   className="pieChart"
                   series={[
                     {
-                      data,
+                      data: pieChartData.length > 0 ? pieChartData : data,
                       highlightScope: { faded: "global", highlighted: "item" },
                       faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                       innerRadius: 30,
@@ -222,7 +224,11 @@ function SavingReport() {
               </div>
               <div className="savingRp-chart">
                 <div className="savingRp-chart-element">
-                  <AreaChartType data={[]} pageChart={"expense"} />
+                  {savingReportData ? (
+                    <AreaChartType data={savingReportData} pageChart={"saving"} />
+                  ) : (
+                    <AreaChartType data={[]} pageChart={"saving"} />
+                  )}
                 </div>
               </div>
             </div>

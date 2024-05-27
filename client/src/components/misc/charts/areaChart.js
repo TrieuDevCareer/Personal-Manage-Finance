@@ -12,88 +12,172 @@ import {
 import "./areaChart.scss";
 
 function AreaChartType({ data, pageChart }) {
-  data = [
-    {
-      name: 0,
-      "Nguồn sống": 0,
-      "Tiết kiệm": 0,
-      "Đầu tư": 0,
-      "Tự do": 0,
-      SOContent: "Điểm bắt đầu",
-      TDContent: "Điểm bắt đầu",
-      TKContent: "Điểm bắt đầu",
-      DTContent: "Điểm bắt đầu",
-    },
-  ].concat(data);
-  data = data.concat([
-    {
-      name: data.length,
-      "Nguồn sống": 0,
-      "Tiết kiệm": 0,
-      "Đầu tư": 0,
-      "Tự do": 0,
-      SOContent: "Điểm kết thúc",
-      TDContent: "Điểm kết thúc",
-      TKContent: "Điểm kết thúc",
-      DTContent: "Điểm kết thúc",
-    },
-  ]);
+  const frsPoint = [];
+  const lstPoint = [];
+  switch (pageChart) {
+    case "income":
+      frsPoint.push({
+        name: 0,
+        "Nguồn sống": 0,
+        "Tiết kiệm": 0,
+        "Đầu tư": 0,
+        "Tự do": 0,
+        SOContent: "Điểm bắt đầu",
+        TDContent: "Điểm bắt đầu",
+        TKContent: "Điểm bắt đầu",
+        DTContent: "Điểm bắt đầu",
+      });
+      lstPoint.push({
+        name: data.length,
+        "Nguồn sống": 0,
+        "Tiết kiệm": 0,
+        "Đầu tư": 0,
+        "Tự do": 0,
+        SOContent: "Điểm kết thúc",
+        TDContent: "Điểm kết thúc",
+        TKContent: "Điểm kết thúc",
+        DTContent: "Điểm kết thúc",
+      });
+      break;
+    case "expense":
+      frsPoint.push({
+        name: 0,
+        "Nguồn sống": 0,
+        "Tự do": 0,
+        SOContent: "Điểm bắt đầu",
+        TDContent: "Điểm bắt đầu",
+      });
+      lstPoint.push({
+        name: data.length,
+        "Nguồn sống": 0,
+        "Tự do": 0,
+        SOContent: "Điểm kết thúc",
+        TDContent: "Điểm kết thúc",
+      });
+      break;
+    case "invest":
+      frsPoint.push({});
+      lstPoint.push({});
+      break;
+    default:
+      break;
+  }
+  if (pageChart !== "saving") {
+    data = frsPoint.concat(data);
+    data = data.concat(lstPoint);
+  }
+  // function renderItemAreaSaving(){
+  //   return
+  // }
 
   const CustomTooltip = ({ active, payload, label }) => {
+    const a = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
     if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip">
-          {pageChart !== "expense" && (
-            <>
-              {" "}
-              <div className="desc TK">
-                {payload[3].dataKey +
+      switch (pageChart) {
+        case "saving":
+          console.log(payload);
+          return (
+            <div className="custom-tooltip">
+              <div className="custom-tooltip">
+                {payload.map((item, i) => {
+                  if (i !== 0) {
+                    return (
+                      <>
+                        <div
+                          className="desc SO"
+                          style={{ color: `${payload[payload.length - i].stroke}` }}
+                        >
+                          {"Ngân hàng " +
+                            payload[payload.length - i].dataKey +
+                            ": " +
+                            payload[payload.length - i].payload[
+                              payload[payload.length - i].dataKey
+                            ].toLocaleString("it-IT", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
+                        </div>
+                      </>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+          );
+
+          break;
+        default:
+          return (
+            <div className="custom-tooltip">
+              {pageChart !== "expense" && (
+                <>
+                  <div className="desc TK">
+                    {payload[3].dataKey +
+                      " - " +
+                      data[label].TKContent +
+                      ": " +
+                      payload[3].value.toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                  </div>
+                  <div className="desc DT">
+                    {payload[2].dataKey +
+                      "  - " +
+                      data[label].DTContent +
+                      ": " +
+                      payload[2].value.toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                  </div>
+                </>
+              )}
+              <div className="desc TD">
+                {payload[1].dataKey +
                   " - " +
-                  data[label].TKContent +
+                  data[label].TDContent +
                   ": " +
-                  payload[3].value.toLocaleString("it-IT", {
+                  payload[1].value.toLocaleString("it-IT", {
                     style: "currency",
                     currency: "VND",
                   })}
               </div>
-              <div className="desc DT">
-                {payload[2].dataKey +
-                  "  - " +
-                  data[label].DTContent +
+              <div className="desc SO">
+                {payload[0].dataKey +
+                  " - " +
+                  data[label].SOContent +
                   ": " +
-                  payload[2].value.toLocaleString("it-IT", {
+                  payload[0].value.toLocaleString("it-IT", {
                     style: "currency",
                     currency: "VND",
                   })}
               </div>
-            </>
-          )}
-          <div className="desc TD">
-            {payload[1].dataKey +
-              " - " +
-              data[label].TDContent +
-              ": " +
-              payload[1].value.toLocaleString("it-IT", {
-                style: "currency",
-                currency: "VND",
-              })}
-          </div>
-          <div className="desc SO">
-            {payload[0].dataKey +
-              " - " +
-              data[label].SOContent +
-              ": " +
-              payload[0].value.toLocaleString("it-IT", {
-                style: "currency",
-                currency: "VND",
-              })}
-          </div>
-        </div>
-      );
+            </div>
+          );
+      }
     }
 
     return null;
   };
+  function renderAreaItem() {
+    if (data.length > 0) {
+      const a = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
+      return Object.keys(data[0]).map((item, i) => {
+        return (
+          <>
+            <Area
+              type="monotone"
+              dataKey={item}
+              stackId="2"
+              stroke={a[(i + 1) % a.length]}
+              fill={a[(i + 1) % a.length]}
+            />
+          </>
+        );
+      });
+    }
+  }
 
   return (
     <ResponsiveContainer
@@ -106,15 +190,46 @@ function AreaChartType({ data, pageChart }) {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
-        <Area type="monotone" dataKey="Nguồn sống" stackId="2" stroke="#8884d8" fill="#8884d8" />;
-        <Area type="monotone" dataKey="Tự do" stackId="2" stroke="#ffc658" fill="#ffc658" />;
-        {pageChart !== "expense" && (
-          <>
-            <Area type="monotone" dataKey="Đầu tư" stackId="2" stroke="#ff007f" fill="#ff007f" />;
-            <Area type="monotone" dataKey="Tiết kiệm" stackId="2" stroke="#82ca9d" fill="#82ca9d" />
-            ;
-          </>
-        )}
+        <>
+          {pageChart === "income" && (
+            <>
+              <Area
+                type="monotone"
+                dataKey="Nguồn sống"
+                stackId="2"
+                stroke="#8884d8"
+                fill="#8884d8"
+              />
+              ;
+              <Area type="monotone" dataKey="Tự do" stackId="2" stroke="#ffc658" fill="#ffc658" />
+              ;
+              <Area type="monotone" dataKey="Đầu tư" stackId="2" stroke="#ff007f" fill="#ff007f" />
+              ;
+              <Area
+                type="monotone"
+                dataKey="Tiết kiệm"
+                stackId="2"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+            </>
+          )}
+          {pageChart === "expense" && (
+            <>
+              <Area
+                type="monotone"
+                dataKey="Nguồn sống"
+                stackId="2"
+                stroke="#8884d8"
+                fill="#8884d8"
+              />
+              ;
+              <Area type="monotone" dataKey="Tự do" stackId="2" stroke="#ffc658" fill="#ffc658" />;
+            </>
+          )}
+          {pageChart === "saving" && renderAreaItem()}
+          {pageChart === "invest" && <></>}
+        </>
       </AreaChart>
     </ResponsiveContainer>
   );
