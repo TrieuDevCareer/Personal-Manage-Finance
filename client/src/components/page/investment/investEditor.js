@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import domain from "../../../util/domain.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import ErrorMessage from "../../misc/ErrorMessage";
 import "./investEditor.scss";
 const StatusSav = [
@@ -33,6 +34,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   const [coinList, setCoinList] = useState([]);
   const [investDMoney, setInvestDMoney] = useState(0);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function closeEditor() {
     setInvestmentEditorOpen(false);
@@ -40,6 +42,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
 
   async function saveInCome(e) {
     e.preventDefault();
+    setIsLoading(true);
     const oInvestmentData = {
       coinLstID,
       coinName: coinName.split(" - ")[1],
@@ -62,6 +65,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
       if (!editInvestmentData) await Axios.post(`${domain}/investment/`, oInvestmentData);
       else await Axios.put(`${domain}/investment/${editInvestmentData._id}`, oInvestmentData);
     } catch (err) {
+      setIsLoading(false);
       if (err.response) {
         if (err.response.data.errorMessage) {
           setMessage(err.response.data.errorMessage);
@@ -185,146 +189,149 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   }, [editInvestmentData]);
   return (
     <div className="popup-container-invest">
-      <Box
-        className="popup-form-invest"
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "40rem" },
-        }}
-        noValidate
-        autoComplete="off"
-        onSubmit={saveInCome}
-      >
-        <ErrorMessage message={message} setMessage={setMessage} />
-        <div className="text-container">
-          <div className="left-group-input">
-            <TextField
-              className="popup-text"
-              required
-              label="Ngày bắt đầu Đầu tư"
-              id=""
-              type="date"
-              value={investDate}
-              InputLabelProps={{ shrink: true }}
-              onChange={(e) => setInvestDate(e.target.value)}
-            />
-            <TextField
-              className="popup-text"
-              id="outlined-select-currency"
-              select
-              label="Mã Coin mua"
-              value={coinName}
-              onChange={onChangeCoin}
-            >
-              {coinList.map((option) => (
-                <MenuItem key={option.value} value={`${option.coinLstID} - ${option.coinName}`}>
-                  {option.coinLstID} - {option.coinName}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              className="popup-text"
-              label="Giá $ lúc mua"
-              id=""
-              type="number"
-              value={investExRate}
-              onChange={onChangeUSD}
-            />
-            <TextField
-              className="popup-text"
-              label="Số tiền VND mua"
-              id=""
-              type="number"
-              value={investMoney}
-              onChange={onChangeVND}
-            />
-            <TextField
-              disabled
-              className="popup-text"
-              label="Số coin mua được"
-              id=""
-              type="number"
-              value={investNumCoin}
-            />
-            <TextField
-              disabled
-              className="popup-text"
-              label="USDT lúc nhận"
-              id=""
-              type="number"
-              value={investReUSDT}
-            />
+      {isLoading && <LoadingProgess />}
+      {!isLoading && (
+        <Box
+          className="popup-form-invest"
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "40rem" },
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={saveInCome}
+        >
+          <ErrorMessage message={message} setMessage={setMessage} />
+          <div className="text-container">
+            <div className="left-group-input">
+              <TextField
+                className="popup-text"
+                required
+                label="Ngày bắt đầu Đầu tư"
+                id=""
+                type="date"
+                value={investDate}
+                InputLabelProps={{ shrink: true }}
+                onChange={(e) => setInvestDate(e.target.value)}
+              />
+              <TextField
+                className="popup-text"
+                id="outlined-select-currency"
+                select
+                label="Mã Coin mua"
+                value={coinName}
+                onChange={onChangeCoin}
+              >
+                {coinList.map((option) => (
+                  <MenuItem key={option.value} value={`${option.coinLstID} - ${option.coinName}`}>
+                    {option.coinLstID} - {option.coinName}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                className="popup-text"
+                label="Giá $ lúc mua"
+                id=""
+                type="number"
+                value={investExRate}
+                onChange={onChangeUSD}
+              />
+              <TextField
+                className="popup-text"
+                label="Số tiền VND mua"
+                id=""
+                type="number"
+                value={investMoney}
+                onChange={onChangeVND}
+              />
+              <TextField
+                disabled
+                className="popup-text"
+                label="Số coin mua được"
+                id=""
+                type="number"
+                value={investNumCoin}
+              />
+              <TextField
+                disabled
+                className="popup-text"
+                label="USDT lúc nhận"
+                id=""
+                type="number"
+                value={investReUSDT}
+              />
+            </div>
+            <div className="right-group-input">
+              {" "}
+              <TextField
+                className="popup-text"
+                required
+                label="Ngày bán Coin"
+                id=""
+                type="date"
+                value={investSeDate}
+                InputLabelProps={{ shrink: true }}
+                onChange={(e) => setInvestSeDate(e.target.value)}
+              />
+              <TextField
+                className="popup-text"
+                label="Giá $ lúc bán"
+                id=""
+                type="number"
+                value={investSeExRate}
+                onChange={onchangeUSDSell}
+              />
+              <TextField
+                disabled
+                className="popup-text"
+                label="USDT lúc bán"
+                id=""
+                type="number"
+                value={investSeUSDT}
+              />
+              <TextField
+                disabled
+                className="popup-text"
+                label="Số tiền VND thu về"
+                id=""
+                type="number"
+                value={investReMoney}
+              />
+              <TextField
+                className="popup-text"
+                id="outlined-select-currency"
+                select
+                label="Trạng thái"
+                value={investStatus}
+                defaultValue=""
+                onChange={(e) => setInvestStatus(e.target.value)}
+              >
+                {StatusSav.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                disabled
+                className="popup-text"
+                id=""
+                label="Lãi/Lỗ"
+                value={investResult}
+                defaultValue=""
+              />
+            </div>
           </div>
-          <div className="right-group-input">
-            {" "}
-            <TextField
-              className="popup-text"
-              required
-              label="Ngày bán Coin"
-              id=""
-              type="date"
-              value={investSeDate}
-              InputLabelProps={{ shrink: true }}
-              onChange={(e) => setInvestSeDate(e.target.value)}
-            />
-            <TextField
-              className="popup-text"
-              label="Giá $ lúc bán"
-              id=""
-              type="number"
-              value={investSeExRate}
-              onChange={onchangeUSDSell}
-            />
-            <TextField
-              disabled
-              className="popup-text"
-              label="USDT lúc bán"
-              id=""
-              type="number"
-              value={investSeUSDT}
-            />
-            <TextField
-              disabled
-              className="popup-text"
-              label="Số tiền VND thu về"
-              id=""
-              type="number"
-              value={investReMoney}
-            />
-            <TextField
-              className="popup-text"
-              id="outlined-select-currency"
-              select
-              label="Trạng thái"
-              value={investStatus}
-              defaultValue=""
-              onChange={(e) => setInvestStatus(e.target.value)}
-            >
-              {StatusSav.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              disabled
-              className="popup-text"
-              id=""
-              label="Lãi/Lỗ"
-              value={investResult}
-              defaultValue=""
-            />
-          </div>
-        </div>
-        <Stack className="btn-control" spacing={2} direction="row" justifyContent="right">
-          <Button variant="outlined" color="success" type="submit">
-            Lưu thay đổi
-          </Button>
-          <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-            Hủy thay đổi
-          </Button>
-        </Stack>
-      </Box>
+          <Stack className="btn-control" spacing={2} direction="row" justifyContent="right">
+            <Button variant="outlined" color="success" type="submit">
+              Lưu thay đổi
+            </Button>
+            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+              Hủy thay đổi
+            </Button>
+          </Stack>
+        </Box>
+      )}
     </div>
   );
 }

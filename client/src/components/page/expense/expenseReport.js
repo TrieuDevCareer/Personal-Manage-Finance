@@ -1,9 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MultiDropdown from "../../misc/multiDropdown";
-import TableReport from "../../misc/tableReport";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import AreaChartType from "../../misc/charts/areaChart";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -27,7 +25,6 @@ function ExpenseReport() {
   const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
   var d = new Date();
 
   const date = [];

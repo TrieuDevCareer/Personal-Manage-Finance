@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MultiDropdown from "../../misc/multiDropdown";
 import TableReport from "../../misc/tableReport";
@@ -20,7 +19,6 @@ function IncomeReport() {
   const [contentData, setContentData] = useState([]);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
   const date = [];
   const month = [];
   const captitalSource = ["SO", "TK", "DT", "TD"];
@@ -86,8 +84,8 @@ function IncomeReport() {
   }, [user]);
   return (
     <div>
-      {user && !incomeReportData && <LoadingProgess />}
-      {user && incomeReportData && (
+      {user && !incomeReportData && !contentData && <LoadingProgess />}
+      {user && incomeReportData && contentData && (
         <div className="incomeRp-container">
           <div className="incomeRp-ctrl-gr">
             <div className="incomeRp-title">Bảng điều khiển chọn lọc</div>

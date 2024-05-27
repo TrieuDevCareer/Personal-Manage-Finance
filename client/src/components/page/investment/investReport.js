@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import MultiDropdown from "../../misc/multiDropdown.js";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -11,7 +10,6 @@ import AreaChartType from "../../misc/charts/areaChart.js";
 import AuthPage from "../../auth/authPage.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import ErrorMessage from "../../misc/ErrorMessage.js";
 import "./investReport.scss";
 
 const data = [
@@ -35,7 +33,6 @@ function InvestReport() {
   const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const date = [];
   const month = [];

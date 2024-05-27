@@ -155,19 +155,24 @@ function Table({
     <div className="table-root">
       <ErrorMessage message={message} setMessage={setMessage} />
       <table className="table-container">
-        <tr className="table-header">
-          <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}></th>
-          {!isCatalogPage && (
+        <thead>
+          <tr className="table-header">
             <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}>
-              STT
+              CHỌN
             </th>
-          )}
-          {renderHeaderTable()}
-          {!isCatalogPage && (
-            <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>
-          )}
-        </tr>
-        {oData.length > 0 && renderDataTable()}
+            {!isCatalogPage && (
+              <th className="table-title stt-style" style={{ backgroundColor: colorTitle }}>
+                STT
+              </th>
+            )}
+            {renderHeaderTable()}
+            {!isCatalogPage && (
+              <th className="table-title edit-style" style={{ backgroundColor: colorTitle }}></th>
+            )}
+          </tr>
+        </thead>
+        <tbody> {oData.length > 0 ? renderDataTable() : ""}</tbody>
+        <tfoot></tfoot>
       </table>
       {oData.length === 0 && <h2 className="ndata-style">Không có dữ liệu để hiển thị</h2>}
       <div className="foot-table" colSpan="7">

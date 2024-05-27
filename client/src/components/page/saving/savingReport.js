@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import MultiDropdown from "../../misc/multiDropdown";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -25,10 +24,8 @@ function SavingReport() {
   const [bankCondition, setBankCondition] = useState([]);
   const [bankData, setBankData] = useState();
   const [statusCondition, setStatusCondition] = useState([]);
-  const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const date = [];
   const month = [];
@@ -83,7 +80,7 @@ function SavingReport() {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          setMessage(err.response.data.errorMessage);
+          console.log(err.response.data.errorMessage);
         }
       }
       return;

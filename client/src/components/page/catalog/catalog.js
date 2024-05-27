@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
 import "./catalog.scss";
 import UserContext from "../../../context/UserContext.js";
 import IncomeList from "../incomeList/incomeList.js";
@@ -11,7 +9,6 @@ import AuthPage from "../../auth/authPage.js";
 
 function Catalog() {
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
   return (
     <div>
       {user && (

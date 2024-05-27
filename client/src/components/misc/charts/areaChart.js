@@ -71,7 +71,6 @@ function AreaChartType({ data, pageChart }) {
   // }
 
   const CustomTooltip = ({ active, payload, label }) => {
-    const a = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
     if (active && payload && payload.length) {
       switch (pageChart) {
         case "saving":
@@ -105,7 +104,6 @@ function AreaChartType({ data, pageChart }) {
             </div>
           );
 
-          break;
         default:
           return (
             <div className="custom-tooltip">

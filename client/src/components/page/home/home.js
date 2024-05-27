@@ -10,7 +10,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AuthPage from "../../auth/authPage.js";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import LoadingProgess from "../../misc/loadingProgess.js";
-import { useNavigate } from "react-router-dom";
 import "./home.scss";
 
 const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
@@ -22,7 +21,6 @@ function Home() {
   const [investReportTotal, setInvestReportTotal] = useState();
   const { user } = useContext(UserContext);
 
-  const navigate = useNavigate();
   function getArcLabel(params) {
     const TOTAL =
       pieChartData.length > 0
