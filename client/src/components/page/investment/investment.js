@@ -16,10 +16,7 @@ function Investment({ isCheck, setIsCheck }) {
   const [investmentData, setInvestmentData] = useState();
   const [investmentEditorOpen, setInvestmentEditorOpen] = useState(false);
   const [editInvestmentData, setEditInvestmentData] = useState(null);
-  const [investmentAmount, setInvestmentAmount] = useState(0); //Số tiền đầu tư có thể có
-  const [nonInvestAmount, setNonInvestAmount] = useState(0); //Tổng số tiền chưa đem đi đầu tư
-  const [profitAmount, setProfitAmount] = useState(0); //Tổng số tiền có thể lãi lỗ
-
+  const [investReportTotal, setInvestReportTotal] = useState();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const aTitle = [
@@ -68,13 +65,7 @@ function Investment({ isCheck, setIsCheck }) {
 
   async function getInvestments() {
     const investments = await Axios.get(`${domain}/investment/`);
-    let iInvested = 0;
-    let iProfitMoney = 0;
     investments.data.map((i) => {
-      if (!i.investStatus) {
-        iInvested += i.investMoney;
-        iProfitMoney += i.investResult;
-      }
       i.investExRate = i.investExRate ? i.investExRate : 0;
       i.investMoney = i.investMoney ? i.investMoney : 0;
       i.investSeUSDT = i.investSeUSDT ? i.investSeUSDT : 0;
@@ -111,47 +102,27 @@ function Investment({ isCheck, setIsCheck }) {
       today = i.investSeDate;
       today = Date.parse(today);
       i.investSeDate = new Date(today).toISOString().split("T")[0];
-      // eslint-disable-next-line no-sequences
       return (
         i.investExRate, i.investMoney, i.investSeUSDT, i.investReMoney, i.investDate, i.investSeDate
       );
     });
     setInvestmentData(investments.data);
-    getUserData(iInvested, iProfitMoney);
   }
 
-  async function getUserData(iInvested, iProfitMoney) {
-    const usersData = await Axios.get(`${domain}/auth`);
-    const investTotal = usersData.data.walletInvest + iInvested;
-    const nonInvestTotal = usersData.data.walletInvest;
-    setInvestmentAmount(
-      investTotal.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setNonInvestAmount(
-      nonInvestTotal.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setProfitAmount(
-      iProfitMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
+  async function handleGetInvestReportTotal() {
+    const resultData = await Axios.get(`${domain}/investment/reporttotaldata`);
+    setInvestReportTotal(resultData.data);
   }
 
   useEffect(() => {
     if (!user) setInvestmentData();
     else getInvestments();
+    handleGetInvestReportTotal();
   }, [user]);
   return (
     <div>
-      {user && !investmentData && <LoadingProgess />}
-      {user && investmentData && (
+      {user && !investmentData && !investReportTotal && <LoadingProgess />}
+      {user && investReportTotal && investmentData && (
         <div className="investment-container">
           <div className="title-investment">DANH SÁCH ĐẦU TƯ</div>
           {investmentEditorOpen ? (
@@ -166,15 +137,15 @@ function Investment({ isCheck, setIsCheck }) {
                 <div className="report-invest">
                   <div className="report-item">
                     <p>Số tiền đầu tư có thể có:</p>
-                    <span>{investmentAmount}</span>
+                    <span>{investReportTotal.investmentAmount}</span>
                   </div>
                   <div className="report-item">
                     <p>Tổng số tiền chưa đem đi đầu tư:</p>
-                    <span>{nonInvestAmount}</span>
+                    <span>{investReportTotal.nonInvestAmount}</span>
                   </div>
                   <div className="report-item">
                     <p>Tổng số tiền có thể lãi lỗ:</p>
-                    <span>{profitAmount}</span>
+                    <span>{investReportTotal.profitAmount}</span>
                   </div>
                 </div>
               </div>

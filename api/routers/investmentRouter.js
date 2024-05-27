@@ -9,6 +9,43 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, Invesment);
 });
 
+// get Invest report total data
+router.get("/reporttotaldata", auth, async (req, res) => {
+  try {
+    let resultData = {
+      investmentAmount: 0,
+      nonInvestAmount: 0,
+      profitAmount: 0,
+    };
+    const aInvestData = await Invesment.find({ user: req.user, investStatus: false });
+    const oUserLogin = await User.findById(req.user);
+    aInvestData.forEach((item) => {
+      resultData.investmentAmount += item.investMoney;
+      resultData.profitAmount += item.investResult;
+    });
+    resultData.investmentAmount += oUserLogin.walletInvest;
+    resultData.nonInvestAmount += oUserLogin.walletInvest;
+    res.json(
+      (resultData = {
+        investmentAmount: resultData.investmentAmount.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        nonInvestAmount: resultData.nonInvestAmount.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        profitAmount: resultData.profitAmount.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+      })
+    );
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 // create data router
 router.post("/", auth, async (req, res) => {
   try {

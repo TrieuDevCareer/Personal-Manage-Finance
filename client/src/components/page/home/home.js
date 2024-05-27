@@ -18,14 +18,8 @@ const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 function Home() {
   const [userData, setUserData] = useState();
   const [pieChartData, setPieChartData] = useState([]);
-  const [iReportTotalMon, setIReportTotalMon] = useState(0); //Tổng số tiền nếu rút hết TKTK:
-  const [iUnsavedAmount, setIUnsavedAmount] = useState(0); //Tổng số tiền chưa gửi tiết kiệm
-  const [iSavingAmount, setISavingAmount] = useState(0); //Tổng số tiền đang gửi tiết kiệm
-  const [iAmountOfInterest, setIAmountOfInterest] = useState(0); //Tổng số
-  const [investmentAmount, setInvestmentAmount] = useState(0); //Số tiền đầu tư có thể có
-  const [nonInvestAmount, setNonInvestAmount] = useState(0); //Tổng số tiền chưa đem đi đầu tư
-  const [profitAmount, setProfitAmount] = useState(0); //Tổng số tiền có thể lãi lỗ
-
+  const [savingReportTotal, setSavingReportTotal] = useState();
+  const [investReportTotal, setInvestReportTotal] = useState();
   const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -38,33 +32,10 @@ function Home() {
     return `${(percent * 100).toFixed(0)}%`;
   }
   async function getSavings() {
-    const savings = await Axios.get(`${domain}/saving/`);
-    let iSaved = 0;
-    let iInterest = 0;
-    let iTotalMon = 0;
-    let iInvested = 0;
-    let iProfitMoney = 0;
-    savings.data.forEach((i) => {
-      if (!i.savStatus) {
-        iSaved += i.savMoney;
-        iInterest += i.savInteretMoney;
-        iTotalMon += i.savTRealMoney;
-      }
-    });
-    setIAmountOfInterest(
-      iInterest.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    const investments = await Axios.get(`${domain}/investment/`);
-    investments.data.forEach((i) => {
-      if (!i.investStatus) {
-        iInvested += i.investMoney;
-        iProfitMoney += i.investResult;
-      }
-    });
-    getUserData(iSaved, iTotalMon, iInvested, iProfitMoney);
+    const resultSavingData = await Axios.get(`${domain}/saving/reporttotaldata`);
+    setSavingReportTotal(resultSavingData.data);
+    const resultInvestData = await Axios.get(`${domain}/investment/reporttotaldata`);
+    setInvestReportTotal(resultInvestData.data);
   }
   async function handleGetExpensePie() {
     const result = await Axios.post(`${domain}/expense/reportexpense`, {
@@ -72,77 +43,23 @@ function Home() {
     });
     setPieChartData(result.data.pieChartData);
   }
-  async function getUserData(iSaved, iTotalMon, iInvested, iProfitMoney) {
+  async function getUserData() {
     const usersData = await Axios.get(`${domain}/auth`);
-    let iUnsavedAmount = usersData.data.walletSaving;
-    let iReportTotalMon = iTotalMon + usersData.data.walletSaving;
-    const investTotal = usersData.data.walletInvest + iInvested;
-    const nonInvestTotal = usersData.data.walletInvest;
-    usersData.data.walletLife = usersData.data.walletLife.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletInvest = usersData.data.walletInvest.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletSaving = usersData.data.walletSaving.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletFree = usersData.data.walletFree.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
     setUserData(usersData.data);
-    setIReportTotalMon(
-      iReportTotalMon.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setIUnsavedAmount(
-      iUnsavedAmount.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setISavingAmount(
-      iSaved.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setInvestmentAmount(
-      investTotal.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setNonInvestAmount(
-      nonInvestTotal.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
-    setProfitAmount(
-      iProfitMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      })
-    );
   }
+
   useEffect(() => {
     if (!user) setUserData();
     else {
+      getUserData();
       getSavings();
       handleGetExpensePie();
     }
   }, [user]);
   return (
     <div>
-      {user && !userData && <LoadingProgess />}
-      {user && userData && (
+      {user && !userData && !savingReportTotal && !investReportTotal && <LoadingProgess />}
+      {user && userData && savingReportTotal && investReportTotal && (
         <div className="home-container">
           <div className="top-left-container">
             <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
@@ -244,7 +161,7 @@ function Home() {
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền nếu rút hết TKTK</div>
-                    <div className="money-value">{iReportTotalMon}</div>
+                    <div className="money-value">{savingReportTotal.iReportTotalMon}</div>
                   </div>
                 </div>
                 <div className="second-box item-box">
@@ -253,7 +170,7 @@ function Home() {
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền chưa gửi tiết kiệm</div>
-                    <div className="money-value">{iUnsavedAmount}</div>
+                    <div className="money-value">{savingReportTotal.iUnsavedAmount}</div>
                   </div>
                 </div>
                 <div className="third-box item-box">
@@ -262,7 +179,7 @@ function Home() {
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền đang gửi tiết kiệm</div>
-                    <div className="money-value">{iSavingAmount}</div>
+                    <div className="money-value">{savingReportTotal.iSavingAmount}</div>
                   </div>
                 </div>
                 <div className="forth-box item-box">
@@ -271,7 +188,7 @@ function Home() {
                   </div>
                   <div className="box-title">
                     <div className="money-title">Tổng số tiền lãi có thể nhận được</div>
-                    <div className="money-value">{iAmountOfInterest}</div>
+                    <div className="money-value">{savingReportTotal.iAmountOfInterest}</div>
                   </div>
                 </div>
               </div>
@@ -281,16 +198,16 @@ function Home() {
               <div className="box-TD-root">
                 <div className="box-item">
                   <div className="title">Số tiền đầu tư có thể có</div>
-                  <div className="money">{investmentAmount}</div>
+                  <div className="money">{investReportTotal.investmentAmount}</div>
                 </div>
                 <div className="second-gr-box">
                   <div className="box-item box-item-first">
                     <div className="title">Tổng số tiền chưa đem đi</div>
-                    <div className="money">{nonInvestAmount}</div>
+                    <div className="money">{investReportTotal.nonInvestAmount}</div>
                   </div>
                   <div className="box-item  box-item-second">
                     <div className="title">Tổng số tiền có thể lãi lỗ</div>
-                    <div className="money">{profitAmount}</div>
+                    <div className="money">{investReportTotal.profitAmount}</div>
                   </div>
                 </div>
               </div>

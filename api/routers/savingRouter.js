@@ -9,6 +9,56 @@ router.get("/", auth, async (req, res) => {
   await commonUtil.getAllResult(req, res, Saving);
 });
 
+// get Saving report total data
+router.get("/reporttotaldata", auth, async (req, res) => {
+  try {
+    let resultData = {
+      iReportStartMon: 0,
+      iReportTotalMon: 0,
+      iUnsavedAmount: 0,
+      iSavingAmount: 0,
+      iAmountOfInterest: 0,
+    };
+    const aSavingData = await Saving.find({ user: req.user, savStatus: false });
+    const oUserLogin = await User.findById(req.user);
+    aSavingData.forEach((item) => {
+      resultData.iReportStartMon += item.savMoney;
+      resultData.iAmountOfInterest += item.savInteretMoney;
+      resultData.iReportTotalMon += item.savTRealMoney;
+    });
+    resultData.iSavingAmount = resultData.iReportStartMon;
+    resultData.iReportStartMon += oUserLogin.walletSaving;
+    resultData.iReportTotalMon += oUserLogin.walletSaving;
+    resultData.iUnsavedAmount += oUserLogin.walletSaving;
+    res.json(
+      (resultData = {
+        iReportStartMon: resultData.iReportStartMon.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        iReportTotalMon: resultData.iReportTotalMon.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        iUnsavedAmount: resultData.iUnsavedAmount.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        iSavingAmount: resultData.iSavingAmount.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+        iAmountOfInterest: resultData.iAmountOfInterest.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        }),
+      })
+    );
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 // get Saving Data report list
 router.post("/reportsaving", auth, async (req, res) => {
   const { date, month, bank, status } = req.body;

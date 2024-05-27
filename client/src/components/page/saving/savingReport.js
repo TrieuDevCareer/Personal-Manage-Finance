@@ -9,21 +9,21 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import AuthPage from "../../auth/authPage.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import AreaChartType from "../../misc/charts/areaChart";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import ErrorMessage from "../../misc/ErrorMessage";
 import "./savingReport.scss";
-
 const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 
 function SavingReport() {
   const [savingReportData, setSavingReportData] = useState();
-  const [pieChartData, setPieChartData] = useState([]);
+  const [savingReportTotal, setSavingReportTotal] = useState();
+  const [pieChartData, setPieChartData] = useState();
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
   const [bankCondition, setBankCondition] = useState([]);
-  const [bankData, setBankData] = useState([]);
+  const [bankData, setBankData] = useState();
   const [statusCondition, setStatusCondition] = useState([]);
   const [message, setMessage] = useState("");
 
@@ -99,16 +99,24 @@ function SavingReport() {
     setSavingReportData(result.data.resultData);
     setPieChartData(result.data.pieResultData);
   }
+  async function handleGetSavingReportTotal() {
+    const resultData = await Axios.get(`${domain}/saving/reporttotaldata`);
+    setSavingReportTotal(resultData.data);
+  }
   useEffect(() => {
     if (!user) setBankData([]);
     else {
       handleGetDataContent();
       handleGetSavingReport();
+      handleGetSavingReportTotal();
     }
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !savingReportData && !savingReportTotal && !pieChartData && !bankData && (
+        <LoadingProgess />
+      )}
+      {user && savingReportData && savingReportTotal && pieChartData && bankData && (
         <div className="savingRp-container">
           <div className="savingRp-ctrl-gr">
             <div className="title-container savingRp-title">Bảng điều khiển chọn lọc</div>
@@ -145,7 +153,7 @@ function SavingReport() {
           <div className="savingRp-root">
             <div className="savingRp-left-container">
               <div className="savingRp-left-top">
-                <div className="title-container top-left">Số tiền mặt còn lại trong Ví</div>
+                <div className="title-container top-left">Thống kê tổng quan tiết kiệm</div>
                 <div className="box">
                   <div className="first-box item-box">
                     <div className="icon-container">
@@ -155,7 +163,7 @@ function SavingReport() {
                       <div className="money-title">
                         Tổng số tiền nếu rút hết Tài Khoản Tiết Kiệm
                       </div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{savingReportTotal.iReportTotalMon}</div>
                     </div>
                   </div>
                   <div className="second-box item-box">
@@ -164,7 +172,7 @@ function SavingReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Tổng số tiền chưa gửi Tiết Kiệm</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{savingReportTotal.iUnsavedAmount}</div>
                     </div>
                   </div>
                   <div className="third-box item-box">
@@ -173,7 +181,7 @@ function SavingReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Tổng số tiền đang gửi Tiết Kiệm</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{savingReportTotal.iSavingAmount}</div>
                     </div>
                   </div>
                   <div className="forth-box item-box">
@@ -182,7 +190,7 @@ function SavingReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Tổng số tiền lãi có thể nhận được</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{savingReportTotal.iAmountOfInterest}</div>
                     </div>
                   </div>
                 </div>
