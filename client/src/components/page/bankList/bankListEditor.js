@@ -46,50 +46,51 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
     }
   }, [editBankListData]);
   return (
-    <div className="popup-container">
-      {isLoading ? (
-        <LoadingProgess />
-      ) : (
-        <Box
-          className="popup-form"
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={saveInCome}
-        >
-          <ErrorMessage message={message} setMessage={setMessage} />
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Mã ngân hàng"
-            id="fullWidth"
-            type="input"
-            value={bnkLstID}
-            onChange={(e) => setBnkLstID(e.target.value)}
-          />
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Tên ngân hàng"
-            id="fullWidth"
-            type="input"
-            value={bnkName}
-            onChange={(e) => setBnkName(e.target.value)}
-          />
-          <Stack spacing={2} direction="row" justifyContent="right">
-            <Button variant="outlined" color="success" type="submit">
-              Lưu thay đổi
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-              Hủy thay đổi
-            </Button>
-          </Stack>
-        </Box>
+    <>
+      {isLoading && <LoadingProgess />}
+      {!isLoading && (
+        <div className="popup-container">
+          <Box
+            className="popup-form"
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "40rem" },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={saveInCome}
+          >
+            <ErrorMessage message={message} setMessage={setMessage} />
+            <TextField
+              className="popup-text"
+              fullWidth
+              label="Mã ngân hàng"
+              id="fullWidth"
+              type="input"
+              value={bnkLstID}
+              onChange={(e) => setBnkLstID(e.target.value)}
+            />
+            <TextField
+              className="popup-text"
+              fullWidth
+              label="Tên ngân hàng"
+              id="fullWidth"
+              type="input"
+              value={bnkName}
+              onChange={(e) => setBnkName(e.target.value)}
+            />
+            <Stack spacing={2} direction="row" justifyContent="right">
+              <Button variant="outlined" color="success" type="submit">
+                Lưu thay đổi
+              </Button>
+              <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+                Hủy thay đổi
+              </Button>
+            </Stack>
+          </Box>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 export default BankListEditor;

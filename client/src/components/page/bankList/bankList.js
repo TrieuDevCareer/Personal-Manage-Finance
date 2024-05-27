@@ -45,7 +45,10 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
     <div>
       {user && !isCatalogPage && !bankListData && <LoadingProgess />}
       {user && bankListData && (
-        <div className="bankList-container">
+        <div
+          className="bankList-container"
+          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+        >
           <div className="title-container">
             {!isCatalogPage && <div className="title-bankList">DANH MỤC NGÂN HÀNG</div>}
           </div>
@@ -73,7 +76,11 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
             </div>
           )}
           {!bankListEditorOpen && !isCatalogPage && (
-            <div className="footer-link" onClick={() => navigate("/saving")}>
+            <div
+              className="footer-link"
+              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              onClick={() => navigate("/saving")}
+            >
               <OpenInNewIcon />
               <div className="footer-titel">DANH SÁCH GỬI TIẾT KIỆM</div>
             </div>

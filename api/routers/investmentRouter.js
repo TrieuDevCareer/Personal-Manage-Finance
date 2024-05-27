@@ -95,7 +95,18 @@ router.post("/", auth, async (req, res) => {
       0 - parseInt(req.body.investMoney),
       User
     );
-    res.json(`${sNotice} và ${SNoticeUser}`);
+    if (SNoticeUser.status === 200 && sNotice.status === 200) {
+      res.json(`${sNotice.message} và ${SNoticeUser.message}`);
+    } else {
+      if (sNotice.status !== 200 && SNoticeUser.status === 200)
+        res.status(400).json({
+          errorMessage: sNotice.message,
+        });
+      else
+        res.status(400).json({
+          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+        });
+    }
   } catch (error) {
     res.status(500).send();
   }
@@ -137,7 +148,7 @@ router.put("/:id", auth, async (req, res) => {
       investResult,
     };
     const sExpenseId = req.params.id;
-    const sUpdateWalletUser = await commonUtil.updateDataCase(
+    const sUpdateEntity = await commonUtil.updateDataCase(
       req,
       res,
       oUpdateData,
@@ -145,7 +156,7 @@ router.put("/:id", auth, async (req, res) => {
       sExpenseId,
       "bảng đầu tư"
     );
-    const sUpdateEntity = await commonUtil.UpdateUserWalletUpdate(
+    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
       req,
       res,
       "DT",
@@ -155,7 +166,18 @@ router.put("/:id", auth, async (req, res) => {
       User
     );
 
-    res.json(`${sUpdateEntity} và ${sUpdateWalletUser}`);
+    if (sUpdateEntity.status === 200 && sUpdateWalletUser.status === 200) {
+      res.json(`${sUpdateEntity.message} và ${sUpdateWalletUser.message}`);
+    } else {
+      if (sUpdateEntity.status !== 200 && sUpdateWalletUser.status === 200)
+        res.status(400).json({
+          errorMessage: sUpdateEntity.message,
+        });
+      else
+        res.status(400).json({
+          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+        });
+    }
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -166,9 +188,26 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     const sExpenseId = req.params.id;
     const data = req.body;
-    await commonUtil.deleteDataCase(req, res, Invesment, sExpenseId, "bảng đầu tư");
-    await commonUtil.UpdateWalletUser(req, "coinLstID", "investMoney", data, User);
-    res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
+    const result = await commonUtil.deleteDataCase(req, res, Invesment, sExpenseId, "bảng đầu tư");
+    const minusAmountMoney = await commonUtil.UpdateWalletUser(
+      req,
+      "coinLstID",
+      "investMoney",
+      data,
+      User
+    );
+    if (result.status === 200 && minusAmountMoney.status === 200) {
+      res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
+    } else {
+      if (result.status !== 200 && minusAmountMoney.status === 200)
+        res.status(400).json({
+          errorMessage: result.message,
+        });
+      else
+        res.status(400).json({
+          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+        });
+    }
   } catch (error) {
     res.status(500).json({ error });
   }

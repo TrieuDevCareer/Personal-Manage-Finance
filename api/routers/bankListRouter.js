@@ -14,7 +14,11 @@ router.post("/", auth, async (req, res) => {
     const { bnkLstID, bnkName } = req.body;
     const oCreateData = { bnkLstID, bnkName };
     const result = await commonUtil.createDataCase(req, res, oCreateData, BankList, "Ngân hàng");
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).send();
   }
@@ -34,7 +38,11 @@ router.put("/:id", auth, async (req, res) => {
       sBankId,
       "ngân hàng"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -45,7 +53,11 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     const oBankId = req.params.id;
     const result = await commonUtil.deleteDataCase(req, res, BankList, oBankId, "ngân hàng");
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }

@@ -57,55 +57,57 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
     }
   }, [editExpenseListData]);
   return (
-    <div className="popup-container">
+    <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <Box
-          className="popup-form"
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={saveExpenseListEditor}
-        >
-          <ErrorMessage message={message} setMessage={setMessage} />
-          <TextField
-            className="popup-text"
-            id="outlined-select-currency"
-            fullWidth
-            select
-            label="Nguồn quỹ"
-            value={exelstCode}
-            onChange={(e) => setExelstCode(e.target.value)}
+        <div className="popup-container">
+          <Box
+            className="popup-form"
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "40rem" },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={saveExpenseListEditor}
           >
-            {currencies.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Nội dung chi tiêu"
-            id="fullWidth"
-            type="input"
-            value={exeLstContent}
-            onChange={(e) => setExeLstContent(e.target.value)}
-          />
-          <Stack spacing={2} direction="row" justifyContent="right">
-            <Button variant="outlined" color="success" type="submit">
-              Lưu thay đổi
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-              Hủy thay đổi
-            </Button>
-          </Stack>
-        </Box>
+            <ErrorMessage message={message} setMessage={setMessage} />
+            <TextField
+              className="popup-text"
+              id="outlined-select-currency"
+              fullWidth
+              select
+              label="Nguồn quỹ"
+              value={exelstCode}
+              onChange={(e) => setExelstCode(e.target.value)}
+            >
+              {currencies.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              className="popup-text"
+              fullWidth
+              label="Nội dung chi tiêu"
+              id="fullWidth"
+              type="input"
+              value={exeLstContent}
+              onChange={(e) => setExeLstContent(e.target.value)}
+            />
+            <Stack spacing={2} direction="row" justifyContent="right">
+              <Button variant="outlined" color="success" type="submit">
+                Lưu thay đổi
+              </Button>
+              <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+                Hủy thay đổi
+              </Button>
+            </Stack>
+          </Box>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 export default ExpenseListEditor;

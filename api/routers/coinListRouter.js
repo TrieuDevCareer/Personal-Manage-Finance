@@ -18,7 +18,11 @@ router.post("/", auth, async (req, res) => {
     const { coinLstID, coinName } = req.body;
     const oCreateData = { coinLstID, coinName };
     const result = await commonUtil.createDataCase(req, res, oCreateData, CoinList, "đồng coin");
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).send();
   }
@@ -38,7 +42,11 @@ router.put("/:id", auth, async (req, res) => {
       sCoinId,
       "đồng coin"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -55,7 +63,11 @@ router.delete("/:id", auth, async (req, res) => {
       oCoinId,
       "danh mục tổng hợp"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }

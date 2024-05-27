@@ -65,55 +65,57 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
     }
   }, [editIncomeListData]);
   return (
-    <div className="popup-container">
+    <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <Box
-          className="popup-form"
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={saveInCome}
-        >
-          <ErrorMessage message={message} setMessage={setMessage} />
-          <TextField
-            className="popup-text"
-            id="outlined-select-currency"
-            fullWidth
-            select
-            label="Nguồn quỹ"
-            value={inlstCode}
-            onChange={(e) => setInlstCode(e.target.value)}
+        <div className="popup-container">
+          <Box
+            className="popup-form"
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "40rem" },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={saveInCome}
           >
-            {optionSource.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Nội dung thu nhập"
-            id="fullWidth"
-            type="input"
-            value={inLstContent}
-            onChange={(e) => setInLstContent(e.target.value)}
-          />
-          <Stack spacing={2} direction="row" justifyContent="right">
-            <Button variant="outlined" color="success" type="submit">
-              Lưu thay đổi
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-              Hủy thay đổi
-            </Button>
-          </Stack>
-        </Box>
+            <ErrorMessage message={message} setMessage={setMessage} />
+            <TextField
+              className="popup-text"
+              id="outlined-select-currency"
+              fullWidth
+              select
+              label="Nguồn quỹ"
+              value={inlstCode}
+              onChange={(e) => setInlstCode(e.target.value)}
+            >
+              {optionSource.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              className="popup-text"
+              fullWidth
+              label="Nội dung thu nhập"
+              id="fullWidth"
+              type="input"
+              value={inLstContent}
+              onChange={(e) => setInLstContent(e.target.value)}
+            />
+            <Stack spacing={2} direction="row" justifyContent="right">
+              <Button variant="outlined" color="success" type="submit">
+                Lưu thay đổi
+              </Button>
+              <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+                Hủy thay đổi
+              </Button>
+            </Stack>
+          </Box>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 export default IncomeListEditor;

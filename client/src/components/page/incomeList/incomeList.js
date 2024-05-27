@@ -45,7 +45,10 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
     <div>
       {user && !incomeListData && !isCatalogPage && <LoadingProgess />}
       {user && incomeListData && (
-        <div className="incomeList-container">
+        <div
+          className="incomeList-container"
+          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+        >
           <div className="title-container">
             {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}
           </div>
@@ -73,7 +76,11 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
             </div>
           )}
           {!incomeListEditorOpen && !isCatalogPage && (
-            <div className="footer-link" onClick={() => navigate("/income")}>
+            <div
+              className="footer-link"
+              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              onClick={() => navigate("/income")}
+            >
               <OpenInNewIcon />
               <div className="footer-titel">DANH SÁCH CÁC KHOẢN THU</div>
             </div>

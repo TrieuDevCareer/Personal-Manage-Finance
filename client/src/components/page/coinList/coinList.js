@@ -45,7 +45,10 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
     <div>
       {user && !isCatalogPage && !coinListData && <LoadingProgess />}
       {user && coinListData && (
-        <div className="coinList-container">
+        <div
+          className="coinList-container"
+          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+        >
           <div className="title-container">
             {!isCatalogPage && <div className="title-coinList">DANH MỤC ĐỒNG COIN</div>}
           </div>
@@ -73,7 +76,11 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
             </div>
           )}
           {!coinListEditorOpen && !isCatalogPage && (
-            <div className="footer-link" onClick={() => navigate("/invest")}>
+            <div
+              className="footer-link"
+              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              onClick={() => navigate("/invest")}
+            >
               <OpenInNewIcon />
               <div className="footer-titel">DANH SÁCH ĐẦU TƯ</div>
             </div>

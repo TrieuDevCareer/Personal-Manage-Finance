@@ -8,6 +8,7 @@
     text-align: center;
     grid-auto-rows: max-content auto;
 
+
     .title-incomeList {
         text-align: center;
         font-size: 1.5rem;
@@ -23,7 +24,6 @@
     .footer-link {
         display: flex;
         position: relative;
-        left: 0;
         bottom: 1.4rem;
         justify-self: flex-start;
         color: var(--background-light-color);

@@ -45,7 +45,10 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
     <div>
       {user && !isCatalogPage && !expenseListData && <LoadingProgess />}
       {user && expenseListData && (
-        <div className="expenseList-container">
+        <div
+          className="expenseList-container"
+          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+        >
           <div className="title-container">
             {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}
           </div>
@@ -73,7 +76,11 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
             </div>
           )}
           {!expenseListEditorOpen && !isCatalogPage && (
-            <div className="footer-link" onClick={() => navigate("/expense")}>
+            <div
+              className="footer-link"
+              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              onClick={() => navigate("/expense")}
+            >
               <OpenInNewIcon />
               <div className="footer-titel">DANH SÁCH CÁC KHOẢN CHI</div>
             </div>

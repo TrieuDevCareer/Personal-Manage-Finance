@@ -29,7 +29,11 @@ router.post("/", auth, async (req, res) => {
       IncomeList,
       "danh mục thu nhập"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).send();
   }
@@ -49,7 +53,11 @@ router.put("/:id", auth, async (req, res) => {
       oIncId,
       "danh mục thu nhập"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -66,7 +74,11 @@ router.delete("/:id", auth, async (req, res) => {
       oIncId,
       "danh mục thu nhập"
     );
-    res.json(result);
+    result.status === 200
+      ? res.json(result.message)
+      : res.status(400).json({
+          errorMessage: result.message,
+        });
   } catch (error) {
     res.status(500).json({ error });
   }

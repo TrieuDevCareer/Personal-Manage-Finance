@@ -117,22 +117,22 @@ async function getAllDataEntity(req, res, oEntity) {
 // create data from  Entity
 async function createData(req, res, oCreateData, oEntity, sNameEntity) {
   // validate before create data
+  let resultLogic = { status: 200, message: "" };
   const oResultValidation = await _validateDataCaseCreate(oCreateData, oEntity, sNameEntity);
   if (!oResultValidation.status) {
-    return res.status(400).json({
-      errorMessage: oResultValidation.message,
-    });
+    return (resultLogic = { status: 400, message: oResultValidation.message });
   }
   oCreateData.user = req.user;
   // create data
   const oNewData = new oEntity(oCreateData);
-  const oSaveBankList = await oNewData.save();
-  return `${sNameEntity} được tạo mới thành công`;
+  await oNewData.save();
+  return (resultLogic = { status: 200, message: `${sNameEntity} được tạo mới thành công` });
 }
 
 // update data from Entity
 async function updateData(req, res, oUpdateData, oEntity, sItemId, sNameEntity) {
   // validate data before update
+  let resultLogic = { status: 200, message: "" };
   const oResultValidate = await _validateDataCaseUpdate(
     req,
     oUpdateData,
@@ -141,30 +141,28 @@ async function updateData(req, res, oUpdateData, oEntity, sItemId, sNameEntity) 
     sNameEntity
   );
   if (!oResultValidate.status) {
-    return res.status(400).json({
-      errorMessage: oResultValidate.message,
-    });
+    return (resultLogic = { status: 400, message: oResultValidate.message });
   }
 
   // update data
   await oEntity.findOneAndUpdate({ _id: sItemId }, oUpdateData);
-  return `${sNameEntity} được cập nhập thành công`;
+  return (resultLogic = { status: 200, message: `${sNameEntity} được cập nhập thành công` });
 }
 
 // delete data from Entity
 async function deleteData(req, res, oEntity, sItemId, sNameEntity) {
   // validate before delete data
+  let resultLogic = { status: 200, message: "" };
   const oResultValidate = await _validateDatacaseDelete(req, oEntity, sItemId, sNameEntity);
   if (!oResultValidate.status) {
-    return res.status(400).json({
-      errorMessage: oResultValidate.message,
-    });
+    return (resultLogic = { status: 400, message: oResultValidate.message });
   }
   await oResultValidate.oCurrentItem.deleteOne();
-  return `${sNameEntity} xóa thành công`;
+  return (resultLogic = { status: 200, message: `${sNameEntity} được cập nhập thành công` });
 }
 //  wallet when user add income or get saving aor invesment
 async function UpdateUserWalletCaseCreate(req, res, listCode, iChangeMoney, oEntity) {
+  let resultLogic = { status: 200, message: "" };
   try {
     let oUserData = await oEntity.findById(req.user);
     switch (listCode) {
@@ -187,15 +185,14 @@ async function UpdateUserWalletCaseCreate(req, res, listCode, iChangeMoney, oEnt
       default:
         break;
     }
-    return "Đã cập nhập ví của bạn";
+    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
   } catch (error) {
-    return res.status(400).json({
-      errorMessage: error,
-    });
+    return (resultLogic = { status: 500, message: error });
   }
 }
 //  wallet when user add income or get saving aor invesment
 async function UpdateUserWalletCaseUpdate(req, res, listCode, iChangeMoney, oEntity) {
+  let resultLogic = { status: 200, message: "" };
   try {
     let oUserData = await oEntity.findById(req.user);
     switch (listCode) {
@@ -218,14 +215,13 @@ async function UpdateUserWalletCaseUpdate(req, res, listCode, iChangeMoney, oEnt
       default:
         break;
     }
-    return "Đã cập nhập ví của bạn";
+    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
   } catch (error) {
-    return res.status(400).json({
-      errorMessage: error,
-    });
+    return (resultLogic = { status: 400, message: error });
   }
 }
 async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney, oEntity) {
+  let resultLogic = { status: 200, message: "" };
   try {
     const sSourceCode = data[oCodeDis];
     const iChangeMoney = _currencyStringToInt(data[oChangeMoney]);
@@ -251,57 +247,61 @@ async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney
       default:
         break;
     }
-    return "Đã cập nhập ví của bạn";
+    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
   } catch (error) {
-    return res.status(400).json({
-      errorMessage: error,
-    });
+    return (resultLogic = { status: 400, message: error });
   }
 }
 
 async function UpdateWalletUser(req, title, iMoney, data, User) {
-  const totals = {
-    SO: 0,
-    DT: 0,
-    TK: 0,
-    TD: 0,
-  };
-  switch (title) {
-    case "exelstCode":
-      data.forEach((element) => {
-        totals[element[title]] += parseInt(_currencyStringToInt(element[iMoney]));
-      });
-      break;
-    case "inlstCode":
-      data.forEach((element) => {
-        totals[element[title]] -= parseInt(_currencyStringToInt(element[iMoney]));
-      });
-      break;
-    case "bnkLstID":
-      data.forEach((element) => {
-        if (!element.savStatus) {
-          totals.TK += parseInt(_currencyStringToInt(element[iMoney]));
-        }
-      });
-      break;
-    case "coinLstID":
-      data.forEach((element) => {
-        if (!element.investStatus) {
-          totals.DT += parseInt(_currencyStringToInt(element[iMoney]));
-        }
-      });
-      break;
-    default:
-      break;
+  let resultLogic = { status: 200, message: "" };
+  try {
+    const totals = {
+      SO: 0,
+      DT: 0,
+      TK: 0,
+      TD: 0,
+    };
+    switch (title) {
+      case "exelstCode":
+        data.forEach((element) => {
+          totals[element[title]] += parseInt(_currencyStringToInt(element[iMoney]));
+        });
+        break;
+      case "inlstCode":
+        data.forEach((element) => {
+          totals[element[title]] -= parseInt(_currencyStringToInt(element[iMoney]));
+        });
+        break;
+      case "bnkLstID":
+        data.forEach((element) => {
+          if (!element.savStatus) {
+            totals.TK += parseInt(_currencyStringToInt(element[iMoney]));
+          }
+        });
+        break;
+      case "coinLstID":
+        data.forEach((element) => {
+          if (!element.investStatus) {
+            totals.DT += parseInt(_currencyStringToInt(element[iMoney]));
+          }
+        });
+        break;
+      default:
+        break;
+    }
+
+    const oUserData = await User.findById(req.user);
+    oUserData.walletLife += totals.SO;
+    oUserData.walletSaving += totals.TK;
+    oUserData.walletInvest += totals.DT;
+    oUserData.walletFree += totals.TD;
+
+    await User.findOneAndUpdate({ _id: req.user }, oUserData);
+    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
+  } catch (error) {
+    return (resultLogic = { status: 400, message: error });
   }
-
-  const oUserData = await User.findById(req.user);
-  oUserData.walletLife += totals.SO;
-  oUserData.walletSaving += totals.TK;
-  oUserData.walletInvest += totals.DT;
-  oUserData.walletFree += totals.TD;
-
-  await User.findOneAndUpdate({ _id: req.user }, oUserData);
 }
 
 module.exports = {
