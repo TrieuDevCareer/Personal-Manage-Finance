@@ -55,26 +55,16 @@ function AreaChartType({ data, pageChart }) {
         TDContent: "Điểm kết thúc",
       });
       break;
-    case "invest":
-      frsPoint.push({});
-      lstPoint.push({});
-      break;
-    default:
-      break;
   }
-  if (pageChart !== "saving") {
+  if (pageChart !== "saving" && pageChart !== "invest") {
     data = frsPoint.concat(data);
     data = data.concat(lstPoint);
   }
-  // function renderItemAreaSaving(){
-  //   return
-  // }
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       switch (pageChart) {
         case "saving":
-          console.log(payload);
           return (
             <div className="custom-tooltip">
               <div className="custom-tooltip">
@@ -103,7 +93,55 @@ function AreaChartType({ data, pageChart }) {
               </div>
             </div>
           );
-
+        case "invest":
+          return (
+            <div className="custom-tooltip">
+              <div className="custom-tooltip">
+                {payload.map((_, i) => {
+                  if (i !== 0 && pageChart === "saving") {
+                    return (
+                      <>
+                        <div
+                          className="desc SO"
+                          style={{ color: `${payload[payload.length - i].stroke}` }}
+                        >
+                          {"Ngân hàng " +
+                            payload[payload.length - i].dataKey +
+                            ": " +
+                            payload[payload.length - i].payload[
+                              payload[payload.length - i].dataKey
+                            ].toLocaleString("it-IT", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
+                        </div>
+                      </>
+                    );
+                  } else if (i !== 0 && pageChart === "invest") {
+                    return (
+                      <>
+                        <div
+                          className="desc SO"
+                          style={{ color: `${payload[payload.length - i].stroke}` }}
+                        >
+                          {"Đồng coin " +
+                            payload[payload.length - i].dataKey +
+                            ": " +
+                            payload[payload.length - i].payload[
+                              payload[payload.length - i].dataKey
+                            ].toLocaleString("it-IT", {
+                              style: "currency",
+                              currency: "VND",
+                            })}
+                        </div>
+                      </>
+                    );
+                  }
+                  return;
+                })}
+              </div>
+            </div>
+          );
         default:
           return (
             <div className="custom-tooltip">
@@ -226,7 +264,7 @@ function AreaChartType({ data, pageChart }) {
             </>
           )}
           {pageChart === "saving" && renderAreaItem()}
-          {pageChart === "invest" && <></>}
+          {pageChart === "invest" && renderAreaItem()}
         </>
       </AreaChart>
     </ResponsiveContainer>

@@ -16,7 +16,7 @@ function IncomeReport() {
   const [monthCodition, setMonthCondition] = useState([]);
   const [capitalCondition, setCapitalCondition] = useState([]);
   const [contentCondition, setContentCondition] = useState([]);
-  const [contentData, setContentData] = useState([]);
+  const [contentData, setContentData] = useState();
 
   const { user } = useContext(UserContext);
   const date = [];

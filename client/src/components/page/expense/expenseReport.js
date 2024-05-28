@@ -20,8 +20,8 @@ function ExpenseReport() {
   const [monthCodition, setMonthCondition] = useState([]);
   const [capitalCondition, setCapitalCondition] = useState([]);
   const [contentCondition, setContentCondition] = useState([]);
-  const [contentData, setContentData] = useState([]);
-  const [resultByDay, setResultByDay] = useState([]);
+  const [contentData, setContentData] = useState();
+  const [resultByDay, setResultByDay] = useState();
   const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
@@ -101,8 +101,8 @@ function ExpenseReport() {
   }, [user]);
   return (
     <div>
-      {user && !expenseReportData && !resultByDay && <LoadingProgess />}
-      {user && expenseReportData && (
+      {user && !expenseReportData && !resultByDay && !contentData && <LoadingProgess />}
+      {user && expenseReportData && resultByDay && contentData && (
         <div className="expenseRp-container">
           <ErrorMessage message={message} setMessage={setMessage} />
 

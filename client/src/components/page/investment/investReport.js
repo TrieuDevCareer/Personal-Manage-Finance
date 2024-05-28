@@ -7,29 +7,23 @@ import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import AreaChartType from "../../misc/charts/areaChart.js";
+import LoadingProgess from "../../misc/loadingProgess.js";
 import AuthPage from "../../auth/authPage.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
 import "./investReport.scss";
 
-const data = [
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-  { label: "Không có dữ liệu", value: 1, color: "#0088FE" },
-];
+const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 
 function InvestReport() {
+  const [investReportData, setInvestReportData] = useState();
   const [pieChartData, setPieChartData] = useState([]);
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
-  const [bankCondition, setBankCondition] = useState([]);
-  const [bankData, setBankData] = useState([]);
+  const [coinCondition, setCoinCondition] = useState([]);
+  const [coinData, setCoinData] = useState([]);
   const [statusCondition, setStatusCondition] = useState([]);
+  const [investReportTotal, setInvestReportTotal] = useState();
   const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
@@ -63,11 +57,11 @@ function InvestReport() {
     } = event;
     setMonthCondition(typeof value === "string" ? value.split(",") : value);
   }
-  async function handleChangeBank(event) {
+  async function handleChangeCoin(event) {
     const {
       target: { value },
     } = event;
-    setBankCondition(typeof value === "string" ? value.split(",") : value);
+    setCoinCondition(typeof value === "string" ? value.split(",") : value);
     setStatusCondition([]);
   }
   function handleChangeStatus(event) {
@@ -78,12 +72,12 @@ function InvestReport() {
   }
   async function handleGetDataContent(data) {
     try {
-      const result = await Axios.get(`${domain}/coinlist`, { data: data });
+      const result = await Axios.get(`${domain}/coinlist`);
       let a = [];
       result.data.forEach((i) => {
-        a.push(`${i.bnkName}`);
+        a.push(`${i.coinName}`);
       });
-      setBankData(a);
+      setCoinData(a);
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
@@ -93,16 +87,34 @@ function InvestReport() {
       return;
     }
   }
+  async function handleGetInvestReportTotal() {
+    const resultData = await Axios.get(`${domain}/investment/reporttotaldata`);
+    setInvestReportTotal(resultData.data);
+  }
+  async function handleGetInvestReport() {
+    const result = await Axios.post(`${domain}/investment/reportinvest`, {
+      date: dateCondition,
+      month: monthCodition,
+      bank: coinCondition,
+      status: statusCondition,
+    });
+    setInvestReportData(result.data.resultData);
+    setPieChartData(result.data.pieResultData);
+  }
   useEffect(() => {
-    if (!user) setBankData([]);
+    if (!user) setCoinData([]);
     else {
       handleGetDataContent();
-      // handleGetExpenseReport();
+      handleGetInvestReport();
+      handleGetInvestReportTotal();
     }
   }, [user]);
   return (
     <div>
-      {user && (
+      {user && !coinData && !investReportTotal && !investReportData && !pieChartData && (
+        <LoadingProgess />
+      )}
+      {user && coinData && investReportTotal && investReportData && pieChartData && (
         <div className="investRp-container">
           <div className="investRp-ctrl-gr">
             <div className="title-container investRp-title"> Bảng điều khiển chọn lọc</div>
@@ -120,10 +132,10 @@ function InvestReport() {
                 handleChange={handleChangeMonth}
               />
               <MultiDropdown
-                personName={bankCondition}
-                data={bankData}
+                personName={coinCondition}
+                data={coinData}
                 title={"Mã Coin"}
-                handleChange={handleChangeBank}
+                handleChange={handleChangeCoin}
               />
               <MultiDropdown
                 personName={statusCondition}
@@ -131,7 +143,7 @@ function InvestReport() {
                 title={"Tình trạng gửi"}
                 handleChange={handleChangeStatus}
               />
-              <div className="btn-style-edit">
+              <div className="btn-style-edit" onClick={handleGetInvestReport}>
                 <SearchOutlinedIcon /> Thống kê
               </div>
             </div>
@@ -147,7 +159,7 @@ function InvestReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Số tiền đầu tư có thể có</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{investReportTotal.investmentAmount}</div>
                     </div>
                   </div>
                   <div className="second-box item-box">
@@ -156,7 +168,7 @@ function InvestReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Tổng số tiền chưa đem đi</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{investReportTotal.nonInvestAmount}</div>
                     </div>
                   </div>
                   <div className="third-box item-box">
@@ -165,7 +177,7 @@ function InvestReport() {
                     </div>
                     <div className="box-title">
                       <div className="money-title">Tổng số tiền có thể lãi lỗ</div>
-                      <div className="money-value">20.000.000 VND</div>
+                      <div className="money-value">{investReportTotal.profitAmount}</div>
                     </div>
                   </div>
                 </div>
@@ -178,7 +190,7 @@ function InvestReport() {
                   className="pieChart"
                   series={[
                     {
-                      data,
+                      data: pieChartData.length > 0 ? pieChartData : data,
                       highlightScope: { faded: "global", highlighted: "item" },
                       faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                       innerRadius: 30,
@@ -207,7 +219,11 @@ function InvestReport() {
               </div>
               <div className="investRp-chart">
                 <div className="investRp-chart-element">
-                  <AreaChartType data={[]} pageChart={"expense"} />
+                  {investReportData ? (
+                    <AreaChartType data={investReportData} pageChart={"invest"} />
+                  ) : (
+                    <AreaChartType data={[]} pageChart={"saving"} />
+                  )}
                 </div>
               </div>
             </div>
