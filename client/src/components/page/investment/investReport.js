@@ -17,11 +17,11 @@ const data = [{ label: "Không có dữ liệu", value: 1, color: "#0088FE" }];
 
 function InvestReport() {
   const [investReportData, setInvestReportData] = useState();
-  const [pieChartData, setPieChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState();
   const [dateCondition, setDateCondition] = useState([]);
   const [monthCodition, setMonthCondition] = useState([]);
   const [coinCondition, setCoinCondition] = useState([]);
-  const [coinData, setCoinData] = useState([]);
+  const [coinData, setCoinData] = useState();
   const [statusCondition, setStatusCondition] = useState([]);
   const [investReportTotal, setInvestReportTotal] = useState();
   const [message, setMessage] = useState("");

@@ -159,7 +159,7 @@ function Investment({ isCheck, setIsCheck }) {
                 editModel={editInvestment}
                 oRouter={oRouter}
                 bStatus={bStatusInvest}
-                colorTitle={"#0ecb74"}
+                colorTitle={"#ff007f"}
               />
             </div>
           )}

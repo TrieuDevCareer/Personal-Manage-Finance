@@ -71,7 +71,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
                 editModel={editCoinList}
                 oRouter={oRouter}
                 isCatalogPage={isCatalogPage}
-                colorTitle={"#0ecb74"}
+                colorTitle={"#ff007f"}
               />
             </div>
           )}
