@@ -1,16 +1,20 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container {
+.popup-container-income {
     display: flex;
-    height: 38rem;
-    margin-top: 2rem;
+    position: absolute;
+    align-items: center;
+    height: 42rem;
 
     .popup-form {
         display: grid;
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
         border-radius: 1rem;
 
         .popup-text {

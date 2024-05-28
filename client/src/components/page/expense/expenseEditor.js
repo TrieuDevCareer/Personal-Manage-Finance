@@ -83,7 +83,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     }
   }, [editExpenseData]);
   return (
-    <div className="popup-container">
+    <div className="popup-container-expense">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box
@@ -158,7 +158,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
             value={expMoney}
             onChange={onChangeMoney}
           />
-          <Stack spacing={2} direction="row" justifyContent="right">
+          <Stack spacing={1} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>

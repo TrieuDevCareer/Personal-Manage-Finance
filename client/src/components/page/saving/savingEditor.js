@@ -150,7 +150,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     }
   }, [editSavingData]);
   return (
-    <div className="popup-container">
+    <div className="popup-container-saving">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box

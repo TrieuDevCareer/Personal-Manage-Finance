@@ -85,7 +85,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   }, [editIncomeData]);
 
   return (
-    <div className="popup-container">
+    <div className="popup-container-income">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box
@@ -171,7 +171,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
             value={incMoney}
             onChange={onChangeMoney}
           />
-          <Stack spacing={2} direction="row" justifyContent="right">
+          <Stack spacing={1} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>

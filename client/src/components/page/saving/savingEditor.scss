@@ -1,11 +1,10 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container {
+.popup-container-saving {
     display: flex;
-    justify-content: center;
-    // align-items: center;
-    height: 38rem;
-    margin-top: 2rem;
+    position: absolute;
+    align-items: center;
+    height: 42rem;
 
     .popup-form-saving {
         display: grid;
