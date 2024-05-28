@@ -16,6 +16,8 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [expDMoney, setExpDMoney] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isLockContent, setIsLockContent] = useState(true);
+  const lstCodeData = ["Nguồn sống", "Tự do"];
   function closeEditor() {
     setExpenseEditorOpen(false);
   }
@@ -25,7 +27,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     setIsLoading(true);
     const oExpenseData = {
       exelstCode,
-      exeLstContent: exeLstContent.split(" - ")[1],
+      exeLstContent: exeLstContent,
       expDate,
       expDetail,
       expMoney,
@@ -54,14 +56,14 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     // Convert to integer
     return parseInt(numberString);
   }
-  function onChangeLstExe(e) {
-    const dic = e.target.value.split(" - ");
-    setExelstCode(dic[0]);
-    setExeLstContent(e.target.value);
+  function onChangeLstCode(e) {
+    setExelstCode(e.target.value);
+    getExpenseLists(e.target.value);
   }
-  async function getExpenseLists() {
-    const expenseLists = await Axios.get(`${domain}/expenselist/`);
+  async function getExpenseLists(data) {
+    const expenseLists = await Axios.post(`${domain}/expenselist/content`, { data: [data] });
     setExpenseListData(expenseLists.data);
+    setIsLockContent(false);
   }
   function onChangeMoney(e) {
     if (editExpenseData) {
@@ -70,17 +72,14 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     setIncMoney(e.target.value);
   }
   useEffect(() => {
-    getExpenseLists();
     if (editExpenseData) {
       setExelstCode(editExpenseData.exelstCode ? editExpenseData.exelstCode : "");
-      setExeLstContent(
-        editExpenseData.exeLstContent
-          ? editExpenseData.exelstCode + " - " + editExpenseData.exeLstContent
-          : ""
-      );
+      setExeLstContent(editExpenseData.exeLstContent ? editExpenseData.exeLstContent : "");
       setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);
       setIncDetail(editExpenseData.expDetail ? editExpenseData.expDetail : "");
       setIncMoney(editExpenseData.expMoney ? currencyStringToInt(editExpenseData.expMoney) : 0);
+      setIsLockContent(false);
+      getExpenseLists(editExpenseData.exelstCode);
     }
   }, [editExpenseData]);
   return (
@@ -111,32 +110,36 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           />
           <TextField
             className="popup-text"
+            fullWidth
+            select
+            label="Nguồn quỹ"
+            id="fullWidth"
+            type="input"
+            value={exelstCode}
+            onChange={onChangeLstCode}
+          >
+            {lstCodeData.map((option) => (
+              <MenuItem key={option} value={option === "Nguồn sống" ? "SO" : "TD"}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            disabled={isLockContent}
+            className="popup-text"
             id="outlined-select-currency"
             fullWidth
             select
             label="Danh mục chi tiêu"
             value={exeLstContent}
-            defaultValue="EUR"
-            onChange={onChangeLstExe}
+            onChange={(e) => setExeLstContent(e.target.value)}
           >
             {expenseListData.map((option) => (
-              <MenuItem
-                key={option.exeLstContent}
-                value={`${option.exelstCode} - ${option.exeLstContent}`}
-              >
-                {option.exelstCode} - {option.exeLstContent}
+              <MenuItem key={option.exeLstContent} value={`${option.exeLstContent}`}>
+                {option.exeLstContent}
               </MenuItem>
             ))}
           </TextField>
-          <TextField
-            disabled
-            className="popup-text"
-            fullWidth
-            label="Nguồn quỹ"
-            id="fullWidth"
-            type="input"
-            value={exelstCode}
-          />
           <TextField
             className="popup-text"
             fullWidth

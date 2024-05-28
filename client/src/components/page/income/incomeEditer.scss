@@ -2,7 +2,6 @@
 
 .popup-container {
     display: flex;
-    align-items: center;
     height: 38rem;
     margin-top: 2rem;
 
@@ -11,7 +10,7 @@
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 2rem;
+        padding: 1rem;
         border-radius: 1rem;
 
         .popup-text {

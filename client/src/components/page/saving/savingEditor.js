@@ -154,7 +154,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box
-          className="popup-form"
+          className="popup-form-saving"
           component="form"
           sx={{
             "& > :not(style)": { m: 1, width: "40rem" },

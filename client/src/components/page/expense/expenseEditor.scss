@@ -3,7 +3,6 @@
 .popup-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 38rem;
     margin-top: 2rem;
 
@@ -12,8 +11,8 @@
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 2rem;
         border-radius: 1rem;
+        padding: 1rem;
 
         .popup-text {
             label {

@@ -3,16 +3,19 @@
 .popup-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     height: 38rem;
     margin-top: 2rem;
 
-    .popup-form {
+    .popup-form-saving {
         display: grid;
         justify-content: center;
         background-color: var(--background-rdcolor);
         box-shadow: var(--box-shadow);
-        padding: 2rem;
+        padding-left: 1rem;
+        padding-top: 0.5rem;
+        padding-right: 2rem;
+        padding-bottom: 0.5rem;
         border-radius: 1rem;
         justify-items: center;
 

@@ -16,6 +16,8 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [incDMoney, setIncDMoney] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isLockContent, setIsLockContent] = useState(true);
+  const lstCodeData = ["Nguồn sống", "Tự do", "Tiết kiệm", "Đầu tư"];
   function closeEditor() {
     setIncomeEditorOpen(false);
   }
@@ -25,7 +27,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     setIsLoading(true);
     const oIncomeData = {
       inlstCode,
-      inLstContent: inLstContent.split(" - ")[1],
+      inLstContent,
       incDate,
       incDetail,
       incMoney,
@@ -54,14 +56,15 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     // Convert to integer
     return parseInt(numberString);
   }
-  function onChangeLstInc(e) {
-    const dic = e.target.value.split(" - ");
-    setInlstCode(dic[0]);
-    setInLstContent(e.target.value);
+  function onChangeLstCode(e) {
+    setInlstCode(e.target.value);
+
+    getIncomeLists(e.target.value);
   }
-  async function getIncomeLists() {
-    const incomeLists = await Axios.get(`${domain}/incomelist/`);
+  async function getIncomeLists(data) {
+    const incomeLists = await Axios.post(`${domain}/incomelist/content`, { data: [data] });
     setIncomeListData(incomeLists.data);
+    setIsLockContent(false);
   }
   function onChangeMoney(e) {
     if (editIncomeData) {
@@ -70,17 +73,14 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     setIncMoney(e.target.value);
   }
   useEffect(() => {
-    getIncomeLists();
     if (editIncomeData) {
       setInlstCode(editIncomeData.inlstCode ? editIncomeData.inlstCode : "");
-      setInLstContent(
-        editIncomeData.inLstContent
-          ? editIncomeData.inlstCode + " - " + editIncomeData.inLstContent
-          : ""
-      );
+      setInLstContent(editIncomeData.inLstContent ? editIncomeData.inLstContent : "");
       setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
       setIncDetail(editIncomeData.incDetail ? editIncomeData.incDetail : "");
       setIncMoney(editIncomeData.incMoney ? currencyStringToInt(editIncomeData.incMoney) : 0);
+      setIsLockContent(false);
+      getIncomeLists(editIncomeData.inlstCode);
     }
   }, [editIncomeData]);
 
@@ -112,32 +112,47 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
           />
           <TextField
             className="popup-text"
+            fullWidth
+            select
+            label="Nguồn quỹ"
+            id="fullWidth"
+            type="input"
+            value={inlstCode}
+            onChange={onChangeLstCode}
+          >
+            {lstCodeData.map((option) => (
+              <MenuItem
+                key={option}
+                value={
+                  option === "Nguồn sống"
+                    ? "SO"
+                    : option === "Tự do"
+                    ? "TD"
+                    : option === "Tiết kiệm"
+                    ? "TK"
+                    : "DT"
+                }
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            disabled={isLockContent}
+            className="popup-text"
             id="outlined-select-currency"
             fullWidth
             select
             label="Danh mục thu nhập"
             value={inLstContent}
-            defaultValue="EUR"
-            onChange={onChangeLstInc}
+            onChange={(e) => setInLstContent(e.target.value)}
           >
             {incomeListData.map((option) => (
-              <MenuItem
-                key={option.inLstContent}
-                value={`${option.inlstCode} - ${option.inLstContent}`}
-              >
-                {option.inlstCode} - {option.inLstContent}
+              <MenuItem key={option.inLstContent} value={`${option.inLstContent}`}>
+                {option.inLstContent}
               </MenuItem>
             ))}
           </TextField>
-          <TextField
-            disabled
-            className="popup-text"
-            fullWidth
-            label="Nguồn quỹ"
-            id="fullWidth"
-            type="input"
-            value={inlstCode}
-          />
           <TextField
             className="popup-text"
             fullWidth
