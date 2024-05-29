@@ -11,7 +11,9 @@ function auth(req, res, next) {
 
     next();
   } catch (err) {
-    return res.status(401).json({ errorMessage: "Lỗi xác thực tài khoản! Hãy đăng nhập lại!" });
+    return res
+      .status(401)
+      .json({ errorMessage: `Lỗi xác thực tài khoản! Hãy đăng nhập lại!,${err}` });
   }
 }
 

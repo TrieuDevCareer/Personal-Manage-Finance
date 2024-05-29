@@ -20,7 +20,7 @@ router.post("/", auth, async (req, res) => {
           errorMessage: result.message,
         });
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 });
 

@@ -152,7 +152,7 @@ router.post("/login", async (req, res) => {
       })
       .send();
   } catch (err) {
-    res.status(500).send();
+    res.status(500).send(err);
   }
 });
 

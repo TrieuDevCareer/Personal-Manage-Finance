@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { randomUUID } = require("crypto");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const expenseListSchema = new mongoose.Schema(

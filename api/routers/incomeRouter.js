@@ -2,7 +2,6 @@ const router = require("express").Router();
 const Income = require("../models/incomeModel");
 const Expense = require("../models/expenseModel");
 const Saving = require("../models/savingModel");
-const Invest = require("../models/investmentModel");
 const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
@@ -156,7 +155,7 @@ router.post("/", auth, async (req, res) => {
         });
     }
   } catch (error) {
-    res.status(500).send();
+    res.status(500).send(error);
   }
 });
 
