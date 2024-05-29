@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-// import Logo from "../../../public/image/logo.png";
-// import "./ErrorMessage.scss";
+import UserContext from "../../context/UserContext.js";
 import "./navbar.scss";
 
 function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
@@ -11,6 +10,7 @@ function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
   let [styleInvest, setStyleInvest] = useState("txt-style default-color");
   let [styleContent, setStyleContent] = useState("txt-style default-color");
   let [styleTotal, setStyleTotal] = useState("txt-style default-color");
+  const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
     setClickPattern("navbar");
@@ -119,6 +119,14 @@ function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
             <p>Tổng hợp</p>
           </Link>
         </li>
+        {user && user.role === 1 && (
+          <li>
+            <Link className={styleTotal} to="/register" onClick={() => onClickHeaderBtn("Total")}>
+              <img src={"/images/total.png"} alt="..." className="nav-icon" />
+              <p>Tổng hợp</p>
+            </Link>
+          </li>
+        )}
       </ul>
       <div className="line-nav"></div>
       <div className="vertical-line-nav"></div>

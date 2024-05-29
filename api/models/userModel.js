@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema(
     walletSaving: { type: Number, required: true },
     walletFree: { type: Number, required: true },
     salaryDate: { type: Number, required: true },
+    role: { type: Number, required: true, default: 0 },
+    verifyMail: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: true,

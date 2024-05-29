@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 //validate for case Create data
 async function _validateDataCaseCreate(oValidateData, oValidateEntity, sNameEntity) {
   const oResultValidate = { status: true, message: "" };
@@ -254,7 +256,6 @@ async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney
 }
 
 async function UpdateWalletUser(req, title, iMoney, data, User) {
-  let resultLogic = { status: 200, message: "" };
   try {
     const totals = {
       SO: 0,
@@ -304,6 +305,63 @@ async function UpdateWalletUser(req, title, iMoney, data, User) {
   }
 }
 
+async function verifyMail(email, link, userName) {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: "manageeconomic@gmail.com",
+        pass: "bcmj mkpd hfdy wctm",
+      },
+    });
+    //send mail
+    let info = await transporter.sendMail({
+      from: "manageeconomic@gmail.com",
+      to: email,
+      subject: "KÍCH HOẠT TÀI KHOẢN NGƯỜI DÙNG PERSONAL ECONOMIC", // Subject line
+      text: "Xin chào!", // plain text body
+      html: `
+      <div>
+            <h2>Xin chào bạn ${userName}</h2>
+      <p
+        style="
+    margin-top: 20px;"
+      >
+        Đầu tiên, chúng tôi gửi lời cảm ơn đến bạn đã sử dụng dịch vụ Personal Economic!
+      </p>
+      <p
+        style="
+    margin-top: 20px;"
+      >
+        Để kích hoạt tài khoản, bạn vui lòng click vào đường link tại đây:
+        <a href=${link}> kích hoạt</a>
+      </p>
+      <div
+        style="
+    font-weight: 600;
+    font-style: italic;"
+      >
+        Personal Economic & with love
+      </div>
+      <div>
+        <h8
+          style="
+    font-weight: 600;
+    font-style: italic;
+    margin-top: 30px;
+    font-size: 77%;"
+        >
+          ------------------------------------------------
+        </h8>
+        <p>Đây là mail tự động. Vui lòng không reply lại mail này!</p>
+      </div>
+      </div>
+      `, // html body
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
 module.exports = {
   getAllResult: getAllDataEntity,
   createDataCase: createData,
@@ -313,4 +371,5 @@ module.exports = {
   UpdateUserWalletUpdate: UpdateUserWalletCaseUpdate,
   UpdateWalletUser: UpdateWalletUser,
   UpdateUserWalletDelete: UpdateUserWalletCaseDelete,
+  verifyMail: verifyMail,
 };

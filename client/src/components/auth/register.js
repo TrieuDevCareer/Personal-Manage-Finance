@@ -42,7 +42,10 @@ function Register() {
     };
 
     try {
-      await Axios.post(`${domain}/auth/`, registerData);
+      const messageResult = await Axios.post(`${domain}/auth/`, registerData);
+      if (window.confirm(`${messageResult.data}`)) {
+        navigate("/");
+      }
     } catch (err) {
       setIsLoading(false);
       if (err.response) {
@@ -53,8 +56,7 @@ function Register() {
       return;
     }
 
-    await getUser();
-    navigate("/");
+    // await getUser();
   }
 
   return (

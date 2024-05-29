@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
+const commonUtils = require("../commonUtils");
 
 router.get("/", auth, async (req, res) => {
   const aResultData = await User.findById(req.user);
@@ -66,6 +67,7 @@ router.post("/", async (req, res) => {
       walletInvest: walletInvest ? walletInvest : 0,
       walletSaving: walletSaving ? walletSaving : 0,
       walletFree: walletFree ? walletFree : 0,
+      role: 0,
     });
 
     const savedUser = await newUser.save();
@@ -75,29 +77,14 @@ router.post("/", async (req, res) => {
     const token = jwt.sign(
       {
         id: savedUser._id,
-        userName,
-        salaryDate,
-        walletLife,
-        walletInvest,
-        walletSaving,
-        walletFree,
       },
       process.env.JWT_SECRET
     );
-
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        sameSite:
-          process.env.NODE_ENV === "development"
-            ? "lax"
-            : process.env.NODE_ENV === "production" && "none",
-        secure:
-          process.env.NODE_ENV === "development"
-            ? false
-            : process.env.NODE_ENV === "production" && true,
-      })
-      .send();
+    const link = `${req.protocol}://${req.get("host")}/auth/${token}`;
+    await commonUtils.verifyMail(email, link, userName);
+    res.json(
+      `Chúng tôi đã gửi email ${email} xác thực đến bạn, hãy kiểm tra và xác thực tài khoản của mình!`
+    );
   } catch (error) {
     res.status(500).send();
   }
@@ -131,6 +118,11 @@ router.post("/login", async (req, res) => {
         errorMessage: "Email hoặc mật khẩu sai! Vui lòng thử lại!",
       });
 
+    if (!existingUser.verifyMail)
+      return res.status(400).json({
+        errorMessage: `Tài khoản chưa được xác thực. Vui lòng check mail ${email} để kích hoạt tài khoản!`,
+      });
+
     // create a JWT token
 
     const token = jwt.sign(
@@ -142,10 +134,10 @@ router.post("/login", async (req, res) => {
         walletInvest: existingUser.walletInvest,
         walletSaving: existingUser.walletSaving,
         walletFree: existingUser.walletFree,
+        role: existingUser.role,
       },
       process.env.JWT_SECRET
     );
-
     res
       .cookie("token", token, {
         httpOnly: true,
@@ -200,6 +192,15 @@ router.get("/logOut", (req, res) => {
   } catch (err) {
     return res.json(null);
   }
+});
+
+router.get("/:token", async (req, res) => {
+  const token = req.params.token;
+  const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
+  await User.updateOne({ _id: validatedUser.id }, { $set: { verifyMail: true } });
+  res.json(
+    "Đã xác thực tài khoản thành công! Hãy tắt trang này và đăng nhập để sử dụng ứng dụng của chúng tôi"
+  );
 });
 
 module.exports = router;
