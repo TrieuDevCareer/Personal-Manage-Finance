@@ -52,7 +52,6 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
           <div className="title-container">
             {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}
           </div>
-
           {incomeListEditorOpen ? (
             <IncomeListEditor
               getIncomeLists={getIncomeLists}

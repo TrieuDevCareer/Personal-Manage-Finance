@@ -19,6 +19,7 @@ function Home() {
   const [pieChartData, setPieChartData] = useState([]);
   const [savingReportTotal, setSavingReportTotal] = useState();
   const [investReportTotal, setInvestReportTotal] = useState();
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
 
   function getArcLabel(params) {
@@ -40,6 +41,7 @@ function Home() {
       month: `${new Date().getMonth() + 1}`,
     });
     setPieChartData(result.data.pieChartData);
+    console.log(result.data.pieChartData);
   }
   async function getUserData() {
     const usersData = await Axios.get(`${domain}/auth`);
@@ -68,6 +70,9 @@ function Home() {
       getUserData();
       getSavings();
       handleGetExpensePie();
+    }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
     }
   }, [user]);
   return (
@@ -114,13 +119,13 @@ function Home() {
                     highlightScope: { faded: "global", highlighted: "item" },
                     faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                     innerRadius: 30,
-                    outerRadius: 95,
+                    outerRadius: isPhoneWidth ? 160 : 95,
                     paddingAngle: 2,
                     cornerRadius: 3,
                     startAngle: -180,
                     endAngle: 180,
-                    cx: 170,
-                    cy: 100,
+                    cx: isPhoneWidth ? 173 : 170,
+                    cy: isPhoneWidth ? 200 : 100,
                     arcLabel: getArcLabel,
                   },
                 ]}
@@ -128,6 +133,7 @@ function Home() {
                   [`& .${pieArcLabelClasses.root}`]: {
                     fill: "white",
                     fontSize: 14,
+                    height: "10rem",
                   },
                 }}
               />
@@ -162,6 +168,7 @@ function Home() {
           <div className="bottom-left-container">
             <div className="title-container top-left">Bảng thống kê Thu - Chi qua các tháng</div>
             <div className="distance-box"></div>
+            {isPhoneWidth && <div className="distance-box-v2"></div>}
             <TableReport page={"home"} />
           </div>
           <div className="bottom-right-container">

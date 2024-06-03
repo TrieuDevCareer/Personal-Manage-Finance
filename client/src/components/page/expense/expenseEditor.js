@@ -17,6 +17,8 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isLockContent, setIsLockContent] = useState(true);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
+
   const lstCodeData = ["Nguồn sống", "Tự do"];
   function closeEditor() {
     setExpenseEditorOpen(false);
@@ -81,6 +83,9 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
       setIsLockContent(false);
       getExpenseLists(editExpenseData.exelstCode);
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editExpenseData]);
   return (
     <div className="popup-container-expense">
@@ -90,7 +95,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           className="popup-form"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
           }}
           noValidate
           autoComplete="off"

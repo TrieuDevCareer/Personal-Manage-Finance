@@ -1,112 +1,200 @@
 @import url("../../style/variables.scss");
 
-
-// table {
-//     border: 2px solid forestgreen;
-//     width: 800px;
-//     height: 200px;
-// }
-
-// th {
-//     border-bottom: 1px solid black;
-// }
-
-// td {
-//     text-align: center;
-// }
-
-.table-root {
-    width: auto;
-    height: auto;
-    margin-top: 1.5rem;
-    overflow-x: auto;
-    overflow-y: auto;
-
-    .table-container {
+@media screen and (min-width: 376px) {
+    .table-root {
         width: auto;
         height: auto;
-        background-color: var(--background-ndcolor);
+        margin-top: 1.5rem;
+        overflow-x: auto;
+        overflow-y: auto;
 
-        .table-header {
-            .table-title {
-                font-size: 0.8rem;
-                width: 14rem;
-                height: 2rem;
-                text-align: center;
-                font-weight: bold;
-                border: 1px solid var(--background-title-color);
-                position: sticky;
-                top: 0;
+        .table-container {
+            width: auto;
+            height: auto;
+            background-color: var(--background-ndcolor);
+
+            .table-header {
+                .table-title {
+                    font-size: 0.8rem;
+                    width: 14rem;
+                    height: 2rem;
+                    text-align: center;
+                    font-weight: bold;
+                    border: 1px solid var(--background-title-color);
+                    position: sticky;
+                    top: 0;
+                }
+
+                .stt-style {
+                    width: 5rem;
+                }
+
+                .edit-style {
+                    width: 2rem;
+                }
             }
 
-            .stt-style {
-                width: 5rem;
-            }
+            .table-Item {
+                .item-value {
+                    border: 1px solid var(--background-title-color);
+                    border-collapse: collapse;
+                    text-align: center;
+                    height: 2rem;
+                    font-size: 0.9rem;
+                }
 
-            .edit-style {
-                width: 2rem;
+                .btn-style-edit {
+                    height: 2rem;
+                    width: 2rem;
+                    cursor: pointer;
+                    margin-left: 0.5rem;
+                }
+
+                .btn-style-edit-disable {
+                    height: 2rem;
+                    width: 2rem;
+                    margin-left: 0.5rem;
+                    color: #949494;
+                }
+
+                .btn-style-edit:hover {
+                    color: var(--background-title-color);
+                    color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+                }
             }
         }
 
-        .table-Item {
-            .item-value {
-                border: 1px solid var(--background-title-color);
-                border-collapse: collapse;
-                text-align: center;
-                height: 2rem;
-                font-size: 0.9rem;
-            }
+        .foot-table {
+            display: flex;
+            justify-content: end;
+            margin-top: 1rem;
 
-            .btn-style-edit {
-                height: 2rem;
-                width: 2rem;
+            .btn-style {
+                margin-left: 1rem;
                 cursor: pointer;
-                margin-left: 0.5rem;
+
             }
 
-            .btn-style-edit-disable {
-                height: 2rem;
-                width: 2rem;
-                margin-left: 0.5rem;
-                color: #949494;
-            }
-
-            .btn-style-edit:hover {
+            .btn-style:hover {
                 color: var(--background-title-color);
                 color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
             }
+
+            .btn-style-delete {
+                margin-left: 1rem;
+                cursor: pointer;
+            }
+
+            .btn-style-delete:hover {
+                color: var(--text-danger-color);
+                color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
+            }
+        }
+
+        .ndata-style {
+            margin-top: 1rem;
+
         }
     }
+}
 
-    .foot-table {
-        display: flex;
-        justify-content: end;
-        margin-top: 1rem;
+@media screen and (max-width: 376px) {
+    .table-root {
+        width: 23.3rem;
+        height: max-content;
+        margin-top: 0.7rem;
+        overflow-x: auto;
+        overflow-y: auto;
 
-        .btn-style {
-            margin-left: 1rem;
-            cursor: pointer;
 
+        .table-container {
+            width: 23.32rem;
+            height: max-content;
+            background-color: var(--background-ndcolor);
+            margin-bottom: 1rem;
+
+            .table-header {
+                .table-title {
+                    font-size: 0.7rem;
+                    width: 20rem;
+                    height: 2rem;
+                    text-align: center;
+                    font-weight: bold;
+                    border: 1px solid var(--background-title-color);
+                    position: sticky;
+                    top: 0;
+                }
+
+                .stt-style {
+                    width: 1rem;
+                }
+
+                .edit-style {
+                    width: 2em;
+                }
+            }
+
+            .table-Item {
+                .item-value {
+                    border: 1px solid var(--background-title-color);
+                    border-collapse: collapse;
+                    text-align: center;
+                    height: 2rem;
+                    font-size: 0.7rem;
+                }
+
+                .btn-style-edit {
+                    height: 1.5rem;
+                    width: 1.5rem;
+                    cursor: pointer;
+                    // margin-left: 0.5rem;
+                }
+
+                .btn-style-edit-disable {
+                    height: 2rem;
+                    width: 2rem;
+                    margin-left: 0.5rem;
+                    color: #949494;
+                }
+
+                .btn-style-edit:hover {
+                    color: var(--background-title-color);
+                    color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+                }
+            }
         }
 
-        .btn-style:hover {
-            color: var(--background-title-color);
-            color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        .foot-table {
+            display: flex;
+            justify-content: end;
+            margin-bottom: 1rem;
+            position: sticky;
+            left: 0rem;
+
+            .btn-style {
+                margin-left: 1rem;
+                cursor: pointer;
+            }
+
+            .btn-style:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            }
+
+            .btn-style-delete {
+                margin-left: 1rem;
+                cursor: pointer;
+            }
+
+            .btn-style-delete:hover {
+                color: var(--text-danger-color);
+                color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
+            }
         }
 
-        .btn-style-delete {
-            margin-left: 1rem;
-            cursor: pointer;
+        .ndata-style {
+            margin-top: 1rem;
+
         }
-
-        .btn-style-delete:hover {
-            color: var(--text-danger-color);
-            color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
-        }
-    }
-
-    .ndata-style {
-        margin-top: 1rem;
-
     }
 }

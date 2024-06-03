@@ -9,6 +9,7 @@ function ErrorMessage({ message, setMessage }) {
   return (
     <Collapse in={message}>
       <Alert
+        className="error-message"
         action={
           <IconButton
             aria-label="close"

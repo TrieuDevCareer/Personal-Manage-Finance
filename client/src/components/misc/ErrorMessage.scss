@@ -1,24 +1,14 @@
 @import "../../style/variables.scss";
 
-.error-message {
-    margin-bottom: 1rem;
-    padding: 0.3rem;
-    // border: 1px solid var(--danger-color);
-    border-radius: 5px;
-    // background: var(--danger-light-color);
-    display: flex;
-    position: absolute;
-    justify-content: space-between;
-    align-items: center;
 
-    p {
-        // color: var(--text-danger-color);
+@media screen and (max-width: 376px) {
+    .error-message {
+        height: auto;
+
+        .css-1pxa9xg-MuiAlert-message {
+            font-size: 1resm;
+            padding: 0;
+        }
+
     }
-
-    // button {
-    //     @include btn();
-    //     padding: 0.1rem 0.4rem;
-    //     background: var(--danger-color);
-    //     color: var(--text-light-color);
-    // }
 }

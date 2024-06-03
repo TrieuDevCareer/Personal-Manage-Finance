@@ -1,60 +1,127 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container {
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    height: 35rem;
-
-    .popup-form {
-        display: grid;
+@media screen and (min-width: 376px) {
+    .popup-container-bank {
+        margin-top: 4rem;
+        display: flex;
         justify-content: center;
-        background-color: var(--background-rdcolor);
-        box-shadow: var(--box-shadow);
-        padding: 1rem;
-        border-radius: 1rem;
+        align-items: start;
+        height: 35rem;
 
-        .popup-text {
-            label {
-                color: var(--text-light-color);
-            }
+        .popup-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding: 1rem;
+            border-radius: 1rem;
 
-            div {
-                color: var(--text-light-color);
-                text-align: left;
+            .popup-text {
+                label {
+                    color: var(--text-light-color);
+                }
 
-                input {
+                div {
                     color: var(--text-light-color);
                     text-align: left;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .popup-text:hover {
+                label {
+                    color: var(--text-danger-color);
                 }
 
-                fieldset {
-                    border-color: var(--text-title-color);
-                    ;
-                }
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
 
-                svg {
-                    color: var(--text-title-color);
-                    ;
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }
+    }
+}
 
-        .popup-text:hover {
-            label {
-                color: var(--text-danger-color);
-            }
+@media screen and (max-width: 376px) {
+    .popup-container-bank {
+        z-index: -1;
+        display: grid;
+        height: auto;
+        width: 23.4rem;
+        align-items: center;
+        justify-items: center;
+        margin-top: 1rem;
 
-            div {
-                input {
+        .popup-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding: 1rem;
+            border-radius: 1rem;
+
+            .popup-text {
+                label {
                     color: var(--text-light-color);
-                    ;
                 }
 
-                fieldset {
-                    border-color: var(--text-danger-color);
-                    ;
+                div {
+                    color: var(--text-light-color);
+                    text-align: left;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .popup-text:hover {
+                label {
+                    color: var(--text-danger-color);
+                }
+
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }

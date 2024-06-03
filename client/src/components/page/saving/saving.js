@@ -148,7 +148,7 @@ function Saving({ isCheck, setIsCheck }) {
                 oData={savingData}
                 aKeyItem={aKeyItem}
                 aTitle={aTitle}
-                rowsPerPage={10}
+                rowsPerPage={8}
                 isCheck={isCheck}
                 setIsCheck={setIsCheck}
                 editModel={editSaving}

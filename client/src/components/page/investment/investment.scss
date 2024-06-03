@@ -1,63 +1,131 @@
 @import url("../../../style//variables.scss");
 
-.investment-container {
-    grid-auto-rows: max-content auto;
-    grid-auto-columns: 68.8rem;
+@media screen and (min-width: 376px) {
+    .investment-container {
+        grid-auto-rows: max-content auto;
+        grid-auto-columns: 68.8rem;
 
-    .report-investment {
-        display: grid;
-        grid-template-rows: auto auto auto auto;
-        grid-template-columns: auto;
-        font-size: small;
-        margin-bottom: 1rem;
+        .report-investment {
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            grid-template-columns: auto;
+            font-size: small;
+            margin-bottom: 1rem;
+            justify-content: center;
+
+            .report-item {
+                display: flex;
+                justify-content: end;
+                height: 1.5rem;
+            }
+
+            p {
+                justify-content: flex-end;
+                margin-right: 2rem;
+            }
+
+            span {
+                width: 10rem;
+                text-align: left;
+            }
+        }
+
         justify-content: center;
-
-        .report-item {
-            display: flex;
-            justify-content: end;
-            height: 1.5rem;
-        }
-
-        p {
-            justify-content: flex-end;
-            margin-right: 2rem;
-        }
-
-        span {
-            width: 10rem;
-            text-align: left;
-        }
-    }
-
-    justify-content: center;
-    justify-items: center;
-    display: grid;
-    margin: 1rem;
-    text-align: center;
-
-    .title-investment {
+        justify-items: center;
+        display: grid;
+        margin: 1rem;
         text-align: center;
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var(--background-title-color);
-    }
 
-    .footer-link {
-        display: flex;
-        position: relative;
-        left: 0;
-        bottom: 1.4rem;
-        justify-self: flex-start;
-        color: var(--background-light-color);
-        font-weight: 500;
+        .title-investment {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--background-title-color);
+        }
 
-        .footer-titel {
-            margin-left: 0.5rem;
+        .footer-link {
+            display: flex;
+            position: relative;
+            left: 0;
+            bottom: 1.4rem;
+            justify-self: flex-start;
+            color: var(--background-light-color);
+            font-weight: 500;
+
+            .footer-titel {
+                margin-left: 0.5rem;
+            }
+        }
+
+        .footer-link:hover {
+            color: var(--background-title-color);
+            cursor: pointer;
         }
     }
+}
 
-    .footer-link:hover {
-        color: var(--background-title-color);
-        cursor: pointer;
+@media screen and (max-width: 376px) {
+    .investment-container {
+        justify-content: center;
+        justify-items: center;
+        display: grid;
+        text-align: center;
+        grid-auto-rows: max-content 0.5rem auto;
+        width: 23.4rem;
+        height: auto;
+
+        .report-investment {
+            display: grid;
+            grid-template-rows: auto auto auto auto auto;
+            grid-template-columns: 23.4rem;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+
+            .report-item {
+                display: flex;
+                justify-content: end;
+                height: 1.5rem;
+                margin-left: 1rem;
+            }
+
+            p {
+                text-align: end;
+                margin-right: 1rem;
+                width: 14rem;
+            }
+
+            span {
+                width: 10rem;
+                text-align: left;
+            }
+        }
+
+        .title-investment {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--background-title-color);
+        }
+
+        .footer-link {
+            display: flex;
+            position: relative;
+            bottom: -5rem;
+            justify-self: flex-start;
+            color: var(--background-light-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+
+            .footer-titel {
+                align-content: center;
+            }
+        }
+
+        .footer-link:hover {
+            color: var(--background-title-color);
+            cursor: pointer;
+        }
     }
 }

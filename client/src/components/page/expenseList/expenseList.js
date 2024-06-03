@@ -52,7 +52,6 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
           <div className="title-container">
             {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}
           </div>
-
           {expenseListEditorOpen ? (
             <ExpenseListEditor
               getExpenseLists={getExpenseLists}

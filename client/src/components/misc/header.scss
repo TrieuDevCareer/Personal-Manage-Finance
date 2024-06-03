@@ -1,72 +1,158 @@
 @import "../../style/variables.scss";
 
-.header-container {
-    display: grid;
-    grid-template-columns: 13rem 13rem 13rem 13rem auto;
-    position: relative;
-    transform: translate(0%, 70%);
 
-    .box-bg {
-        margin-left: 10%;
-        text-align: center;
-        border-radius: 15px;
+@media screen and (min-width: 376px) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 13rem 13rem 13rem 13rem auto;
+        position: relative;
+        transform: translate(0%, 70%);
 
-        .txt-style {
-            color: var(--text-light-color);
-            text-decoration: none;
+        .box-bg {
+            margin-left: 10%;
+            text-align: center;
+            border-radius: 15px;
+
+            .txt-style {
+                color: var(--text-light-color);
+                text-decoration: none;
+                display: flex;
+                width: 12rem;
+
+                p {
+                    position: relative;
+                    transform: translate(0%, 25%);
+                    margin-left: 0.8rem;
+                }
+
+                .nav-icon {
+                    width: 2rem;
+                    height: fit-content;
+                    border-radius: 50%;
+                    margin-left: 0.2rem;
+                    margin-top: 0.3rem;
+                }
+            }
+
+        }
+
+        .gradient-btn {
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .default-btn {
+            background-color: var(--background-rdcolor);
+        }
+
+        .box-bg:hover {
+            background: var(--background-title-color);
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .title-root {
             display: flex;
-            width: 12rem;
+            justify-content: right;
+            margin-right: 1rem;
+            align-items: center;
 
-            p {
-                position: relative;
-                transform: translate(0%, 25%);
-                margin-left: 0.8rem;
+            .tile-userName {
+                margin-right: 0.5rem;
+                font-size: 1.2rem;
             }
 
-            .nav-icon {
-                width: 2rem;
-                height: fit-content;
-                border-radius: 50%;
-                margin-left: 0.2rem;
-                margin-top: 0.3rem;
+            .btn-style-edit {
+                height: 1.5rem;
+                width: 1.5rem;
+                cursor: pointer;
+            }
+
+            .btn-style-edit:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
             }
         }
-
     }
+}
 
-    .gradient-btn {
-        background-color: var(--background-title-color);
-    }
+@media screen and (max-width: 376px) {
+    .header-container {
+        display: grid;
+        grid-template-columns: 5.7rem 5.7rem 5.7rem 5.7rem;
+        position: fixed;
+        margin-left: 0.2rem;
+        padding-bottom: 0.5rem;
+        top: 0rem;
+        background-color: var(--background-stcolor);
+        z-index: 0;
 
-    .default-btn {
-        background-color: var(--background-rdcolor);
-    }
+        .box-bg {
+            margin-left: 0.3rem;
+            text-align: center;
+            border-radius: 15px;
+            height: 2.2rem;
+            align-content: center;
+            margin-top: 0.5rem;
 
-    .box-bg:hover {
-        background: var(--background-title-color);
-        background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-    }
+            .txt-style {
+                color: var(--text-light-color);
+                text-decoration: none;
+                display: grid;
+                grid-template-columns: 1.1rem 3.4rem;
+                width: 0.5rem;
+                align-items: center;
+                grid-template-rows: 1rem;
 
-    .title-root {
-        display: flex;
-        justify-content: right;
-        margin-right: 1rem;
-        align-items: center;
+                p {
+                    font-size: 0.7rem;
+                    margin-top: 0.9rem;
+                    text-align: left;
+                    margin-left: 0.5rem;
+                }
 
-        .tile-userName {
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
+                .nav-icon {
+                    width: 1.4rem;
+                    height: 1.4rem;
+                    border-radius: 50%;
+                    margin-left: 0.2rem;
+                }
+            }
+
         }
 
-        .btn-style-edit {
-            height: 1.5rem;
-            width: 1.5rem;
-            cursor: pointer;
+        .gradient-btn {
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }
 
-        .btn-style-edit:hover {
-            color: var(--background-title-color);
-            color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        .default-btn {
+            background-color: var(--background-rdcolor);
+        }
+
+        .box-bg:hover {
+            background: var(--background-title-color);
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .title-root {
+            display: flex;
+            justify-content: right;
+            margin-right: 1rem;
+            align-items: center;
+
+            .tile-userName {
+                margin-right: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-style-edit {
+                height: 1.5rem;
+                width: 1.5rem;
+                cursor: pointer;
+            }
+
+            .btn-style-edit:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            }
         }
     }
 }

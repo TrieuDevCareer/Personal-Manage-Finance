@@ -30,13 +30,19 @@ router.get("/byday", auth, async (req, res) => {
 
   const oResultData = {
     SoDay: Math.round(
-      userData.walletLife / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
+      userData.walletLife /
+        (userData.salaryDate > day
+          ? userData.salaryDate - day
+          : new Date(year, month, 0).getDate() - day + userData.salaryDate)
     ).toLocaleString("it-IT", {
       style: "currency",
       currency: "VND",
     }),
     TdDay: Math.round(
-      userData.walletFree / (new Date(year, month, 0).getDate() - day + userData.salaryDate)
+      userData.walletFree /
+        (userData.salaryDate > day
+          ? userData.salaryDate - day
+          : new Date(year, month, 0).getDate() - day + userData.salaryDate)
     ).toLocaleString("it-IT", {
       style: "currency",
       currency: "VND",
@@ -75,7 +81,9 @@ router.post("/reportexpense", auth, async (req, res) => {
   // Hàm để lọc dữ liệu
   const filterData = (item) => {
     return (
-      matches(item, "expDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "expDate", date, (d) =>
+        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
+      ) &&
       matches(item, "expDate", month, (d) => (d.getMonth() + 1).toString()) &&
       matches(item, "exelstCode", capitalSource) &&
       (!contentData ||

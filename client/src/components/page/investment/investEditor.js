@@ -35,6 +35,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   const [investDMoney, setInvestDMoney] = useState(0);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   function closeEditor() {
     setInvestmentEditorOpen(false);
@@ -186,6 +187,9 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
         editInvestmentData.investResult ? currencyStringToInt(editInvestmentData.investResult) : 0
       );
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editInvestmentData]);
   return (
     <div className="popup-container-invest">
@@ -195,7 +199,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
           className="popup-form-invest"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
           }}
           noValidate
           autoComplete="off"
@@ -322,7 +326,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
               />
             </div>
           </div>
-          <Stack className="btn-control" spacing={2} direction="row" justifyContent="right">
+          <Stack className="btn-control" spacing={1} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>

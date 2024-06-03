@@ -116,8 +116,10 @@ function Investment({ isCheck, setIsCheck }) {
 
   useEffect(() => {
     if (!user) setInvestmentData();
-    else getInvestments();
-    handleGetInvestReportTotal();
+    else {
+      getInvestments();
+      handleGetInvestReportTotal();
+    }
   }, [user]);
   return (
     <div>
@@ -153,7 +155,7 @@ function Investment({ isCheck, setIsCheck }) {
                 oData={investmentData}
                 aKeyItem={aKeyItem}
                 aTitle={aTitle}
-                rowsPerPage={10}
+                rowsPerPage={8}
                 isCheck={isCheck}
                 setIsCheck={setIsCheck}
                 editModel={editInvestment}

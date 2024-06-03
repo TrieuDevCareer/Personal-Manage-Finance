@@ -1,79 +1,189 @@
 @import "../../style/variables.scss";
 
-.vertical-nav {
-    min-width: 17rem;
-    width: 17rem;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s;
-    background-color: var(--background-stcolor);
-    .nav-logo {
+
+@media screen and (min-width: 376px) {
+    .vertical-nav {
+        min-width: 17rem;
+        width: 17rem;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s;
+        background-color: var(--background-stcolor);
+
+        .close-icon {
+            display: none;
+        }
+
+        .nav-logo {
             position: relative;
             top: -2rem;
             width: 9rem;
             left: 2rem;
         }
 
-    .list-nav {
-        list-style-type: none;
+        .list-nav {
+            list-style-type: none;
             position: relative;
-                top: -2rem;
+            top: -2rem;
 
-        li {
-            margin-bottom: 10%;
-            font-weight: 600;
-        }
-
-        .txt-style {
-
-            text-decoration: none;
-            display: flex;
-
-            p {
-                position: relative;
-                transform: translate(0%, 25%);
-                margin-left: 0.3rem;
+            li {
+                margin-bottom: 10%;
+                font-weight: 600;
             }
-            .nav-icon{
-                width: 2rem;
-                height: fit-content;
-                border-radius: 50%;
+
+            .txt-style {
+
+                text-decoration: none;
+                display: flex;
+
+                p {
+                    position: relative;
+                    transform: translate(0%, 25%);
+                    margin-left: 0.3rem;
+                }
+
+                .nav-icon {
+                    width: 2rem;
+                    height: fit-content;
+                    border-radius: 50%;
+                }
+            }
+
+            .default-color {
+                color: var(--text-light-color);
+            }
+
+            .gradient-color {
+                color: var(--background-title-color);
+            }
+
+            .txt-style:hover {
+                cursor: pointer;
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
             }
         }
 
-        .default-color {
-            color: var(--text-light-color);
+        .line-nav {
+            width: 10rem;
+            height: 1.1px;
+            position: absolute;
+            left: 1rem;
+            top: 6rem;
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }
 
-        .gradient-color {
-            color: var(--background-title-color);
+        .vertical-line-nav {
+            height: 35rem;
+            width: 1.1px;
+            position: absolute;
+            left: 12rem;
+            top: 3rem;
+            background: linear-gradient(180deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }
 
-        .txt-style:hover {
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .vertical-nav {
+        width: 13rem;
+        height: 42.1rem;
+        top: 0;
+        left: 0;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s;
+        background-color: var(--background-stcolor);
+        border-radius: 1rem;
+        z-index: 1;
+
+        .close-icon {
+            z-index: 100;
+            position: fixed;
+            left: 11.5rem;
+            transition: left 0.4s;
+            top: 20rem;
+            font-size: 2rem;
+        }
+
+        .close-icon:hover {
             cursor: pointer;
             color: var(--background-title-color);
             color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }
-    }
 
-    .line-nav {
-        width: 10rem;
-        height: 1.1px;
-        position: absolute;
-        left: 1rem;
-        top: 6rem;
-        background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-    }
+        .transition-close {
+            left: -100%;
+        }
 
-    .vertical-line-nav {
-        height: 35rem;
-        width: 1.1px;
-        position: absolute;
-        left: 12rem;
-        top: 3rem;
-        background: linear-gradient(180deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-    }
+        .nav-logo {
+            position: relative;
+            top: -2rem;
+            width: 9rem;
+            left: 2rem;
+        }
 
+        .list-nav {
+            list-style-type: none;
+            position: relative;
+            top: -2rem;
+
+            li {
+                margin-bottom: 10%;
+                font-weight: 600;
+            }
+
+            .txt-style {
+
+                text-decoration: none;
+                display: flex;
+
+                p {
+                    position: relative;
+                    transform: translate(0%, 25%);
+                    margin-left: 0.3rem;
+                }
+
+                .nav-icon {
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 50%;
+                }
+            }
+
+            .default-color {
+                color: var(--text-light-color);
+            }
+
+            .gradient-color {
+                color: var(--background-title-color);
+            }
+
+            .txt-style:hover {
+                cursor: pointer;
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            }
+        }
+
+        .line-nav {
+            width: 10rem;
+            height: 1.1px;
+            position: absolute;
+            left: 1rem;
+            top: 6rem;
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .vertical-line-nav {
+            height: 33rem;
+            width: 1.1px;
+            position: absolute;
+            left: 11.5rem;
+            top: 3rem;
+            background: linear-gradient(180deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+    }
 }

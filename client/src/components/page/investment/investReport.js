@@ -24,7 +24,6 @@ function InvestReport() {
   const [coinData, setCoinData] = useState();
   const [statusCondition, setStatusCondition] = useState([]);
   const [investReportTotal, setInvestReportTotal] = useState();
-  const [message, setMessage] = useState("");
 
   const { user } = useContext(UserContext);
 
@@ -70,7 +69,7 @@ function InvestReport() {
     } = event;
     setStatusCondition(typeof value === "string" ? value.split(",") : value);
   }
-  async function handleGetDataContent(data) {
+  async function handleGetDataContent() {
     try {
       const result = await Axios.get(`${domain}/coinlist`);
       let a = [];
@@ -81,7 +80,7 @@ function InvestReport() {
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
-          setMessage(err.response.data.errorMessage);
+          console.log(err.response.data.errorMessage);
         }
       }
       return;

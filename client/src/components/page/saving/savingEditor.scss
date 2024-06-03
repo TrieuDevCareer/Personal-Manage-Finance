@@ -1,89 +1,170 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container-saving {
-    display: flex;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    height: 42rem;
-    width: 70.5rem;
-
-    .popup-form-saving {
-        display: grid;
+@media screen and (min-width: 376px) {
+    .popup-container-saving {
+        display: flex;
+        position: absolute;
+        align-items: center;
         justify-content: center;
-        background-color: var(--background-rdcolor);
-        box-shadow: var(--box-shadow);
-        padding-left: 1rem;
-        padding-top: 0.5rem;
-        padding-right: 2rem;
-        padding-bottom: 0.5rem;
-        border-radius: 1rem;
-        justify-items: center;
+        height: 42rem;
+        width: 70.5rem;
 
-        .text-container {
+        .popup-form-saving {
             display: grid;
-            grid-template-columns: auto auto;
-            margin-right: 2.5rem;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding-left: 1rem;
+            padding-top: 0.5rem;
+            padding-right: 2rem;
+            padding-bottom: 0.5rem;
+            border-radius: 1rem;
+            justify-items: center;
 
-            .left-group-input {
-                margin-right: 0.1rem;
-            }
+            .text-container {
+                display: grid;
+                grid-template-columns: auto auto;
+                margin-right: 2.5rem;
 
-            .right-group-input {
-                margin-left: 0.1rem;
-            }
-
-            // .text-disable {
-            //     disabled:
-            // }
-
-            .popup-text {
-                margin-bottom: 1rem;
-                margin-right: 1rem;
-                width: 21rem;
-
-                label {
-                    color: var(--text-light-color);
+                .left-group-input {
+                    margin-right: 0.1rem;
                 }
 
-                div {
-                    color: var(--text-light-color);
-                    text-align: left;
+                .right-group-input {
+                    margin-left: 0.1rem;
+                }
 
-                    input {
+                // .text-disable {
+                //     disabled:
+                // }
+
+                .popup-text {
+                    margin-bottom: 1rem;
+                    margin-right: 1rem;
+                    width: 21rem;
+
+                    label {
+                        color: var(--text-light-color);
+                    }
+
+                    div {
                         color: var(--text-light-color);
                         text-align: left;
-                        -webkit-text-fill-color: var(--text-light-color);
+
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                            -webkit-text-fill-color: var(--text-light-color);
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                            ;
+                        }
+                    }
+                }
+
+                .popup-text:hover {
+                    label {
+                        color: var(--text-danger-color);
                     }
 
-                    fieldset {
-                        border-color: var(--text-title-color);
-                        ;
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                            ;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                            ;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .popup-container-saving {
+        z-index: 0;
+        height: 56rem;
+        width: 23.4rem;
+        margin-bottom: 10rem;
+
+        .popup-form-saving {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            margin: 0.2rem;
+            border-radius: 1rem;
+            width: 22.5rem;
+            margin-left: 0.5rem;
+            margin-top: 1rem;
+            justify-items: center;
+            align-self: flex-start;
+
+            .text-container {
+
+                .popup-text {
+                    margin-bottom: 1rem;
+                    width: 20rem;
+
+                    label {
+                        color: var(--text-light-color);
                     }
 
-                    svg {
-                        color: var(--text-title-color);
-                        ;
+                    div {
+                        color: var(--text-light-color);
+                        text-align: left;
+
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                            -webkit-text-fill-color: var(--text-light-color);
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                            ;
+                        }
+                    }
+                }
+
+                .popup-text:hover {
+                    label {
+                        color: var(--text-danger-color);
+                    }
+
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                            ;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                            ;
+                        }
                     }
                 }
             }
 
-            .popup-text:hover {
-                label {
-                    color: var(--text-danger-color);
-                }
-
-                div {
-                    input {
-                        color: var(--text-light-color);
-                        ;
-                    }
-
-                    fieldset {
-                        border-color: var(--text-danger-color);
-                        ;
-                    }
-                }
+            .css-1grant-MuiStack-root {
+                margin: 0;
+                margin-bottom: 1rem;
             }
         }
     }

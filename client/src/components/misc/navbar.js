@@ -1,20 +1,34 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import Axios from "axios";
+import domain from "../../util/domain";
 import UserContext from "../../context/UserContext.js";
+import KeyboardDoubleArrowLeftSharpIcon from "@mui/icons-material/KeyboardDoubleArrowLeftSharp";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import "./navbar.scss";
 
-function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
+function Navbar({
+  clickPattern,
+  setClickPattern,
+  setIsCheck,
+  toggleMenu,
+  showMenu,
+  closeMenuOnMobile,
+}) {
   let [styleIncome, setStyleIncome] = useState("txt-style default-color");
   let [styleExpense, setStyleExpense] = useState("txt-style default-color");
   let [styleSaving, setStyleSaving] = useState("txt-style default-color");
   let [styleInvest, setStyleInvest] = useState("txt-style default-color");
   let [styleContent, setStyleContent] = useState("txt-style default-color");
   let [styleTotal, setStyleTotal] = useState("txt-style default-color");
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
     setClickPattern("navbar");
     setIsCheck(false);
+    closeMenuOnMobile();
     switch (typeBtn) {
       case "Income":
         setStyleIncome("txt-style gradient-color");
@@ -67,6 +81,14 @@ function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
     }
     return;
   }
+  async function logOut() {
+    if (window.confirm(`Bạn muốn đăng xuất khỏi tài khoản, ${user.userName}?`)) {
+      if (window.confirm(`Tạm biệt, sớm gặp lại bạn nhé ${user.userName}`)) {
+        await Axios.get(`${domain}/auth/logOut`);
+        window.location.reload();
+      }
+    }
+  }
   useEffect(() => {
     if (clickPattern !== "navbar") {
       setStyleIncome("txt-style default-color");
@@ -76,9 +98,16 @@ function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
       setStyleContent("txt-style default-color");
       setStyleTotal("txt-style default-color");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [clickPattern]);
   return (
     <div className="vertical-nav">
+      <KeyboardDoubleArrowLeftSharpIcon
+        className={`close-icon ${!showMenu ? "transition-close" : ""}`}
+        onClick={toggleMenu}
+      />
       <Link to="/">
         <img src={"/images/logo.png"} alt="..." className="nav-logo" />
       </Link>
@@ -121,9 +150,17 @@ function Navbar({ clickPattern, setClickPattern, setIsCheck }) {
         </li>
         {user && user.role === 1 && (
           <li>
-            <Link className={styleTotal} to="/register" onClick={() => onClickHeaderBtn("Total")}>
-              <img src={"/images/total.png"} alt="..." className="nav-icon" />
-              <p>Tổng hợp</p>
+            <Link className={styleTotal} to="/register">
+              <HowToRegIcon className="nav-icon" />
+              <p>Tạo tài khoản</p>
+            </Link>
+          </li>
+        )}
+        {user && isPhoneWidth && (
+          <li>
+            <Link className={styleIncome} onClick={() => logOut()}>
+              <LogoutIcon className="nav-icon" />
+              <p> {user.userName}</p>
             </Link>
           </li>
         )}

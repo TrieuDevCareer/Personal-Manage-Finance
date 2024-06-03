@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Box from "@mui/material/Box";
@@ -14,6 +14,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [phoneWidth, setPhoneWidth] = useState("40rem");
 
   const { getUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -41,17 +42,22 @@ function Login() {
     await getUser();
     navigate("/");
   }
+  useEffect(() => {
+    if (window.outerWidth <= 375) {
+      setPhoneWidth("17rem");
+    } else setPhoneWidth("40rem");
+  }, [phoneWidth, isLoading]);
   return (
     <div className="auth-container">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div>
+        <div className="box-container">
           <div className="title-auth">ĐĂNG NHẬP TÀI KHOẢN NGƯỜI DÙNG</div>
           <Box
             className="auth-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: "40rem" },
+              "& > :not(style)": { m: 1, width: `${phoneWidth}` },
             }}
             noValidate
             autoComplete="off"
@@ -79,10 +85,20 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Stack spacing={2} direction="row" justifyContent="right">
-              <Button variant="contained" color="success" size="medium" type="submit">
+              <Button
+                variant="contained"
+                color="success"
+                size={phoneWidth === "17rem" ? "small" : "medium"}
+                type="submit"
+              >
                 Đăng Nhập
               </Button>
-              <Button variant="contained" color="error" size="medium" onClick={() => navigate("/")}>
+              <Button
+                variant="contained"
+                color="error"
+                size={phoneWidth === "17rem" ? "small" : "medium"}
+                onClick={() => navigate("/")}
+              >
                 Hủy
               </Button>
             </Stack>

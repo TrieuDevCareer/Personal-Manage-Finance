@@ -22,6 +22,7 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
   const [exeLstContent, setExeLstContent] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setExpenseListEditorOpen(false);
   }
@@ -55,17 +56,20 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
       setExelstCode(editExpenseListData.exelstCode ? editExpenseListData.exelstCode : "");
       setExeLstContent(editExpenseListData.exeLstContent ? editExpenseListData.exeLstContent : "");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editExpenseListData]);
   return (
     <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div className="popup-container">
+        <div className="popup-container-expense">
           <Box
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: "40rem" },
+              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
             }}
             noValidate
             autoComplete="off"

@@ -18,6 +18,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [message, setMessage] = useState("");
   const [isLockContent, setIsLockContent] = useState(true);
   const lstCodeData = ["Nguồn sống", "Tự do", "Tiết kiệm", "Đầu tư"];
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setIncomeEditorOpen(false);
   }
@@ -82,6 +83,9 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
       setIsLockContent(false);
       getIncomeLists(editIncomeData.inlstCode);
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editIncomeData]);
 
   return (
@@ -92,7 +96,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
           className="popup-form"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
           }}
           noValidate
           autoComplete="off"

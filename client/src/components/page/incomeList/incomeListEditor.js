@@ -30,6 +30,7 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
   const [inLstContent, setInLstContent] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setIncomeListEditorOpen(false);
   }
@@ -63,17 +64,20 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
       setInlstCode(editIncomeListData.inlstCode ? editIncomeListData.inlstCode : "");
       setInLstContent(editIncomeListData.inLstContent ? editIncomeListData.inLstContent : "");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editIncomeListData]);
   return (
     <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div className="popup-container">
+        <div className="popup-container-income">
           <Box
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: "40rem" },
+              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
             }}
             noValidate
             autoComplete="off"

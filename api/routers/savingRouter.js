@@ -72,7 +72,9 @@ router.post("/reportsaving", auth, async (req, res) => {
   // Hàm để lọc dữ liệu
   const filterData = (item) => {
     return (
-      matches(item, "savDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "savDate", date, (d) =>
+        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
+      ) &&
       matches(item, "savDate", month, (d) => (d.getMonth() + 1).toString()) &&
       matches(item, "bnkName", bank) &&
       (!status ||

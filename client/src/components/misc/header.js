@@ -12,6 +12,7 @@ function Header({ clickPattern, setClickPattern }) {
   let [styleExpense, setStyleExpense] = useState("box-bg default-btn");
   let [styleSaving, setStyleSaving] = useState("box-bg default-btn");
   let [styleInvest, setStyleInvest] = useState("box-bg default-btn");
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
@@ -59,6 +60,9 @@ function Header({ clickPattern, setClickPattern }) {
       setStyleInvest("box-bg default-btn");
       setStyleSaving("box-bg default-btn");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [clickPattern, user]);
   return (
     <div className="header-container">
@@ -87,7 +91,7 @@ function Header({ clickPattern, setClickPattern }) {
         </Link>
       </div>
 
-      {user && (
+      {user && !isPhoneWidth && (
         <div className="title-root">
           <div className="tile-userName">Welcome, {user.userName}</div>
           <LogoutIcon className="btn-style-edit" onClick={() => logOut()} />

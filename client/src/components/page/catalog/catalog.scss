@@ -1,65 +1,106 @@
 @import url("../../../style//variables.scss");
 
-.catalog-container {
-    justify-content: center;
-    justify-items: center;
-    display: grid;
-    margin: 1rem;
-    text-align: center;
-    grid-auto-rows: max-content auto;
-
-    .title-catalog {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var(--background-title-color);
-    }
-
-    .catalog-table-container {
+@media screen and (min-width: 376px) {
+    .catalog-container {
+        justify-content: center;
+        justify-items: center;
         display: grid;
-        grid-template-columns: 17rem 17rem auto;
-        width: 68rem;
+        margin: 1rem;
+        text-align: center;
+        grid-auto-rows: max-content auto;
 
-        .catalog-income {
-            margin-right: 1rem;
+        .title-catalog {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--background-title-color);
         }
 
-        .catalog-expense {
-            margin-right: 1rem;
-        }
-
-        .catalog-group {
+        .catalog-table-container {
             display: grid;
-            grid-template-rows: auto auto auto;
-            height: 36rem;
-        }
+            grid-template-columns: 17rem 17rem auto;
+            width: 68rem;
 
-        .catalog-frs-group {
-            display: grid;
-            grid-template-columns: 17rem 17rem;
-            height: 14rem;
-
-            .catalog-saving {
+            .catalog-income {
                 margin-right: 1rem;
             }
-        }
 
-        .catalog-snd-group {
-            display: grid;
-            grid-template-columns: 17rem 17rem;
-            height: 11rem;
-
-            .catalog-status-saving {
+            .catalog-expense {
                 margin-right: 1rem;
             }
-        }
 
-        .catalog-link {
-            .catalog-link-style {
-                display: flex;
-                justify-content: center;
+            .catalog-group {
+                display: grid;
+                grid-template-rows: auto auto auto;
+                height: 36rem;
+            }
+
+            .catalog-frs-group {
+                display: grid;
+                grid-template-columns: 17rem 17rem;
+                height: 14rem;
+
+                .catalog-saving {
+                    margin-right: 1rem;
+                }
+            }
+
+            .catalog-snd-group {
+                display: grid;
+                grid-template-columns: 17rem 17rem;
+                height: 11rem;
+
+                .catalog-status-saving {
+                    margin-right: 1rem;
+                }
+            }
+
+            .catalog-link {
+                .catalog-link-style {
+                    display: flex;
+                    justify-content: center;
+                }
             }
         }
+
     }
+}
 
+@media screen and (max-width: 376px) {
+    .catalog-container {
+        z-index: -1;
+        height: auto;
+        width: 23.4rem;
+        align-items: center;
+        justify-items: center;
+        margin-top: 1rem;
+
+        .title-catalog {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--background-title-color);
+        }
+
+        .catalog-table-container {
+            display: grid;
+            grid-template-rows: 26rem 26rem 26rem;
+
+            // .catalog-income {
+            //     margin-right: 1rem;
+            // }
+
+            // .catalog-expense {
+            //     margin-right: 1rem;
+            // }
+
+            .catalog-group {
+                .catalog-frs-group {
+                    display: grid;
+                    grid-template-rows: 26rem 26rem;
+                }
+            }
+        }
+
+    }
 }

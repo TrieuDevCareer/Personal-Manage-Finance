@@ -50,7 +50,9 @@ router.post("/reportincome", auth, async (req, res) => {
   // Hàm để lọc dữ liệu
   const filterData = (item) => {
     return (
-      matches(item, "incDate", date, (d) => d.getDate().toString()) &&
+      matches(item, "incDate", date, (d) =>
+        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
+      ) &&
       matches(item, "incDate", month, (d) => (d.getMonth() + 1).toString()) &&
       matches(item, "inlstCode", capitalSource) &&
       (!contentData ||

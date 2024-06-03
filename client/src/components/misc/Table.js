@@ -29,6 +29,7 @@ function Table({
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
   const [message, setMessage] = useState("");
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const navigate = useNavigate();
 
@@ -150,10 +151,35 @@ function Table({
       return;
     }
   }
-  useEffect(() => {}, [chooseData]);
+  useEffect(() => {
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
+  }, [chooseData]);
   return (
     <div className="table-root">
       <ErrorMessage message={message} setMessage={setMessage} />
+      {isPhoneWidth && (
+        <div className="foot-table" colSpan="7">
+          <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
+          <ArrowBackIosIcon
+            className="btn-style"
+            onClick={() => handleArrowBackPage(Event, page)}
+          />
+          {!isCatalogPage &&
+            (isCheck ? (
+              <DeleteIcon className="btn-style-delete" onClick={deleteData} />
+            ) : (
+              <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
+            ))}
+
+          <ArrowForwardIosIcon
+            className="btn-style"
+            onClick={() => handleArrowForwardPage(Event, page)}
+          />
+          <ArrowForwardIcon className="btn-style" onClick={() => handleArrowForwardMaxPage()} />
+        </div>
+      )}
       <table className="table-container">
         <thead>
           <tr className="table-header">
@@ -175,22 +201,27 @@ function Table({
         <tfoot></tfoot>
       </table>
       {oData.length === 0 && <h2 className="ndata-style">Không có dữ liệu để hiển thị</h2>}
-      <div className="foot-table" colSpan="7">
-        <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
-        <ArrowBackIosIcon className="btn-style" onClick={() => handleArrowBackPage(Event, page)} />
-        {!isCatalogPage &&
-          (isCheck ? (
-            <DeleteIcon className="btn-style-delete" onClick={deleteData} />
-          ) : (
-            <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
-          ))}
+      {!isPhoneWidth && (
+        <div className="foot-table" colSpan="7">
+          <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
+          <ArrowBackIosIcon
+            className="btn-style"
+            onClick={() => handleArrowBackPage(Event, page)}
+          />
+          {!isCatalogPage &&
+            (isCheck ? (
+              <DeleteIcon className="btn-style-delete" onClick={deleteData} />
+            ) : (
+              <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
+            ))}
 
-        <ArrowForwardIosIcon
-          className="btn-style"
-          onClick={() => handleArrowForwardPage(Event, page)}
-        />
-        <ArrowForwardIcon className="btn-style" onClick={() => handleArrowForwardMaxPage()} />
-      </div>
+          <ArrowForwardIosIcon
+            className="btn-style"
+            onClick={() => handleArrowForwardPage(Event, page)}
+          />
+          <ArrowForwardIcon className="btn-style" onClick={() => handleArrowForwardMaxPage()} />
+        </div>
+      )}
     </div>
   );
 }

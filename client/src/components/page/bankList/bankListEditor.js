@@ -11,6 +11,7 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
   const [bnkName, setBnkName] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setBankListEditorOpen(false);
   }
@@ -44,17 +45,20 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
       setBnkLstID(editBankListData.bnkLstID ? editBankListData.bnkLstID : "");
       setBnkName(editBankListData.bnkName ? editBankListData.bnkName : "");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editBankListData]);
   return (
     <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div className="popup-container">
+        <div className="popup-container-bank">
           <Box
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: "40rem" },
+              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
             }}
             noValidate
             autoComplete="off"

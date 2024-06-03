@@ -1,65 +1,133 @@
 @import url("../../../style/mixins.scss");
 
-.popup-container-income {
-    display: flex;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    height: 42rem;
-    width: 70.5rem;
-
-    .popup-form {
-        display: grid;
+@media screen and (min-width: 376px) {
+    .popup-container-income {
+        display: flex;
+        position: absolute;
+        align-items: center;
         justify-content: center;
-        background-color: var(--background-rdcolor);
-        box-shadow: var(--box-shadow);
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        border-radius: 1rem;
+        height: 42rem;
+        width: 70.5rem;
 
-        .popup-text {
-            label {
-                color: var(--text-light-color);
-            }
+        .popup-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-radius: 1rem;
 
-            div {
-                color: var(--text-light-color);
-                text-align: left;
+            .popup-text {
+                label {
+                    color: var(--text-light-color);
+                }
 
-                input {
+                div {
                     color: var(--text-light-color);
                     text-align: left;
-                    -webkit-text-fill-color: var(--text-light-color);
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        -webkit-text-fill-color: var(--text-light-color);
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .popup-text:hover {
+                label {
+                    color: var(--text-danger-color);
                 }
 
-                fieldset {
-                    border-color: var(--text-title-color);
-                    ;
-                }
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
 
-                svg {
-                    color: var(--text-title-color);
-                    ;
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }
+    }
+}
 
-        .popup-text:hover {
-            label {
-                color: var(--text-danger-color);
-            }
+@media screen and (max-width: 376px) {
+    .popup-container-income {
+        height: 38rem;
+        width: 23.4rem;
 
-            div {
-                input {
+        .popup-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            margin: 0.2rem;
+            border-radius: 1rem;
+            width: 21.5rem;
+            margin-left: 0.5rem;
+            margin-top: 1rem;
+            justify-items: center;
+            align-self: flex-start;
+
+            .popup-text {
+                label {
                     color: var(--text-light-color);
-                    ;
                 }
 
-                fieldset {
-                    border-color: var(--text-danger-color);
-                    ;
+                div {
+                    color: var(--text-light-color);
+                    text-align: left;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        -webkit-text-fill-color: var(--text-light-color);
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .popup-text:hover {
+                label {
+                    color: var(--text-danger-color);
+                }
+
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }

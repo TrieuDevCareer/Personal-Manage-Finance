@@ -11,6 +11,7 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
   const [coinName, setCoinName] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setCoinListEditorOpen(false);
   }
@@ -44,18 +45,21 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
       setCoinLstID(editCoinListData.coinLstID ? editCoinListData.coinLstID : "");
       setCoinName(editCoinListData.coinName ? editCoinListData.coinName : "");
     }
+    if (window.outerWidth <= 375) {
+      setIsPhoneWidth(true);
+    }
   }, [editCoinListData]);
   return (
     <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div className="popup-container">
+        <div className="popup-container-coin">
           {" "}
           <Box
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: "40rem" },
+              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
             }}
             noValidate
             autoComplete="off"

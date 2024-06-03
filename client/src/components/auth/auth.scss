@@ -1,71 +1,165 @@
 @import url("../../style/variables.scss");
-
-.auth-container {
-    display: grid;
-    /* position: absolute; */
-    justify-content: center;
-    align-items: center;
-    height: 42rem;
-
-    .title-auth {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var(--background-title-color);
-        margin-bottom: 1rem;
-    }
-
-    .auth-form {
+@media screen and (min-width: 376px) {
+    .auth-container {
         display: grid;
+        /* position: absolute; */
         justify-content: center;
-        background-color: var(--background-rdcolor);
-        box-shadow: var(--box-shadow);
-        padding-left: 2rem;
-        padding-top: 0.5rem;
-        padding-right: 2rem;
-        padding-bottom: 0.5rem;
-        border-radius: 1rem;
+        align-items: center;
+        height: 42rem;
 
-        .auth-text {
-            label {
-                color: var(--text-light-color);
-            }
+        .title-auth {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--background-title-color);
+            margin-bottom: 1rem;
+        }
 
-            div {
-                color: var(--text-light-color);
-                text-align: left;
+        .auth-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding-left: 2rem;
+            padding-top: 0.5rem;
+            padding-right: 2rem;
+            padding-bottom: 0.5rem;
+            border-radius: 1rem;
 
-                input {
+            .auth-text {
+                label {
+                    color: var(--text-light-color);
+                }
+
+                div {
                     color: var(--text-light-color);
                     text-align: left;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .auth-text:hover {
+                label {
+                    color: var(--text-danger-color);
                 }
 
-                fieldset {
-                    border-color: var(--text-title-color);
-                    ;
-                }
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
 
-                svg {
-                    color: var(--text-title-color);
-                    ;
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }
+    }
+}
 
-        .auth-text:hover {
-            label {
-                color: var(--text-danger-color);
+@media screen and (max-width: 376px) {
+    .auth-container {
+        z-index: -1;
+        display: grid;
+        height: 38.1rem;
+        width: 23.4rem;
+        align-items: center;
+        justify-items: center;
+
+        .title-auth {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--background-title-color);
+            height: 1rem;
+        }
+
+        .btn-control {
+            height: 1.7rem;
+            margin-top: 0.2rem;
+
+            button {
+                font-size: 0.7rem;
+                align-items: center;
             }
+        }
 
-            div {
-                input {
+        .auth-form {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            margin: 0.2rem;
+            border-radius: 1rem;
+            width: 21.5rem;
+            // margin-left: 0.5rem;
+            margin-top: 1rem;
+            justify-items: center;
+            align-self: flex-start;
+
+            .auth-text {
+                margin: 0px;
+
+                label {
                     color: var(--text-light-color);
-                    ;
+                    z-index: 0;
                 }
 
-                fieldset {
-                    border-color: var(--text-danger-color);
-                    ;
+                div {
+                    color: var(--text-light-color);
+                    text-align: left;
+                    height: 2.8rem;
+                    margin-bottom: 0.7rem;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        font-size: 0.9rem;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+
+                    }
+                }
+            }
+
+            .auth-text:hover {
+                label {
+                    color: var(--text-danger-color);
+                }
+
+                div {
+                    input {
+                        color: var(--text-light-color);
+                        ;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                        ;
+                    }
                 }
             }
         }

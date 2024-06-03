@@ -6,39 +6,118 @@
     box-sizing: border-box;
 }
 
-body {
-    background: var(--background-stcolor);
-    color: var(--text-light-color);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    height: 100%;
 
-    // overflow: hidden;
+@media screen and (min-width: 376px) {
+    body {
+        background: var(--background-stcolor);
+        color: var(--text-light-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        height: 100%;
+
+        // overflow: hidden;
+
+        .gird-container {
+            display: grid;
+            grid-template-columns: 17rem auto;
+
+            .navbar-icon {
+                display: none;
+            }
+
+            .group-left-area {
+                display: grid;
+                grid-template-columns: 10rem auto;
+                grid-template-rows: 6rem 42rem;
+                grid-template-areas: 'header header' 'main main';
+
+                .header-navbar {
+                    grid-area: header;
+                }
+
+                .router {
+                    grid-area: main;
+                    background-color: var(--background-ndcolor);
+                    border-radius: 1.5rem;
+                    margin-right: 1rem;
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width: 376px) {
+    body {
+        background: var(--background-stcolor);
+        color: var(--text-light-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        height: 100%;
+        width: 100%;
+    }
 
     .gird-container {
-        display: grid;
-        grid-template-columns: 17rem auto;
+        width: 100%;
+        height: 100%;
+
+        // grid-auto-columns: 1rem 1rem;
+        .navbar-icon {
+            position: fixed;
+            z-index: 10000;
+            cursor: pointer;
+            left: -14px;
+            top: 20rem;
+            opacity: 1;
+            visibility: visible;
+            transition: left 0.4s;
+            font-size: 3rem;
+        }
+
+        .navbar-icon:hover {
+            cursor: pointer;
+            color: var(--background-title-color);
+            color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .transition {
+            left: 11rem;
+            opacity: 0.3;
+            visibility: hidden;
+            transition: all .4s ease-in-out;
+        }
+
+        .vertical-navbar {
+            z-index: 2;
+            position: fixed;
+            top: 0;
+            left: -100%;
+            // // background-color: hsla(0, 0%, 6%, 0.2);
+            // backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            width: 3rem;
+            height: 100%;
+            transition: left 0.4s;
+        }
+
+        .show-menu {
+            left: 0;
+        }
 
         .group-left-area {
-            display: grid;
-            grid-template-columns: 10rem auto;
-            grid-template-rows: 6rem 42rem;
-            grid-template-areas: 'header header' 'main main';
+            width: 100%;
+            height: 100%;
 
             .header-navbar {
-                grid-area: header;
+                position: sticky;
+                z-index: 1;
             }
 
             .router {
-                grid-area: main;
-                background-color: var(--background-ndcolor);
-                border-radius: 1.5rem;
-                margin-right: 1rem;
+                width: 23.5rem;
+                height: auto;
+                margin-top: 4rem;
             }
         }
-    }
-
-    line {
-        stroke: var(--background-title-color);
     }
 }
