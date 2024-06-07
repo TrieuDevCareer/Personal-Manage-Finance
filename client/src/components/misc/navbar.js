@@ -156,7 +156,7 @@ function Navbar({
             </Link>
           </li>
         )}
-        {user && isPhoneWidth && (
+        {user && window.outerWidth <= 375 && (
           <li>
             <Link className={styleIncome} onClick={() => logOut()}>
               <LogoutIcon className="nav-icon" />

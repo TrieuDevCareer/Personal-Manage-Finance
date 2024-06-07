@@ -13,7 +13,7 @@ app.use(express.json());
 // apply CORS's client access permission
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://lhtdst.netlify.app"],
+    origin: ["http://localhost:3000", "https://justmeapp.netlify.app"],
     credentials: true,
   })
 );

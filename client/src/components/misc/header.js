@@ -91,7 +91,7 @@ function Header({ clickPattern, setClickPattern }) {
         </Link>
       </div>
 
-      {user && !isPhoneWidth && (
+      {user && window.outerWidth > 375 && (
         <div className="title-root">
           <div className="tile-userName">Welcome, {user.userName}</div>
           <LogoutIcon className="btn-style-edit" onClick={() => logOut()} />
