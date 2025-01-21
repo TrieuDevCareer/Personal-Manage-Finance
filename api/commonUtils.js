@@ -54,7 +54,7 @@ async function _validateDataCaseUpdate(req, oUpdateData, oEntity, sItemId, sName
   }
 
   // validate user fix item
-  if (oCurrentItem.user.toString() !== req.user) {
+  if (oCurrentItem.user && oCurrentItem.user.toString() !== req.user) {
     oResultValidate.status = false;
     oResultValidate.message = "Lỗi xác thực! Vui lòng liên hệ nhà phát triển ứng dụng!";
     return oResultValidate;

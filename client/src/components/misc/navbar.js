@@ -6,6 +6,7 @@ import UserContext from "../../context/UserContext.js";
 import KeyboardDoubleArrowLeftSharpIcon from "@mui/icons-material/KeyboardDoubleArrowLeftSharp";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import PersonIcon from "@mui/icons-material/Person";
 import "./navbar.scss";
 
 function Navbar({
@@ -146,6 +147,12 @@ function Navbar({
           <Link className={styleTotal} to="/generate" onClick={() => onClickHeaderBtn("Total")}>
             <img src={"/images/total.png"} alt="..." className="nav-icon" />
             <p>Tổng hợp</p>
+          </Link>
+        </li>
+        <li>
+          <Link className={styleTotal} to="/user" onClick={() => onClickHeaderBtn("Total")}>
+            <PersonIcon className="nav-icon" />
+            <p>Cá nhân</p>
           </Link>
         </li>
         {user && user.role === 1 && (

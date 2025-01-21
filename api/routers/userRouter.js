@@ -3,12 +3,14 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
-const commonUtils = require("../commonUtils");
+const commonUtil = require("../commonUtils");
 
+// get user data
 router.get("/", auth, async (req, res) => {
   const aResultData = await User.findById(req.user);
   res.json(aResultData);
 });
+
 // register user
 router.post("/", async (req, res) => {
   try {
@@ -81,7 +83,7 @@ router.post("/", async (req, res) => {
       process.env.JWT_SECRET
     );
     const link = `${req.protocol}://${req.get("host")}/auth/${token}`;
-    await commonUtils.verifyMail(email, link, userName);
+    await commonUtil.verifyMail(email, link, userName);
     res.json(
       `Chúng tôi đã gửi email ${email} xác thực đến bạn, hãy kiểm tra và xác thực tài khoản của mình!`
     );
@@ -91,7 +93,6 @@ router.post("/", async (req, res) => {
 });
 
 // login user
-
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -156,8 +157,64 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// get userID after login
+// update data router
+router.put("/", auth, async (req, res) => {
+  try {
+    const {
+      password,
+      oldPassword,
+      walletLife,
+      walletInvest,
+      walletSaving,
+      walletFree,
+      salaryDate,
+    } = req.body;
 
+    // hash the password
+
+    const salt = await bcrypt.genSalt();
+
+    const oUpdateData = {
+      password: await bcrypt.hash(password, salt),
+      walletLife,
+      walletInvest,
+      walletSaving,
+      walletFree,
+      salaryDate,
+    };
+    const sUserID = req.user;
+
+    if (oldPassword) {
+      // get user account
+      const existingUser = await User.findById(sUserID);
+      const correctPassword = await bcrypt.compare(oldPassword, existingUser.passwordHash);
+
+      if (!correctPassword)
+        return res.status(401).json({
+          errorMessage: "Mật khẩu xác thực không chính xác, hãy thử lại!",
+        });
+    }
+    const sUpdateEntity = await commonUtil.updateDataCase(
+      req,
+      res,
+      oUpdateData,
+      User,
+      sUserID,
+      "thông tin cá nhân"
+    );
+    if (sUpdateEntity.status === 200) {
+      res.json(`${sUpdateEntity.message}`);
+    } else {
+      res.status(400).json({
+        errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+// get userID after login
 router.get("/loggedIn", (req, res) => {
   try {
     const token = req.cookies.token;
@@ -172,7 +229,6 @@ router.get("/loggedIn", (req, res) => {
 });
 
 // logout user
-
 router.get("/logOut", (req, res) => {
   try {
     res

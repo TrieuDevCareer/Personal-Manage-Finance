@@ -56,6 +56,7 @@ function Router({ isCheck, setIsCheck }) {
         path="/investreport"
         element={<InvestReport isCheck={isCheck} setIsCheck={setIsCheck} />}
       />
+      <Route path="/user" element={<Income isCheck={isCheck} setIsCheck={setIsCheck} />} />
     </Routes>
   );
 }

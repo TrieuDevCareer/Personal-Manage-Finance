@@ -35,10 +35,7 @@ app.use("/saving", require("./routers/savingRouter"));
 
 // setup + connect to MongoDB
 try {
-  mongoose.connect(process.env.MDB_CONNECT_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoose.connect(process.env.MDB_CONNECT_STRING);
   console.log("Connected to MongoDB");
 } catch (error) {
   return console.error(err);
