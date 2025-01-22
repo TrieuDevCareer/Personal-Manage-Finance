@@ -1,6 +1,6 @@
 @import url("../../../style/variables.scss");
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .incomeRp-container {
         position: relative;
         width: 69.5rem;
@@ -87,7 +87,7 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 46.200625em) {
     .incomeRp-container {
         z-index: 0;
         position: relative;

@@ -99,7 +99,7 @@ function Navbar({
       setStyleContent("txt-style default-color");
       setStyleTotal("txt-style default-color");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [clickPattern]);
@@ -163,7 +163,7 @@ function Navbar({
             </Link>
           </li>
         )}
-        {user && window.outerWidth <= 375 && (
+        {user && window.outerWidth <= 739 && (
           <li>
             <Link className={styleIncome} onClick={() => logOut()}>
               <LogoutIcon className="nav-icon" />

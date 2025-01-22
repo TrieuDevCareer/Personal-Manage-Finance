@@ -1,4 +1,4 @@
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .auth-container-page {
         display: grid;
         justify-content: center;
@@ -23,28 +23,30 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 46.200625em) {
     .auth-container-page {
         display: grid;
-        height: 38.1rem;
         width: 100%;
         justify-content: center;
         align-items: center;
+        grid-template-columns: 100%;
 
         .auth-style {
             text-align: center;
+            display: grid;
+            justify-items: center;
 
             .auth-ele {
-                font-size: 1.5rem;
+                font-size: 5vw;
                 margin-bottom: 1rem;
             }
 
             .auth-title {
-                width: 375px;
                 background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
                 background-clip: text;
                 color: transparent;
-                font-size: 2rem;
+                font-size: 6vw;
+                width: 95%;
             }
         }
     }

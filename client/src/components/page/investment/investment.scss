@@ -1,6 +1,6 @@
 @import url("../../../style//variables.scss");
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .investment-container {
         grid-auto-rows: max-content auto;
         grid-auto-columns: 68.8rem;
@@ -64,7 +64,7 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 46.200625em) {
     .investment-container {
         justify-content: center;
         justify-items: center;

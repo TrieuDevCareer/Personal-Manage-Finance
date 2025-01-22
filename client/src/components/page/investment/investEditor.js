@@ -187,7 +187,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
         editInvestmentData.investResult ? currencyStringToInt(editInvestmentData.investResult) : 0
       );
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editInvestmentData]);

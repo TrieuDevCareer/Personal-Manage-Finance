@@ -64,7 +64,7 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
       setInlstCode(editIncomeListData.inlstCode ? editIncomeListData.inlstCode : "");
       setInLstContent(editIncomeListData.inLstContent ? editIncomeListData.inLstContent : "");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editIncomeListData]);

@@ -56,7 +56,7 @@ function ExpenseListEditor({ getExpenseLists, setExpenseListEditorOpen, editExpe
       setExelstCode(editExpenseListData.exelstCode ? editExpenseListData.exelstCode : "");
       setExeLstContent(editExpenseListData.exeLstContent ? editExpenseListData.exeLstContent : "");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editExpenseListData]);

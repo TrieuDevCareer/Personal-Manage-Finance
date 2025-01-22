@@ -1,8 +1,7 @@
 @import url("../../style/variables.scss");
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .auth-container {
         display: grid;
-        /* position: absolute; */
         justify-content: center;
         align-items: center;
         height: 42rem;
@@ -42,12 +41,10 @@
 
                     fieldset {
                         border-color: var(--text-title-color);
-                        ;
                     }
 
                     svg {
                         color: var(--text-title-color);
-                        ;
                     }
                 }
             }
@@ -60,12 +57,10 @@
                 div {
                     input {
                         color: var(--text-light-color);
-                        ;
                     }
 
                     fieldset {
                         border-color: var(--text-danger-color);
-                        ;
                     }
                 }
             }
@@ -73,92 +68,107 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+    .auth-container {}
+}
+
+@media only screen and (max-width: 46.200625em) {
     .auth-container {
         z-index: -1;
-        display: grid;
-        height: 38.1rem;
-        width: 23.4rem;
+        height: 100vh;
+        width: 100%;
         align-items: center;
         justify-items: center;
 
-        .title-auth {
-            text-align: center;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--background-title-color);
-            height: 1rem;
-        }
-
-        .btn-control {
-            height: 1.7rem;
-            margin-top: 0.2rem;
-
-            button {
-                font-size: 0.7rem;
-                align-items: center;
-            }
-        }
-
-        .auth-form {
+        .box-container {
+            width: 100%;
             display: grid;
-            justify-content: center;
-            background-color: var(--background-rdcolor);
-            box-shadow: var(--box-shadow);
-            margin: 0.2rem;
-            border-radius: 1rem;
-            width: 21.5rem;
-            // margin-left: 0.5rem;
-            margin-top: 1rem;
+            /* justify-content: center; */
+            align-content: center;
+            height: 100%;
             justify-items: center;
-            align-self: flex-start;
+            grid-template-rows: 10vw auto;
 
-            .auth-text {
-                margin: 0px;
+            .title-auth {
+                text-align: center;
+                font-size: 5vw;
+                font-weight: 500;
+                color: var(--background-title-color);
+                width: 95%;
+            }
 
-                label {
-                    color: var(--text-light-color);
-                    z-index: 0;
+            .btn-control {
+                height: 1.7rem;
+                margin-top: 0.2rem;
+                margin: 8px;
+                width: 100%;
+                padding-right: 2%;
+
+                button {
+                    font-size: 0.7rem;
+                    align-items: center;
+                }
+            }
+
+            .auth-form {
+                display: grid;
+                background-color: var(--background-rdcolor);
+                box-shadow: var(--box-shadow);
+                margin: 0.2rem;
+                border-radius: 1rem;
+                width: 80%;
+                justify-items: center;
+                align-self: flex-start;
+
+                .css-bz4dnt-MuiCollapse-root {
+                    width: auto !important;
                 }
 
-                div {
-                    color: var(--text-light-color);
-                    text-align: left;
-                    height: 2.8rem;
-                    margin-bottom: 0.7rem;
+                .auth-text {
+                    margin: 0px;
+                    width: 90%;
+                    padding-right: 2%;
 
-                    input {
+                    label {
+                        color: var(--text-light-color);
+                        z-index: 0;
+                    }
+
+                    div {
                         color: var(--text-light-color);
                         text-align: left;
-                        font-size: 0.9rem;
-                    }
+                        height: 2.8rem;
+                        margin-bottom: 0.7rem;
 
-                    fieldset {
-                        border-color: var(--text-title-color);
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                            font-size: 0.9rem;
+                        }
 
-                    }
+                        fieldset {
+                            border-color: var(--text-title-color);
+                        }
 
-                    svg {
-                        color: var(--text-title-color);
-
+                        svg {
+                            color: var(--text-title-color);
+                        }
                     }
                 }
-            }
 
-            .auth-text:hover {
-                label {
-                    color: var(--text-danger-color);
-                }
-
-                div {
-                    input {
-                        color: var(--text-light-color);
-                        ;
+                .auth-text:hover {
+                    label {
+                        color: var(--text-danger-color);
                     }
 
-                    fieldset {
-                        border-color: var(--text-danger-color);
-                        ;
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                        }
                     }
                 }
             }

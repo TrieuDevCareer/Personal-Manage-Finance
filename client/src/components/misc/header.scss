@@ -1,7 +1,6 @@
 @import "../../style/variables.scss";
 
-
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .header-container {
         display: grid;
         grid-template-columns: 13rem 13rem 13rem 13rem auto;
@@ -74,22 +73,96 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
     .header-container {
         display: grid;
-        grid-template-columns: 5.7rem 5.7rem 5.7rem 5.7rem;
+        grid-template-columns: 13rem 13rem 13rem 13rem auto;
+        position: relative;
+        transform: translate(0%, 70%);
+
+        .box-bg {
+            margin-left: 10%;
+            text-align: center;
+            border-radius: 15px;
+
+            .txt-style {
+                color: var(--text-light-color);
+                text-decoration: none;
+                display: flex;
+                width: 12rem;
+
+                p {
+                    position: relative;
+                    transform: translate(0%, 25%);
+                    margin-left: 0.8rem;
+                }
+
+                .nav-icon {
+                    width: 2rem;
+                    height: fit-content;
+                    border-radius: 50%;
+                    margin-left: 0.2rem;
+                    margin-top: 0.3rem;
+                }
+            }
+
+        }
+
+        .gradient-btn {
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .default-btn {
+            background-color: var(--background-rdcolor);
+        }
+
+        .box-bg:hover {
+            background: var(--background-title-color);
+            background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+        }
+
+        .title-root {
+            display: flex;
+            justify-content: right;
+            margin-right: 1rem;
+            align-items: center;
+
+            .tile-userName {
+                margin-right: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            .btn-style-edit {
+                height: 1.5rem;
+                width: 1.5rem;
+                cursor: pointer;
+            }
+
+            .btn-style-edit:hover {
+                color: var(--background-title-color);
+                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 46.200625em) {
+    .header-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
         position: fixed;
-        margin-left: 0.2rem;
         padding-bottom: 0.5rem;
         top: 0rem;
         background-color: var(--background-stcolor);
         z-index: 0;
 
         .box-bg {
-            margin-left: 0.3rem;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
             text-align: center;
             border-radius: 15px;
-            height: 2.2rem;
+            height: 3rem;
             align-content: center;
             margin-top: 0.5rem;
 
@@ -97,21 +170,21 @@
                 color: var(--text-light-color);
                 text-decoration: none;
                 display: grid;
-                grid-template-columns: 1.1rem 3.4rem;
-                width: 0.5rem;
+                grid-template-columns: 20% 80%;
+                width: 100%;
                 align-items: center;
                 grid-template-rows: 1rem;
 
                 p {
-                    font-size: 0.7rem;
                     margin-top: 0.9rem;
                     text-align: left;
                     margin-left: 0.5rem;
+                    font-size: 2.5vw;
                 }
 
                 .nav-icon {
-                    width: 1.4rem;
-                    height: 1.4rem;
+                    width: 100%;
+                    height: auto;
                     border-radius: 50%;
                     margin-left: 0.2rem;
                 }

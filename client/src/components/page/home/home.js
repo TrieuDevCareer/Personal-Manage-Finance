@@ -71,12 +71,12 @@ function Home() {
       getSavings();
       handleGetExpensePie();
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [user]);
   return (
-    <div>
+    <div className="home-root">
       {user && !userData && !savingReportTotal && !investReportTotal && <LoadingProgess />}
       {user && userData && savingReportTotal && investReportTotal && (
         <div className="home-container">

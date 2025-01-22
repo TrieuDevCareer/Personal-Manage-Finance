@@ -1,7 +1,7 @@
 @import "../../style/variables.scss";
 
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .vertical-nav {
         min-width: 17rem;
         width: 17rem;
@@ -87,12 +87,12 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {}
+
+@media only screen and (max-width: 46.200625em) {
     .vertical-nav {
-        width: 13rem;
-        height: 42.1rem;
-        top: 0;
-        left: 0;
+        width: 50%;
+        height: 100%;
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
         transition: all 0.4s;
         background-color: var(--background-stcolor);
@@ -102,10 +102,12 @@
         .close-icon {
             z-index: 100;
             position: fixed;
-            left: 11.5rem;
+            left: 43%;
             transition: left 0.4s;
-            top: 20rem;
-            font-size: 2rem;
+            font-size: 4vh;
+            display: grid;
+            height: 100vh;
+            place-items: center;
         }
 
         .close-icon:hover {
@@ -127,8 +129,8 @@
 
         .list-nav {
             list-style-type: none;
-            position: relative;
-            top: -2rem;
+            height: 100%;
+            margin-top: -1rem;
 
             li {
                 margin-bottom: 10%;
@@ -138,17 +140,18 @@
             .txt-style {
 
                 text-decoration: none;
-                display: flex;
+                display: grid;
+                grid-template-columns: 20% 80%;
 
                 p {
-                    position: relative;
                     transform: translate(0%, 25%);
                     margin-left: 0.3rem;
+                    font-size: 4vw;
                 }
 
                 .nav-icon {
-                    width: 2rem;
-                    height: 2rem;
+                    width: 100%;
+                    height: auto;
                     border-radius: 50%;
                 }
             }
@@ -169,7 +172,7 @@
         }
 
         .line-nav {
-            width: 10rem;
+            width: 40%;
             height: 1.1px;
             position: absolute;
             left: 1rem;
@@ -178,10 +181,10 @@
         }
 
         .vertical-line-nav {
-            height: 33rem;
+            height: 90%;
             width: 1.1px;
             position: absolute;
-            left: 11.5rem;
+            left: 40%;
             top: 3rem;
             background: linear-gradient(180deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
         }

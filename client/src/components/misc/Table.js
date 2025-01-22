@@ -152,7 +152,7 @@ function Table({
     }
   }
   useEffect(() => {
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [chooseData]);

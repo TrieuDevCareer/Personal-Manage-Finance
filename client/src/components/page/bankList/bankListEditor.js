@@ -45,7 +45,7 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
       setBnkLstID(editBankListData.bnkLstID ? editBankListData.bnkLstID : "");
       setBnkName(editBankListData.bnkName ? editBankListData.bnkName : "");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editBankListData]);

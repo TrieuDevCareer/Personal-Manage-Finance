@@ -21,7 +21,7 @@ function App() {
   };
 
   const closeMenuOnMobile = () => {
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setShowMenu(false);
     }
   };

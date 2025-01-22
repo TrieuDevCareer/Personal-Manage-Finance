@@ -45,7 +45,7 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
       setCoinLstID(editCoinListData.coinLstID ? editCoinListData.coinLstID : "");
       setCoinName(editCoinListData.coinName ? editCoinListData.coinName : "");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editCoinListData]);

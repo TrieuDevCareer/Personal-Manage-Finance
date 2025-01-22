@@ -60,7 +60,7 @@ function Header({ clickPattern, setClickPattern }) {
       setStyleInvest("box-bg default-btn");
       setStyleSaving("box-bg default-btn");
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [clickPattern, user]);
@@ -91,7 +91,7 @@ function Header({ clickPattern, setClickPattern }) {
         </Link>
       </div>
 
-      {user && window.outerWidth > 375 && (
+      {user && window.outerWidth > 739 && (
         <div className="title-root">
           <div className="tile-userName">Welcome, {user.userName}</div>
           <LogoutIcon className="btn-style-edit" onClick={() => logOut()} />

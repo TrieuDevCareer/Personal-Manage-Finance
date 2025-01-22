@@ -2,7 +2,7 @@
 
 
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .popup-container-expense {
         display: flex;
         position: absolute;
@@ -70,7 +70,7 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 46.200625em) {
     .popup-container-expense {
         height: 38rem;
         width: 23.4rem;

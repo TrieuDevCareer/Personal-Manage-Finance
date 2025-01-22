@@ -1,6 +1,6 @@
 @import url("../../style/variables.scss");
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     .table-root {
         width: auto;
         height: auto;
@@ -98,7 +98,7 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 46.200625em) {
     .table-root {
         width: 23.3rem;
         height: max-content;

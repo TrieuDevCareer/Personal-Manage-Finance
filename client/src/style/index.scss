@@ -7,7 +7,7 @@
 }
 
 
-@media screen and (min-width: 376px) {
+@media only screen and (min-width: 64em) {
     body {
         background: var(--background-stcolor);
         color: var(--text-light-color);
@@ -47,7 +47,10 @@
     }
 }
 
-@media screen and (max-width: 376px) {
+
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {}
+
+@media only screen and (max-width: 46.200625em) {
     body {
         background: var(--background-stcolor);
         color: var(--text-light-color);
@@ -67,11 +70,13 @@
             z-index: 10000;
             cursor: pointer;
             left: -14px;
-            top: 20rem;
             opacity: 1;
             visibility: visible;
             transition: left 0.4s;
-            font-size: 3rem;
+            font-size: 6vh;
+            display: grid;
+            height: 100vh;
+            place-items: center;
         }
 
         .navbar-icon:hover {
@@ -102,6 +107,7 @@
 
         .show-menu {
             left: 0;
+            width: 100%;
         }
 
         .group-left-area {
@@ -114,9 +120,9 @@
             }
 
             .router {
-                width: 23.5rem;
-                height: auto;
-                margin-top: 4rem;
+                height: 100vh;
+                place-items: center;
+                display: grid;
             }
         }
     }

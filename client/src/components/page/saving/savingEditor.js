@@ -149,7 +149,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
         editSavingData.savRealInterMoney ? currencyStringToInt(editSavingData.savRealInterMoney) : 0
       );
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editSavingData]);

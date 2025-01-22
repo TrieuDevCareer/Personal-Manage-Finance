@@ -83,7 +83,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
       setIsLockContent(false);
       getExpenseLists(editExpenseData.exelstCode);
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editExpenseData]);
@@ -94,9 +94,6 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
         <Box
           className="popup-form"
           component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
-          }}
           noValidate
           autoComplete="off"
           onSubmit={saveExpense}

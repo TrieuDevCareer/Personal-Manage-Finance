@@ -20,7 +20,7 @@ function Register() {
   const [walletFree, setWalletFree] = useState(0);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [phoneWidth, setPhoneWidth] = useState("40rem");
+  const [phoneWidth, setPhoneWidth] = useState("windown");
 
   const navigate = useNavigate();
 
@@ -58,9 +58,9 @@ function Register() {
     // await getUser();
   }
   useEffect(() => {
-    if (window.outerWidth <= 375) {
-      setPhoneWidth("20rem");
-    } else setPhoneWidth("40rem");
+    if (window.outerWidth <= 739) {
+      setPhoneWidth("phone");
+    } else setPhoneWidth("windown");
   }, [phoneWidth, isLoading]);
 
   return (
@@ -73,7 +73,11 @@ function Register() {
             className="auth-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: `${phoneWidth}` },
+              "& > :not(style)": {
+                m: 1,
+                width: phoneWidth === "phone" ? "100%" : "40rem",
+                paddingRight: "2%",
+              },
             }}
             noValidate
             autoComplete="off"
@@ -173,7 +177,7 @@ function Register() {
               <Button
                 variant="contained"
                 color="success"
-                size={phoneWidth === "17rem" ? "small" : "medium"}
+                size={phoneWidth === "phone" ? "small" : "medium"}
                 type="submit"
               >
                 Đăng ký
@@ -181,7 +185,7 @@ function Register() {
               <Button
                 variant="contained"
                 color="error"
-                size={phoneWidth === "17rem" ? "small" : "medium"}
+                size={phoneWidth === "phone" ? "small" : "medium"}
                 onClick={() => navigate("/")}
               >
                 Hủy

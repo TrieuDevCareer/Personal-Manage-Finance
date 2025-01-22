@@ -83,7 +83,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
       setIsLockContent(false);
       getIncomeLists(editIncomeData.inlstCode);
     }
-    if (window.outerWidth <= 375) {
+    if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
   }, [editIncomeData]);
