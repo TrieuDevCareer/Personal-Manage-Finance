@@ -119,13 +119,13 @@ function Home() {
                     highlightScope: { faded: "global", highlighted: "item" },
                     faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                     innerRadius: 30,
-                    outerRadius: isPhoneWidth ? 160 : 95,
+                    outerRadius: isPhoneWidth ? 200 : 95,
                     paddingAngle: 2,
                     cornerRadius: 3,
                     startAngle: -180,
                     endAngle: 180,
-                    cx: isPhoneWidth ? 173 : 170,
-                    cy: isPhoneWidth ? 200 : 100,
+                    cx: isPhoneWidth ? 500 : 500,
+                    cy: isPhoneWidth ? 200 : 10000,
                     arcLabel: getArcLabel,
                   },
                 ]}
@@ -167,8 +167,6 @@ function Home() {
           </div>
           <div className="bottom-left-container">
             <div className="title-container top-left">Bảng thống kê Thu - Chi qua các tháng</div>
-            <div className="distance-box"></div>
-            {isPhoneWidth && <div className="distance-box-v2"></div>}
             <TableReport page={"home"} />
           </div>
           <div className="bottom-right-container">
@@ -223,12 +221,12 @@ function Home() {
                 </div>
                 <div className="second-gr-box">
                   <div className="box-item box-item-first">
-                    <div className="title">Tổng số tiền chưa đem đi</div>
-                    <div className="money">{investReportTotal.nonInvestAmount}</div>
+                    <div className="title-nd">Tổng số tiền chưa đem đi</div>
+                    <div className="money-nd">{investReportTotal.nonInvestAmount}</div>
                   </div>
                   <div className="box-item  box-item-second">
-                    <div className="title">Tổng số tiền có thể lãi lỗ</div>
-                    <div className="money">{investReportTotal.profitAmount}</div>
+                    <div className="title-nd">Tổng số tiền có thể lãi lỗ</div>
+                    <div className="money-nd">{investReportTotal.profitAmount}</div>
                   </div>
                 </div>
               </div>

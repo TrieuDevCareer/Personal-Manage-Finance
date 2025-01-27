@@ -274,14 +274,16 @@
         width: 100%;
 
         .home-container {
-            width: 23.4rem;
+            width: 100%;
             display: grid;
             justify-items: center;
             z-index: -2;
+            grid-template-rows: auto auto auto auto;
+            margin-top: 5rem;
 
             .title-container {
                 font-weight: 500;
-                font-size: 1.3rem;
+                font-size: 4vw;
                 margin-left: 1rem;
                 background: rgb(0, 136, 255);
                 background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
@@ -292,72 +294,78 @@
             }
 
             .distance-box {
-                height: 1rem;
+                height: 5vw;
             }
 
             .top-left-container {
                 background-color: var(--background-rdcolor);
-                // margin: 0.5rem;
                 border-radius: 1rem;
-                height: 25.5rem;
-                width: 22.3rem;
+                height: 32rem;
+                width: 90%;
                 justify-content: center;
                 justify-items: center;
 
                 .box {
-                    margin-top: 2.5rem;
-                    width: 20rem;
+                    margin-top: 4rem;
+                    width: 100%;
                     justify-items: center;
-                    margin-left: 1rem;
+                    height: 32.5vh;
 
                     .title {
                         margin-left: 0.5rem;
                         margin-top: 0.2rem;
-                        font-size: 1rem;
+                        font-size: 1.7rem;
                         font-weight: 500;
                     }
 
                     .money {
-                        text-align: end;
-                        font-size: 1.3rem;
+                        right: 11vw;
+                        position: absolute;
+                        font-size: 2rem;
                         font-weight: 500;
-                        margin-right: 0.5rem;
+                        margin-top: -2vw;
                     }
 
                     .bank {
                         margin-left: 0.5rem;
-                        font-size: 1rem;
+                        font-size: 1.3rem;
                         color: var(--text-warning-color);
+                        margin-top: 1.6rem;
+                        font-weight: 500;
                     }
 
                     .box-SO-container {
                         border-radius: 1rem;
-                        margin-bottom: 0.7rem;
-                        height: 5rem;
+                        margin-bottom: 1rem;
+                        height: 6rem;
+                        width: 90%;
                         background: rgb(195, 34, 128);
                         background: radial-gradient(circle, rgba(195, 34, 128, 1) 0%, rgba(194, 34, 195, 1) 100%);
                     }
 
                     .box-TK-container {
                         border-radius: 1rem;
-                        margin-bottom: 0.7rem;
-                        height: 5rem;
+                        margin-bottom: 1rem;
+                        height: 6rem;
+                        width: 90%;
                         background: rgb(93, 195, 34);
                         background: linear-gradient(0deg, rgba(93, 195, 34, 1) 0%, rgba(34, 193, 195, 1) 100%);
                     }
 
                     .box-DT-container {
                         border-radius: 1rem;
-                        margin-bottom: 0.7rem;
-                        height: 5rem;
+                        margin-bottom: 1rem;
+                        height: 6rem;
+                        width: 90%;
                         background: rgb(16, 90, 199);
                         background: linear-gradient(90deg, rgba(16, 90, 199, 1) 0%, rgba(27, 111, 173, 1) 50%, rgba(25, 182, 196, 1) 100%);
                     }
 
                     .box-TD-container {
                         border-radius: 1rem;
-                        margin-bottom: 0.7rem;
-                        height: 5rem;
+                        margin-bottom: 1rem;
+                        height: 6rem;
+                        width: 90%;
                         background: rgb(113, 27, 173);
                         background: linear-gradient(90deg, rgba(113, 27, 173, 1) 0%, rgba(158, 114, 189, 1) 50%, rgba(233, 230, 235, 1) 100%);
                     }
@@ -372,7 +380,7 @@
                 margin-bottom: 1rem;
                 border-radius: 1rem;
                 height: 25.5rem;
-                width: 22.3rem;
+                width: 90%;
 
                 .pieChart {
                     z-index: -2;
@@ -395,11 +403,63 @@
                 margin-bottom: 1rem;
                 border-radius: 1rem;
                 font-size: 0.8rem;
-                height: 27.8rem;
-                width: 22.3rem;
+                height: 40rem;
+                width: 90%;
 
-                .distance-box-v2 {
-                    margin-bottom: 2.5rem;
+                .table-report {
+                    width: 95%;
+                    height: 95%;
+                    justify-self: center;
+                    margin-top: 5vw;
+
+                    thead {
+                        th {
+                            font-size: 3vw;
+                            height: 3rem;
+                            text-align: center;
+                            border-bottom: 1px solid var(--text-title-color);
+                        }
+                    }
+
+                    tbody {
+                        font-size: 3vw;
+
+                        .item-table-income {
+                            color: var(--text-green-color);
+                            font-weight: 450;
+                        }
+
+                        .item-table-expense {
+                            color: var(--text-danger-color);
+                            font-weight: 450;
+                        }
+
+                        .item-table-different {
+                            color: var(--text-title-color);
+                            font-weight: 450;
+                            text-align: right;
+                        }
+                    }
+
+                    tfoot {
+                        font-size: 3vw;
+
+                        td {
+                            height: 3rem;
+                            border-top: 1px solid var(--text-title-color);
+                            font-weight: 500;
+                            color: var(--text-warning-color);
+                        }
+                    }
+
+                    td {
+                        height: 2.2rem;
+                        text-align: center;
+                    }
+
+                    #home {
+                        height: 1.5rem;
+                    }
                 }
             }
 
@@ -409,7 +469,7 @@
                 border-radius: 1rem;
                 font-size: 0.8rem;
                 height: 27.8rem;
-                width: 22.3rem;
+                width: 90%;
 
                 .tk-report-container {
                     background-color: var(--background-rdcolor);
@@ -420,23 +480,26 @@
                         margin-top: 1rem;
                         margin-left: 0.8rem;
                         display: grid;
-                        grid-template-rows: 5.7rem 5.7rem 5.7rem 5.7rem;
+                        grid-template-rows: 25% 25% 25% 25%;
+                        justify-items: center;
+                        height: 37rem;
 
                         .item-box {
                             border-radius: 1rem;
-                            margin-bottom: 0.7rem;
-                            margin-right: 1rem;
+                            margin-bottom: 1rem;
+                            width: 95%;
                             justify-items: center;
                             align-items: center;
-                            display: flex;
+                            display: grid;
+                            grid-template-columns: 5rem auto;
 
                             .icon-container {
                                 background-color: #e3b393;
                                 margin-left: 1rem;
                                 border: solid 0.2rem var(--text-light-color);
                                 border-radius: 50%;
-                                height: 3.5rem;
-                                width: 3.5rem;
+                                height: 10vw;
+                                width: 10vw;
                                 justify-content: center;
                                 align-items: center;
                                 display: flex;
@@ -450,20 +513,20 @@
 
                             .box-title {
                                 display: grid;
-                                grid-template-rows: 1rem 3rem;
-                                margin-left: 0.5rem;
+                                grid-template-rows: 5vw 11vw;
+                                margin-left: 1rem;
+                                justify-self: left;
 
                                 .money-title {
-
                                     font-weight: 500;
-                                    font-size: 0.9rem;
+                                    font-size: 4vw;
                                     color: var(--text-dark-color);
                                 }
 
                                 .money-value {
                                     align-self: end;
-                                    font-weight: 700;
-                                    font-size: 1.4rem;
+                                    font-weight: 500;
+                                    font-size: 6vw;
                                     color: var(--text-ndtitle-color);
                                 }
                             }
@@ -492,8 +555,11 @@
                 }
 
                 .dt-report-container {
-                    height: 27.8rem;
-                    width: 22.3rem;
+                    height: 27rem;
+                    width: 90%;
+                    justify-content: center;
+                    justify-items: center;
+                    padding-bottom: 1rem;
 
                     .bg-box {
                         opacity: 0.5;
@@ -502,9 +568,12 @@
                         background-size: cover;
                         position: absolute;
                         border-radius: 1rem;
-                        height: 27.8rem;
-                        width: 22.3rem;
                         z-index: -1;
+                        height: 27rem;
+                        width: 90%;
+                        justify-content: center;
+                        justify-items: center;
+                        margin-bottom: 1rem;
                     }
 
                     .box-TD-root {
@@ -512,56 +581,77 @@
                         position: absolute;
                         margin-top: 5rem;
                         display: grid;
-                        grid-template-rows: 9rem 9rem;
-                        width: 20.9rem;
+                        grid-template-rows: auto auto;
                         justify-items: center;
                         align-content: center;
-                        margin-left: 0.7rem;
+                        width: 90%;
 
                         .box-item {
                             border-radius: 1rem;
-                            margin-right: 0.5rem;
-                            width: 12rem;
+                            width: 98%;
                             background-color: #cbb0b4;
                             height: 7rem;
                             text-align: center;
                             align-content: center;
-                            justify-content: center;
+
+                            .title {
+                                color: var(--text-dark-color);
+                                font-size: 4vw;
+                            }
+
+                            .money {
+                                color: var(--text-ndtitle-color);
+                                font-weight: 500;
+                                font-size: 5vw;
+                            }
                         }
 
                         .second-gr-box {
                             display: grid;
                             justify-items: center;
-                            grid-template-columns: 10rem auto;
-                            margin-top: 1rem;
+                            grid-template-columns: 50% 50%;
+                            margin-top: 2rem;
+                            width: 99%;
 
                             .box-item {
                                 border-radius: 1rem;
-                                margin-right: 0.5rem;
-                                width: 9.5rem;
+                                width: 90%;
                                 align-content: center;
                             }
 
                             .box-item-first {
                                 background-color: #aac7cf;
+
+                                .title-nd {
+                                    color: var(--text-dark-color);
+                                    font-size: 3vw;
+                                }
+
+                                .money-nd {
+                                    color: var(--text-ndtitle-color);
+                                    font-weight: 500;
+                                    font-size: 5vw;
+                                }
                             }
 
                             .box-item-second {
-
                                 background-color: #cfc5a8;
+
+                                .title-nd {
+                                    color: var(--text-dark-color);
+                                    font-size: 3vw;
+                                }
+
+                                .money-nd {
+                                    color: var(--text-ndtitle-color);
+                                    font-weight: 500;
+                                    font-size: 5vw;
+                                }
+
                             }
                         }
 
-                        .title {
-                            color: var(--text-dark-color);
-                            font-size: 1rem;
-                        }
 
-                        .money {
-                            color: var(--text-ndtitle-color);
-                            font-weight: 500;
-                            font-size: 0.9rem;
-                        }
                     }
                 }
             }
