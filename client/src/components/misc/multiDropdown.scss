@@ -2,9 +2,12 @@
 
 .multidrp-container {
     .multidrp-form {
+        width: 100%;
+
         .multidrp-lable {
             color: var(--background-light-color);
-            top: -0.7rem
+            top: -0.8rem;
+            font-size: 1.1rem;
         }
 
         .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {

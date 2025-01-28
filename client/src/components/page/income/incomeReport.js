@@ -83,7 +83,7 @@ function IncomeReport() {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !incomeReportData && !contentData && <LoadingProgess />}
       {user && incomeReportData && contentData && (
         <div className="incomeRp-container">
@@ -144,7 +144,7 @@ function IncomeReport() {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 export default IncomeReport;
