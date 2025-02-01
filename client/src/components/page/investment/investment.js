@@ -122,7 +122,7 @@ function Investment({ isCheck, setIsCheck }) {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !investmentData && !investReportTotal && <LoadingProgess />}
       {user && investReportTotal && investmentData && (
         <div className="investment-container">
@@ -134,7 +134,7 @@ function Investment({ isCheck, setIsCheck }) {
               editInvestmentData={editInvestmentData}
             />
           ) : (
-            <div>
+            <>
               <div className="report-investment">
                 <div className="report-invest">
                   <div className="report-item">
@@ -163,7 +163,7 @@ function Investment({ isCheck, setIsCheck }) {
                 bStatus={bStatusInvest}
                 colorTitle={"#ff007f"}
               />
-            </div>
+            </>
           )}
           {!investmentEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/coinlist")}>
@@ -174,7 +174,7 @@ function Investment({ isCheck, setIsCheck }) {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
