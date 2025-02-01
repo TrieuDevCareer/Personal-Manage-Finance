@@ -42,12 +42,12 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
     else getExpenseLists();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !isCatalogPage && !expenseListData && <LoadingProgess />}
       {user && expenseListData && (
         <div
           className="expenseList-container"
-          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+          style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}
         >
           <div className="title-container">
             {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}
@@ -59,7 +59,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
               editExpenseListData={editExpenseListData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={expenseListData}
                 aKeyItem={aKeyItem}
@@ -72,12 +72,12 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#ff007f"}
               />
-            </div>
+            </>
           )}
           {!expenseListEditorOpen && !isCatalogPage && (
             <div
               className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
               onClick={() => navigate("/expense")}
             >
               <OpenInNewIcon />
@@ -88,7 +88,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
