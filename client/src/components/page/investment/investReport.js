@@ -109,7 +109,7 @@ function InvestReport() {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !coinData && !investReportTotal && !investReportData && !pieChartData && (
         <LoadingProgess />
       )}
@@ -230,7 +230,7 @@ function InvestReport() {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 export default InvestReport;
