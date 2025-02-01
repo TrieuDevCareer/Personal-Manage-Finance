@@ -109,7 +109,7 @@ function SavingReport() {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !savingReportData && !savingReportTotal && !pieChartData && !bankData && (
         <LoadingProgess />
       )}
@@ -157,9 +157,7 @@ function SavingReport() {
                       <AccountBalanceIcon className="icon" />
                     </div>
                     <div className="box-title">
-                      <div className="money-title">
-                        Tổng số tiền nếu rút hết Tài Khoản Tiết Kiệm
-                      </div>
+                      <div className="money-title">Tổng tiền gốc, lãi của các khoản Tiết Kiệm</div>
                       <div className="money-value">{savingReportTotal.iReportTotalMon}</div>
                     </div>
                   </div>
@@ -241,7 +239,7 @@ function SavingReport() {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 export default SavingReport;
