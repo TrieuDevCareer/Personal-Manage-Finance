@@ -100,7 +100,7 @@ function ExpenseReport() {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !expenseReportData && !resultByDay && !contentData && <LoadingProgess />}
       {user && expenseReportData && resultByDay && contentData && (
         <div className="expenseRp-container">
@@ -219,7 +219,7 @@ function ExpenseReport() {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 export default ExpenseReport;
