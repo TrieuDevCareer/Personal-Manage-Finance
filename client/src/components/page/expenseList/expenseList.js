@@ -81,7 +81,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
               onClick={() => navigate("/expense")}
             >
               <OpenInNewIcon />
-              <div className="footer-titel">DANH SÁCH CÁC KHOẢN CHI</div>
+              <div className="footer-title">DANH SÁCH CÁC KHOẢN CHI</div>
             </div>
           )}
         </div>

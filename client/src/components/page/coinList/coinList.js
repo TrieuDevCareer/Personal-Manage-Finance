@@ -82,7 +82,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
               onClick={() => navigate("/invest")}
             >
               <OpenInNewIcon />
-              <div className="footer-titel">DANH SÁCH ĐẦU TƯ</div>
+              <div className="footer-title">DANH SÁCH ĐẦU TƯ</div>
             </div>
           )}
         </div>

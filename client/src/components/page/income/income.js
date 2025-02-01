@@ -83,7 +83,7 @@ function Income({ isCheck, setIsCheck }) {
           {!incomeEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/incomelist")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC THU NHẬP</div>
+              <div className="footer-title">DANH MỤC THU NHẬP</div>
             </div>
           )}
         </div>

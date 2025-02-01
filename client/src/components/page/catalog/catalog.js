@@ -10,7 +10,7 @@ import AuthPage from "../../auth/authPage.js";
 function Catalog() {
   const { user } = useContext(UserContext);
   return (
-    <div>
+    <>
       {user && (
         <div className="catalog-container">
           <div className="title-catalog">DANH MỤC</div>
@@ -35,7 +35,7 @@ function Catalog() {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 

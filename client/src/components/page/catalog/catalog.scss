@@ -68,12 +68,15 @@
 
 @media only screen and (max-width: 46.200625em) {
     .catalog-container {
-        z-index: -1;
-        height: auto;
-        width: 23.4rem;
-        align-items: center;
+        justify-content: center;
         justify-items: center;
-        margin-top: 1rem;
+        display: grid;
+        text-align: center;
+        grid-auto-rows: max-content auto 0.5rem auto;
+        width: 95%;
+        height: auto;
+        align-self: start;
+        margin-top: 5rem;
 
         .title-catalog {
             text-align: center;

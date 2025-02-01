@@ -42,12 +42,12 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
     else getIncomeLists();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !incomeListData && !isCatalogPage && <LoadingProgess />}
       {user && incomeListData && (
         <div
           className="incomeList-container"
-          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
+          style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}
         >
           <div className="title-container">
             {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}
@@ -59,7 +59,7 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
               editIncomeListData={editIncomeListData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={incomeListData}
                 aKeyItem={aKeyItem}
@@ -72,23 +72,23 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#0ecb74"}
               />
-            </div>
+            </>
           )}
           {!incomeListEditorOpen && !isCatalogPage && (
             <div
               className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
               onClick={() => navigate("/income")}
             >
               <OpenInNewIcon />
-              <div className="footer-titel">DANH SÁCH CÁC KHOẢN THU</div>
+              <div className="footer-title">DANH SÁCH CÁC KHOẢN THU</div>
             </div>
           )}
         </div>
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 

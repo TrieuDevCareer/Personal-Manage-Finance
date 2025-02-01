@@ -84,7 +84,7 @@ function Expense({ isCheck, setIsCheck }) {
           {!expenseEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/expenselist")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC CHI TIÊU</div>
+              <div className="footer-title">DANH MỤC CHI TIÊU</div>
             </div>
           )}
         </div>

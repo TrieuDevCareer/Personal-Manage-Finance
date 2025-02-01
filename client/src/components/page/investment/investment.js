@@ -168,7 +168,7 @@ function Investment({ isCheck, setIsCheck }) {
           {!investmentEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/coinlist")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC ĐỒNG COIN</div>
+              <div className="footer-title">DANH MỤC ĐỒNG COIN</div>
             </div>
           )}
         </div>

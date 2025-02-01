@@ -161,7 +161,7 @@ function Saving({ isCheck, setIsCheck }) {
           {!savingEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/banklist")}>
               <OpenInNewIcon />
-              <div className="footer-titel">DANH MỤC NGÂN HÀNG</div>
+              <div className="footer-title">DANH MỤC NGÂN HÀNG</div>
             </div>
           )}
         </div>

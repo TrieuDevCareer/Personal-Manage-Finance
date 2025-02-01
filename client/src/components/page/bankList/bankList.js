@@ -82,7 +82,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
               onClick={() => navigate("/saving")}
             >
               <OpenInNewIcon />
-              <div className="footer-titel">DANH SÁCH GỬI TIẾT KIỆM</div>
+              <div className="footer-title">DANH SÁCH GỬI TIẾT KIỆM</div>
             </div>
           )}
         </div>
