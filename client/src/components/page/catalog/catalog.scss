@@ -80,14 +80,14 @@
 
         .title-catalog {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 6vw;
             font-weight: 500;
             color: var(--background-title-color);
         }
 
         .catalog-table-container {
             display: grid;
-            grid-template-rows: 26rem 26rem 26rem;
+            grid-template-rows: 76rem 76rem auto;
 
             // .catalog-income {
             //     margin-right: 1rem;
@@ -100,7 +100,7 @@
             .catalog-group {
                 .catalog-frs-group {
                     display: grid;
-                    grid-template-rows: 26rem 26rem;
+                    grid-template-rows: 76rem 76rem;
                 }
             }
         }
