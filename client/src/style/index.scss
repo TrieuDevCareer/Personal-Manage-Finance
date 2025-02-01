@@ -74,9 +74,8 @@
             visibility: visible;
             transition: left 0.4s;
             font-size: 6vh;
-            display: grid;
-            height: 100vh;
-            place-items: center;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .navbar-icon:hover {

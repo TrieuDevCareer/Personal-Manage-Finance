@@ -100,7 +100,7 @@
 
 @media only screen and (max-width: 46.200625em) {
     .table-root {
-        width: 23.3rem;
+        width: 100%;
         height: max-content;
         margin-top: 0.7rem;
         overflow-x: auto;
@@ -108,16 +108,16 @@
 
 
         .table-container {
-            width: 23.32rem;
+            width: 100%;
             height: max-content;
             background-color: var(--background-ndcolor);
             margin-bottom: 1rem;
 
             .table-header {
                 .table-title {
-                    font-size: 0.7rem;
-                    width: 20rem;
-                    height: 2rem;
+                    font-size: 2.6vw;
+                    width: 80vw;
+                    height: 4rem;
                     text-align: center;
                     font-weight: bold;
                     border: 1px solid var(--background-title-color);
@@ -126,11 +126,11 @@
                 }
 
                 .stt-style {
-                    width: 1rem;
+                    width: 2rem;
                 }
 
                 .edit-style {
-                    width: 2em;
+                    width: 3rem;
                 }
             }
 
@@ -139,15 +139,18 @@
                     border: 1px solid var(--background-title-color);
                     border-collapse: collapse;
                     text-align: center;
-                    height: 2rem;
-                    font-size: 0.7rem;
+                    height: 6.5rem;
+                    font-size: 3vw;
+
+                    .css-i4bv87-MuiSvgIcon-root {
+                        font-size: 4vw;
+                    }
                 }
 
                 .btn-style-edit {
-                    height: 1.5rem;
-                    width: 1.5rem;
+                    height: 6vw;
+                    width: 6vw;
                     cursor: pointer;
-                    // margin-left: 0.5rem;
                 }
 
                 .btn-style-edit-disable {
@@ -189,6 +192,10 @@
             .btn-style-delete:hover {
                 color: var(--text-danger-color);
                 color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
+            }
+
+            .css-i4bv87-MuiSvgIcon-root {
+                font-size: 5vw;
             }
         }
 

@@ -52,7 +52,7 @@ function Income({ isCheck, setIsCheck }) {
     else getIncomes();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !incomeData && <LoadingProgess />}
       {user && incomeData && (
         <div className="income-container">
@@ -66,7 +66,7 @@ function Income({ isCheck, setIsCheck }) {
               editIncomeData={editIncomeData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={incomeData}
                 aKeyItem={aKeyItem}
@@ -78,7 +78,7 @@ function Income({ isCheck, setIsCheck }) {
                 oRouter={oRouter}
                 colorTitle={"#0ecb74"}
               />
-            </div>
+            </>
           )}
           {!incomeEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/incomelist")}>
@@ -90,7 +90,7 @@ function Income({ isCheck, setIsCheck }) {
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
