@@ -54,7 +54,7 @@ function Expense({ isCheck, setIsCheck }) {
     else getExpenses();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !expenseData && <LoadingProgess />}
       {user && expenseData && (
         <div className="expense-container">
@@ -67,7 +67,7 @@ function Expense({ isCheck, setIsCheck }) {
               editExpenseData={editExpenseData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={expenseData}
                 aKeyItem={aKeyItem}
@@ -79,7 +79,7 @@ function Expense({ isCheck, setIsCheck }) {
                 oRouter={oRouter}
                 colorTitle={"#ff007f"}
               />
-            </div>
+            </>
           )}
           {!expenseEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/expenselist")}>
@@ -91,7 +91,7 @@ function Expense({ isCheck, setIsCheck }) {
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 

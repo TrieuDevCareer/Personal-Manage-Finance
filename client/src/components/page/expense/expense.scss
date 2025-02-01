@@ -50,12 +50,14 @@
         display: grid;
         text-align: center;
         grid-auto-rows: max-content 0.5rem auto;
-        width: 23.4rem;
+        width: 95%;
         height: auto;
+        align-self: start;
+        margin-top: 5rem;
 
         .title-expense {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 6vw;
             font-weight: 500;
             color: var(--background-title-color);
         }
@@ -67,15 +69,15 @@
         .footer-link {
             display: flex;
             position: relative;
-            bottom: -0.5rem;
             justify-self: flex-start;
             color: var(--background-light-color);
             font-weight: 500;
-            margin-bottom: 1rem;
-            font-size: 0.8rem;
 
             .footer-titel {
                 align-content: center;
+                font-size: 3.5vw;
+                margin-left: 0.5rem;
+                margin-top: -0.5rem;
             }
         }
 

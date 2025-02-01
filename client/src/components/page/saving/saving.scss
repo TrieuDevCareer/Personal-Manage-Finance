@@ -72,56 +72,60 @@
         justify-items: center;
         display: grid;
         text-align: center;
-        grid-auto-rows: max-content 0.5rem auto;
-        width: 23.4rem;
+        grid-auto-rows: max-content auto 0.5rem auto;
+        width: 95%;
         height: auto;
+        align-self: start;
+        margin-top: 5rem;
 
         .report-saving {
             display: grid;
-            grid-template-rows: auto auto auto auto auto;
-            grid-template-columns: 23.4rem;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
+            grid-template-rows: 5vw 5vw 5vw 5vw 5vw;
+            grid-template-columns: 100%;
+            margin-bottom: 3rem;
             justify-content: center;
 
             .report-item {
                 display: flex;
                 justify-content: end;
-                height: 1.5rem;
-                margin-left: 1rem;
 
                 p {
                     text-align: end;
                     margin-right: 1rem;
-                    width: 14rem;
+                    width: 100%;
+                    font-weight: 400;
+                    font-size: 3.5vw;
                 }
 
                 span {
-                    width: 10rem;
                     text-align: left;
+                    font-weight: 500;
+                    font-size: 3vw;
+                    color: var(--text-danger-color);
                 }
             }
         }
 
         .title-saving {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 6vw;
             font-weight: 500;
             color: var(--background-title-color);
+            margin-top: 1rem;
         }
 
         .footer-link {
             display: flex;
             position: relative;
-            bottom: -8rem;
             justify-self: flex-start;
             color: var(--background-light-color);
             font-weight: 500;
-            margin-bottom: 1rem;
-            font-size: 0.8rem;
 
             .footer-titel {
                 align-content: center;
+                font-size: 3.5vw;
+                margin-left: 0.5rem;
+                margin-top: -0.5rem;
             }
         }
 

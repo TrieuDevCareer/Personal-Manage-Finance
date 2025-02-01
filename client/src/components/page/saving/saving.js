@@ -109,7 +109,7 @@ function Saving({ isCheck, setIsCheck }) {
     }
   }, [user]);
   return (
-    <div>
+    <>
       {user && !savingData && !savingReportTotal && <LoadingProgess />}
       {user && savingData && savingReportTotal && (
         <div className="saving-container">
@@ -121,7 +121,7 @@ function Saving({ isCheck, setIsCheck }) {
               editSavingData={editSavingData}
             />
           ) : (
-            <div>
+            <>
               <div className="report-saving">
                 <div className="report-item">
                   <p>Số tiền tiết kiệm ban đầu:</p>
@@ -156,7 +156,7 @@ function Saving({ isCheck, setIsCheck }) {
                 bStatus={bStatusSaving}
                 colorTitle={"#0ecb74"}
               />
-            </div>
+            </>
           )}
           {!savingEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/banklist")}>
@@ -167,7 +167,7 @@ function Saving({ isCheck, setIsCheck }) {
         </div>
       )}
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
