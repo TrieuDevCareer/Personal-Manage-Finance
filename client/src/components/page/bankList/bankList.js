@@ -42,13 +42,10 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
     else getBankLists();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !isCatalogPage && !bankListData && <LoadingProgess />}
       {user && bankListData && (
-        <div
-          className="bankList-container"
-          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
-        >
+        <div className="bankList-container" style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}>
           <div className="title-container">
             {!isCatalogPage && <div className="title-bankList">DANH MỤC NGÂN HÀNG</div>}
           </div>
@@ -60,7 +57,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
               editBankListData={editBankListData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={bankListData}
                 aKeyItem={aKeyItem}
@@ -73,12 +70,12 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#0ecb74"}
               />
-            </div>
+            </>
           )}
           {!bankListEditorOpen && !isCatalogPage && (
             <div
               className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
               onClick={() => navigate("/saving")}
             >
               <OpenInNewIcon />
@@ -89,7 +86,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
