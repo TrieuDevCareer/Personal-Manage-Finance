@@ -42,13 +42,10 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
     else getCoinLists();
   }, [user]);
   return (
-    <div>
+    <>
       {user && !isCatalogPage && !coinListData && <LoadingProgess />}
       {user && coinListData && (
-        <div
-          className="coinList-container"
-          style={{ gridAutoColumns: isCatalogPage ? "auto" : "68.6rem" }}
-        >
+        <div className="coinList-container" style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}>
           <div className="title-container">
             {!isCatalogPage && <div className="title-coinList">DANH MỤC ĐỒNG COIN</div>}
           </div>
@@ -60,7 +57,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
               editCoinListData={editCoinListData}
             />
           ) : (
-            <div>
+            <>
               <Table
                 oData={coinListData}
                 aKeyItem={aKeyItem}
@@ -73,12 +70,12 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#ff007f"}
               />
-            </div>
+            </>
           )}
           {!coinListEditorOpen && !isCatalogPage && (
             <div
               className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "13rem" }}
+              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
               onClick={() => navigate("/invest")}
             >
               <OpenInNewIcon />
@@ -89,7 +86,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
       )}
 
       {user === null && <AuthPage />}
-    </div>
+    </>
   );
 }
 
