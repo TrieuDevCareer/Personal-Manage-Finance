@@ -66,13 +66,12 @@
 
 @media only screen and (max-width: 46.200625em) {
     .popup-container-coin {
-        z-index: -1;
-        display: grid;
-        height: auto;
-        width: 23.4rem;
+        height: 100vh;
+        width: 95%;
         align-items: center;
         justify-items: center;
-        margin-top: 1rem;
+        position: fixed;
+        top: 30%;
 
         .popup-form {
             display: grid;
@@ -83,13 +82,17 @@
             border-radius: 1rem;
 
             .popup-text {
+                width: 84vw;
+
                 label {
                     color: var(--text-light-color);
+                    font-size: 3vw;
                 }
 
                 div {
                     color: var(--text-light-color);
                     text-align: left;
+                    font-size: 4vw;
 
                     input {
                         color: var(--text-light-color);
@@ -103,7 +106,6 @@
 
                     svg {
                         color: var(--text-title-color);
-                        ;
                     }
                 }
             }
@@ -123,6 +125,22 @@
                         border-color: var(--text-danger-color);
                         ;
                     }
+                }
+            }
+
+            .css-1grant-MuiStack-root {
+                width: 84vw;
+
+                button {
+                    font-size: 3vw;
+                }
+            }
+
+            .css-1kbj1cy-MuiStack-root {
+                width: 84vw;
+
+                button {
+                    font-size: 3vw;
                 }
             }
         }

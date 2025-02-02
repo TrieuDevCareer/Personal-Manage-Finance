@@ -199,7 +199,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
           className="popup-form-invest"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "unset" : "40rem" },
           }}
           noValidate
           autoComplete="off"
@@ -326,7 +326,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
               />
             </div>
           </div>
-          <Stack className="btn-control" spacing={1} direction="row" justifyContent="right">
+          <Stack className="btn-control" spacing={2} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>
