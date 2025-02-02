@@ -55,6 +55,8 @@ function AreaChartType({ data, pageChart }) {
         TDContent: "Điểm kết thúc",
       });
       break;
+    default:
+      break;
   }
   if (pageChart !== "saving" && pageChart !== "invest") {
     data = frsPoint.concat(data);
