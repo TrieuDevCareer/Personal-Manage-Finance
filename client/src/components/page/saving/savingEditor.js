@@ -161,7 +161,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
           className="popup-form-saving"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "unset" : "40rem" },
           }}
           noValidate
           autoComplete="off"
