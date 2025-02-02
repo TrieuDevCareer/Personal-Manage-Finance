@@ -107,8 +107,6 @@
 
                     svg {
                         color: var(--text-title-color);
-                        // height: 6vw;
-                        // width: 6vw;
                     }
                 }
             }
@@ -133,6 +131,18 @@
 
             .css-1grant-MuiStack-root {
                 width: 85vw;
+
+                button {
+                    font-size: 3vw;
+                }
+            }
+
+            .css-1kbj1cy-MuiStack-root {
+                width: 85vw;
+
+                button {
+                    font-size: 3vw;
+                }
             }
         }
     }

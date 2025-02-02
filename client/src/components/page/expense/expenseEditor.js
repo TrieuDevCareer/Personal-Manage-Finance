@@ -94,6 +94,9 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
         <Box
           className="popup-form"
           component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+          }}
           noValidate
           autoComplete="off"
           onSubmit={saveExpense}
@@ -160,7 +163,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
             value={expMoney}
             onChange={onChangeMoney}
           />
-          <Stack spacing={1} direction="row" justifyContent="right">
+          <Stack spacing={2} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>
