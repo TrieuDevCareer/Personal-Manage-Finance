@@ -88,7 +88,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Stack spacing={2} direction="row" justifyContent="right">
+            <Stack spacing={2} direction="row" justifyContent="right" className="btn-control">
               <Button
                 variant="contained"
                 color="success"

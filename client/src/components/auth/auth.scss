@@ -82,7 +82,6 @@
         .box-container {
             width: 100%;
             display: grid;
-            /* justify-content: center; */
             align-content: center;
             height: 100%;
             justify-items: center;
@@ -96,26 +95,13 @@
                 width: 95%;
             }
 
-            .btn-control {
-                height: 1.7rem;
-                margin-top: 0.2rem;
-                margin: 8px;
-                width: 100%;
-                padding-right: 2%;
-
-                button {
-                    font-size: 0.7rem;
-                    align-items: center;
-                }
-            }
-
             .auth-form {
                 display: grid;
                 background-color: var(--background-rdcolor);
                 box-shadow: var(--box-shadow);
                 margin: 0.2rem;
                 border-radius: 1rem;
-                width: 80%;
+                width: 95%;
                 justify-items: center;
                 align-self: flex-start;
 
@@ -124,25 +110,23 @@
                 }
 
                 .auth-text {
-                    margin: 0px;
-                    width: 90%;
-                    padding-right: 2%;
+                    margin-bottom: 1rem;
+                    width: 88vw;
 
                     label {
-                        color: var(--text-light-color);
                         z-index: 0;
+                        color: var(--text-light-color);
+                        font-size: 3vw;
                     }
 
                     div {
                         color: var(--text-light-color);
                         text-align: left;
-                        height: 2.8rem;
-                        margin-bottom: 0.7rem;
+                        font-size: 4vw;
 
                         input {
                             color: var(--text-light-color);
                             text-align: left;
-                            font-size: 0.9rem;
                         }
 
                         fieldset {
@@ -168,6 +152,15 @@
                         fieldset {
                             border-color: var(--text-danger-color);
                         }
+                    }
+                }
+
+                .btn-control {
+                    width: 85vw;
+
+                    button {
+                        font-size: 3vw;
+                        align-items: center;
                     }
                 }
             }

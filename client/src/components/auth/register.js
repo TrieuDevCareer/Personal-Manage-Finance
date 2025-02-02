@@ -76,7 +76,6 @@ function Register() {
               "& > :not(style)": {
                 m: 1,
                 width: phoneWidth === "phone" ? "100%" : "40rem",
-                paddingRight: "2%",
               },
             }}
             noValidate
