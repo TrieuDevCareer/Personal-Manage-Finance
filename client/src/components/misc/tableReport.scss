@@ -1,64 +1,68 @@
-.table-report {
-    margin-top: 0.5rem;
+@media only screen and (min-width: 64em) {
+    .table-report {
+        width: 95%;
+        height: 95%;
+        justify-self: center;
 
-    thead {
-        th {
-            height: 3rem;
-            text-align: center;
-            border-bottom: 1px solid var(--text-title-color);
-        }
-    }
-
-    tbody {
-        .item-table-income {
-            color: var(--text-green-color);
-            font-weight: 450;
+        thead {
+            th {
+                height: 3rem;
+                text-align: center;
+                border-bottom: 1px solid var(--text-title-color);
+            }
         }
 
-        .item-table-expense {
-            color: var(--text-danger-color);
-            font-weight: 450;
+        tbody {
+            .item-table-income {
+                color: var(--text-green-color);
+                font-weight: 450;
+            }
+
+            .item-table-expense {
+                color: var(--text-danger-color);
+                font-weight: 450;
+            }
+
+            .item-table-different {
+                color: var(--text-title-color);
+                font-weight: 450;
+                text-align: right;
+            }
         }
 
-        .item-table-different {
-            color: var(--text-title-color);
-            font-weight: 450;
-            text-align: right;
+        tfoot {
+            td {
+                height: 3rem;
+                border-top: 1px solid var(--text-title-color);
+                font-weight: 500;
+                color: var(--text-warning-color);
+            }
         }
-    }
 
-    tfoot {
         td {
-            height: 3rem;
-            border-top: 1px solid var(--text-title-color);
-            font-weight: 500;
-            color: var(--text-warning-color);
+            height: 2.2rem;
+            text-align: center;
         }
-    }
 
-    td {
-        height: 2.2rem;
-        text-align: center;
-    }
+        #home {
+            height: 1.5rem;
+        }
 
-    #home {
-        height: 1.5rem;
-    }
+        .table-month {
+            text-align: right;
+            width: 2.7rem;
+        }
 
-    .table-month {
-        text-align: right;
-        width: 2.7rem;
-    }
+        .table-income {
+            width: 8.5rem;
+        }
 
-    .table-income {
-        width: 8.5rem;
-    }
+        .table-expense {
+            width: 8.5rem;
+        }
 
-    .table-expense {
-        width: 8.5rem;
-    }
-
-    .table-disting {
-        width: 7rem;
+        .table-disting {
+            width: 7rem;
+        }
     }
 }

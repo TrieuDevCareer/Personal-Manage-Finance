@@ -109,7 +109,6 @@ function Home() {
             <div className="title-container top-left">
               Phần trăm phân bổ theo danh mục Chi tháng {new Date().getMonth() + 1}
             </div>
-            <div className="distance-box"></div>
             {pieChartData.length > 0 ? (
               <PieChart
                 className="pieChart"
@@ -124,16 +123,15 @@ function Home() {
                     cornerRadius: 3,
                     startAngle: -180,
                     endAngle: 180,
-                    cx: isPhoneWidth ? 500 : 500,
-                    cy: isPhoneWidth ? 200 : 10000,
+                    cx: isPhoneWidth ? 500 : 170,
+                    cy: isPhoneWidth ? 200 : 100,
                     arcLabel: getArcLabel,
                   },
                 ]}
                 sx={{
                   [`& .${pieArcLabelClasses.root}`]: {
                     fill: "white",
-                    fontSize: 14,
-                    height: "10rem",
+                    fontSize: 17,
                   },
                 }}
               />
@@ -166,12 +164,12 @@ function Home() {
             )}
           </div>
           <div className="bottom-left-container">
-            <div className="title-container top-left">Bảng thống kê Thu - Chi qua các tháng</div>
+            <div className="title-container top-left">Bảng thống kê Thu - Chi</div>
             <TableReport page={"home"} />
           </div>
           <div className="bottom-right-container">
             <div className="tk-report-container">
-              <div className="title-container top-left">Tổng quan tài khoản gửi tiết kiệm</div>
+              <div className="title-container top-left">Thống kê mục tiết kiệm</div>
               <div className="distance-box"></div>
               <div className="box">
                 <div className="first-box item-box">
@@ -221,16 +219,15 @@ function Home() {
                 </div>
                 <div className="second-gr-box">
                   <div className="box-item box-item-first">
-                    <div className="title-nd">Tổng số tiền chưa đem đi</div>
-                    <div className="money-nd">{investReportTotal.nonInvestAmount}</div>
+                    <div className="title-nd title">Tổng số tiền chưa đem đi</div>
+                    <div className="money-nd money">{investReportTotal.nonInvestAmount}</div>
                   </div>
                   <div className="box-item  box-item-second">
-                    <div className="title-nd">Tổng số tiền có thể lãi lỗ</div>
-                    <div className="money-nd">{investReportTotal.profitAmount}</div>
+                    <div className="title-nd title">Tổng số tiền có thể lãi lỗ</div>
+                    <div className="money-nd money">{investReportTotal.profitAmount}</div>
                   </div>
                 </div>
               </div>
-              <img className="bg-box" src={"/images/investbg.png"} alt="..." />
             </div>
           </div>
         </div>
