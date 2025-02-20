@@ -28,7 +28,7 @@
             .group-left-area {
                 display: grid;
                 grid-template-columns: 10rem auto;
-                grid-template-rows: 5rem auto;
+                grid-template-rows: 10% 87%;
                 grid-template-areas: 'header header' 'main main';
 
                 .header-navbar {

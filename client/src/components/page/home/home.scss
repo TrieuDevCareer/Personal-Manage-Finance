@@ -1,268 +1,283 @@
 @import url(../../../style/variables.scss);
 
 @media only screen and (min-width: 64em) {
-    .home-container {
-        display: grid;
-        grid-template-columns: 35% 64%;
-        grid-template-rows: auto 26rem;
+    .home-root {
+        height: 100%;
 
-        .title-container {
-            font-weight: 500;
-            font-size: 1.5rem;
-            margin-left: 1rem;
-            margin-bottom: 0.5rem;
-            background: rgb(0, 136, 255);
-            background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
-            background-clip: text;
-            color: transparent;
-            z-index: 100;
-        }
-
-        .distance-box {
-            height: unset;
-        }
-
-        .top-left-container {
-            background-color: var(--background-rdcolor);
-            margin-left: 1rem;
-            margin-bottom: 1rem;
-            margin-top: 0.5rem;
-            border-radius: 1rem;
-
-            .css-l0h214-MuiResponsiveChart-container {
-                height: 12.3rem;
-            }
-
-            .box {
-                display: grid;
-                grid-template-columns: 50% 50%;
-                grid-template-rows: 5.5rem 6.5rem;
-                margin-left: 0.4rem;
-                margin-right: 0.4rem;
-                position: relative;
-                top: 0.5rem;
-
-                .box-SO-container {
-                    grid-template-rows: 30% 40% 20%;
-                    display: grid;
-                    border-radius: 1rem;
-                    margin-right: 0.5rem;
-                    background: rgb(195, 34, 128);
-                    background: radial-gradient(circle, rgba(195, 34, 128, 1) 0%, rgba(194, 34, 195, 1) 100%);
-                }
-
-                .title {
-                    margin-left: 0.5rem;
-                    font-size: 1vw;
-                }
-
-                .money {
-                    text-align: end;
-                    font-weight: 500;
-                    margin-right: 0.5rem;
-                    font-size: 1.5vw;
-                }
-
-                .bank {
-                    margin-left: 0.5rem;
-                    color: var(--text-warning-color);
-                    font-size: 0.8rem;
-                }
-
-                .box-TK-container {
-                    grid-template-rows: 30% 40% 20%;
-                    display: grid;
-                    border-radius: 1rem;
-                    margin-left: 0.3rem;
-                    background: rgb(93, 195, 34);
-                    background: linear-gradient(0deg, rgba(93, 195, 34, 1) 0%, rgba(34, 193, 195, 1) 100%);
-                }
-
-                .box-DT-container {
-                    grid-template-rows: 30% 40% 20%;
-                    display: grid;
-                    border-radius: 1rem;
-                    margin-top: 1rem;
-                    margin-right: 0.3rem;
-                    background: rgb(16, 90, 199);
-                    background: linear-gradient(90deg, rgba(16, 90, 199, 1) 0%, rgba(27, 111, 173, 1) 50%, rgba(25, 182, 196, 1) 100%);
-                }
-
-                .box-TD-container {
-                    grid-template-rows: 30% 40% 20%;
-                    display: grid;
-                    border-radius: 1rem;
-                    margin-top: 1rem;
-                    margin-left: 0.3rem;
-                    background: rgb(113, 27, 173);
-                    background: linear-gradient(90deg, rgba(113, 27, 173, 1) 0%, rgba(158, 114, 189, 1) 50%, rgba(233, 230, 235, 1) 100%);
-                }
-            }
-        }
-
-        .top-right-container {
-            background-color: var(--background-rdcolor);
-            margin-left: 1rem;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 1rem;
-
-            .css-l0h214-MuiResponsiveChart-container {
-                width: 100%;
-                height: 13rem;
-            }
-        }
-
-        .bottom-left-container {
-            background-color: var(--background-rdcolor);
-            margin-left: 1rem;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-
-            .table-report {
-                margin-top: -1rem;
-            }
-        }
-
-        .bottom-right-container {
+        .home-container {
             display: grid;
-            grid-template-columns: 50% 50%;
+            grid-template-columns: 35% 64%;
+            grid-template-rows: 40% 60%;
+            height: 100%;
 
-            .tk-report-container {
+            .title-container {
+                font-weight: 500;
+                font-size: 1.3vw;
+                margin-left: 1rem;
+                background: rgb(0, 136, 255);
+                background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
+                background-clip: text;
+                color: transparent;
+                z-index: 100;
+            }
+
+            .distance-box {
+                height: unset;
+            }
+
+            .top-left-container {
+                background-color: var(--background-rdcolor);
+                margin-left: 1rem;
+                margin-bottom: 1rem;
+                margin-top: 0.5rem;
+                border-radius: 1rem;
+                display: grid;
+                grid-template-rows: 15% 85%;
+
+                .css-l0h214-MuiResponsiveChart-container {
+                    height: 12.3rem;
+                }
+
+                .box {
+                    display: grid;
+                    grid-template-columns: 50% 50%;
+                    grid-template-rows: 50% 50%;
+                    margin-left: 0.4rem;
+                    margin-right: 0.4rem;
+                    position: relative;
+
+                    .box-SO-container {
+                        grid-template-rows: 30% 40% 30%;
+                        display: grid;
+                        border-radius: 1rem;
+                        margin-right: 0.5rem;
+                        margin-bottom: 1rem;
+                        background: rgb(195, 34, 128);
+                        background: radial-gradient(circle, rgba(195, 34, 128, 1) 0%, rgba(194, 34, 195, 1) 100%);
+                    }
+
+                    .box-TK-container {
+                        grid-template-rows: 30% 40% 30%;
+                        display: grid;
+                        border-radius: 1rem;
+                        margin-left: 0.3rem;
+                        margin-bottom: 1rem;
+                        background: rgb(93, 195, 34);
+                        background: linear-gradient(0deg, rgba(93, 195, 34, 1) 0%, rgba(34, 193, 195, 1) 100%);
+                    }
+
+                    .box-DT-container {
+                        grid-template-rows: 30% 40% 30%;
+                        display: grid;
+                        border-radius: 1rem;
+                        margin-bottom: 1rem;
+                        margin-right: 0.3rem;
+                        background: rgb(16, 90, 199);
+                        background: linear-gradient(90deg, rgba(16, 90, 199, 1) 0%, rgba(27, 111, 173, 1) 50%, rgba(25, 182, 196, 1) 100%);
+                    }
+
+                    .box-TD-container {
+                        grid-template-rows: 30% 40% 30%;
+                        display: grid;
+                        border-radius: 1rem;
+                        margin-bottom: 1rem;
+                        margin-left: 0.3rem;
+                        background: rgb(113, 27, 173);
+                        background: linear-gradient(90deg, rgba(113, 27, 173, 1) 0%, rgba(158, 114, 189, 1) 50%, rgba(233, 230, 235, 1) 100%);
+                    }
+
+                    .title {
+                        margin-left: 0.5rem;
+                        font-size: 1vw;
+                    }
+
+                    .money {
+                        text-align: end;
+                        font-weight: 500;
+                        margin-right: 0.5rem;
+                        font-size: 1.3vw;
+                        align-self: center;
+                    }
+
+                    .bank {
+                        margin-left: 0.5rem;
+                        color: var(--text-warning-color);
+                        font-size: 1vw;
+                        align-self: center;
+                    }
+                }
+            }
+
+            .top-right-container {
+                background-color: var(--background-rdcolor);
+                margin-left: 1rem;
+                margin-top: 0.5rem;
+                margin-bottom: 1rem;
+                border-radius: 1rem;
+                display: grid;
+                grid-template-rows: 15% 85%;
+
+                .css-l0h214-MuiResponsiveChart-container {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .bottom-left-container {
                 background-color: var(--background-rdcolor);
                 margin-left: 1rem;
                 border-radius: 1rem;
+                font-size: 0.8rem;
                 margin-bottom: 0.5rem;
+                display: grid;
+                grid-template-rows: 9% 91%;
+            }
 
-                .box {
-                    margin-left: 0.8rem;
+            .bottom-right-container {
+                display: grid;
+                grid-template-columns: 50% 50%;
+
+                .tk-report-container {
+                    background-color: var(--background-rdcolor);
+                    margin-left: 1rem;
+                    border-radius: 1rem;
+                    margin-bottom: 0.5rem;
                     display: grid;
-                    grid-template-rows: 5.7rem 5.7rem 5.7rem 5.7rem;
+                    grid-template-rows: 9% 91%;
 
-                    .item-box {
-                        border-radius: 1rem;
-                        margin-bottom: 0.7rem;
-                        margin-right: 1rem;
-                        justify-items: center;
-                        align-items: center;
-                        display: flex;
+                    .distance-box {
+                        display: none;
+                    }
 
-                        .icon-container {
-                            background-color: #e3b393;
-                            margin-left: 1rem;
-                            border: solid 0.2rem var(--text-light-color);
-                            border-radius: 50%;
-                            height: 3.5rem;
-                            width: 3.5rem;
-                            justify-content: center;
+                    .box {
+                        margin-left: 0.8rem;
+                        display: grid;
+                        grid-template-rows: 25% 25% 25% 25%;
+
+                        .item-box {
+                            border-radius: 1rem;
+                            margin-bottom: 0.7rem;
+                            margin-right: 1rem;
+                            justify-items: center;
                             align-items: center;
                             display: flex;
 
-                            .icon {
-                                color: var(--text-light-color);
-                                width: 2.2rem;
-                                height: 2.2rem;
+                            .icon-container {
+                                background-color: #e3b393;
+                                margin-left: 1rem;
+                                border: solid 0.2rem var(--text-light-color);
+                                border-radius: 50%;
+                                height: 3.5rem;
+                                width: 3.5rem;
+                                justify-content: center;
+                                align-items: center;
+                                display: flex;
+
+                                .icon {
+                                    color: var(--text-light-color);
+                                    width: 2.2rem;
+                                    height: 2.2rem;
+                                }
+                            }
+
+                            .box-title {
+                                display: grid;
+                                grid-template-rows: 1rem 3rem;
+                                margin-left: 0.5rem;
+
+                                .money-title {
+
+                                    font-weight: 500;
+                                    font-size: 0.9rem;
+                                    color: var(--text-dark-color);
+                                }
+
+                                .money-value {
+                                    align-self: end;
+                                    font-weight: 700;
+                                    font-size: 1.4rem;
+                                    color: var(--text-ndtitle-color);
+                                }
                             }
                         }
 
-                        .box-title {
-                            display: grid;
-                            grid-template-rows: 1rem 3rem;
-                            margin-left: 0.5rem;
-
-                            .money-title {
-
-                                font-weight: 500;
-                                font-size: 0.9rem;
-                                color: var(--text-dark-color);
-                            }
-
-                            .money-value {
-                                align-self: end;
-                                font-weight: 700;
-                                font-size: 1.4rem;
-                                color: var(--text-ndtitle-color);
-                            }
+                        .first-box {
+                            background: rgb(19, 221, 199);
+                            background: linear-gradient(90deg, rgba(19, 221, 199, 1) 0%, rgba(121, 236, 223, 1) 50%, rgba(197, 242, 237, 1) 100%);
                         }
-                    }
 
-                    .first-box {
-                        background: rgb(19, 221, 199);
-                        background: linear-gradient(90deg, rgba(19, 221, 199, 1) 0%, rgba(121, 236, 223, 1) 50%, rgba(197, 242, 237, 1) 100%);
-                    }
+                        .second-box {
+                            background: rgb(236, 183, 40);
+                            background: linear-gradient(90deg, rgba(236, 183, 40, 1) 0%, rgba(217, 175, 66, 1) 50%, rgba(222, 195, 121, 1) 100%);
+                        }
 
-                    .second-box {
-                        background: rgb(236, 183, 40);
-                        background: linear-gradient(90deg, rgba(236, 183, 40, 1) 0%, rgba(217, 175, 66, 1) 50%, rgba(222, 195, 121, 1) 100%);
-                    }
+                        .third-box {
+                            background: rgb(199, 130, 29);
+                            background: linear-gradient(90deg, rgba(199, 130, 29, 1) 0%, rgba(198, 146, 71, 1) 50%, rgba(194, 158, 105, 1) 100%);
+                        }
 
-                    .third-box {
-                        background: rgb(199, 130, 29);
-                        background: linear-gradient(90deg, rgba(199, 130, 29, 1) 0%, rgba(198, 146, 71, 1) 50%, rgba(194, 158, 105, 1) 100%);
-                    }
-
-                    .forth-box {
-                        background: rgb(232, 36, 151);
-                        background: linear-gradient(90deg, rgba(232, 36, 151, 1) 0%, rgba(233, 94, 176, 1) 50%, rgba(230, 131, 189, 1) 100%);
+                        .forth-box {
+                            background: rgb(232, 36, 151);
+                            background: linear-gradient(90deg, rgba(232, 36, 151, 1) 0%, rgba(233, 94, 176, 1) 50%, rgba(230, 131, 189, 1) 100%);
+                        }
                     }
                 }
-            }
 
-            .dt-report-container {
+                .dt-report-container {
 
-                background-color: var(--background-rdcolor);
-                margin-left: 1rem;
-                border-radius: 1rem;
-                margin-bottom: 0.5rem;
+                    background-color: var(--background-rdcolor);
+                    margin-left: 1rem;
+                    border-radius: 1rem;
+                    margin-bottom: 0.5rem;
 
-                .box-TD-root {
-                    display: grid;
-                    grid-template-rows: 9rem 9rem;
-                    width: 100%;
-                    justify-items: center;
-                    align-content: center;
-
-                    .box-item {
-                        border-radius: 1rem;
-                        margin-right: 0.5rem;
-                        width: 12rem;
-                        background-color: #cbb0b4;
-                        height: 7rem;
-                        text-align: center;
-                        align-content: center;
-                    }
-
-                    .second-gr-box {
+                    .box-TD-root {
                         display: grid;
+                        grid-template-rows: 9rem 9rem;
+                        width: 100%;
                         justify-items: center;
-                        grid-template-columns: 10rem auto;
-                        margin-top: 1rem;
+                        align-content: center;
 
                         .box-item {
                             border-radius: 1rem;
                             margin-right: 0.5rem;
-                            width: 9.5rem;
+                            width: 12rem;
+                            background-color: #cbb0b4;
+                            height: 7rem;
+                            text-align: center;
                             align-content: center;
                         }
 
-                        .box-item-first {
-                            background-color: #aac7cf;
+                        .second-gr-box {
+                            display: grid;
+                            justify-items: center;
+                            grid-template-columns: 10rem auto;
+                            margin-top: 1rem;
+
+                            .box-item {
+                                border-radius: 1rem;
+                                margin-right: 0.5rem;
+                                width: 9.5rem;
+                                align-content: center;
+                            }
+
+                            .box-item-first {
+                                background-color: #aac7cf;
+                            }
+
+                            .box-item-second {
+
+                                background-color: #cfc5a8;
+                            }
                         }
 
-                        .box-item-second {
-
-                            background-color: #cfc5a8;
+                        .title {
+                            color: var(--text-dark-color);
                         }
-                    }
 
-                    .title {
-                        color: var(--text-dark-color);
-                    }
-
-                    .money {
-                        color: var(--text-ndtitle-color);
-                        font-weight: 500;
+                        .money {
+                            color: var(--text-ndtitle-color);
+                            font-weight: 500;
+                        }
                     }
                 }
             }

@@ -69,25 +69,25 @@ function Header({ clickPattern, setClickPattern }) {
       <div className={styleIncome}>
         <Link className="txt-style" to="/incomereport" onClick={() => onClickHeaderBtn("Income")}>
           <img src={"/images/income.png"} alt="..." className="nav-icon" />
-          <p>Báo cáo thu</p>
+          <div>Báo cáo thu</div>
         </Link>
       </div>
       <div className={styleExpense}>
         <Link className="txt-style" to="/expensereport" onClick={() => onClickHeaderBtn("Expense")}>
           <img src={"/images/expense.png"} alt="..." className="nav-icon" />
-          <p>Báo cáo chi</p>
+          <div>Báo cáo chi</div>
         </Link>
       </div>
       <div className={styleSaving}>
         <Link className="txt-style" to="/savingreport" onClick={() => onClickHeaderBtn("Saving")}>
           <img src={"/images/saving.png"} alt="..." className="nav-icon" />
-          <p>Báo cáo Tiết kiệm</p>
+          <div>Báo cáo Tiết kiệm</div>
         </Link>
       </div>
       <div className={styleInvest}>
         <Link className="txt-style" to="/investreport" onClick={() => onClickHeaderBtn("Invest")}>
           <img src={"/images/invest.png"} alt="..." className="nav-icon" />
-          <p>Báo cáo Đầu tư</p>
+          <div>Báo cáo Đầu tư</div>
         </Link>
       </div>
 
