@@ -68,14 +68,14 @@ function Register() {
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <div className="box-container">
-          <div className="title-auth">ĐĂNG KÝ TÀI KHOẢN NGƯỜI DÙNG</div>
+          <div className="title-auth-res">ĐĂNG KÝ TÀI KHOẢN NGƯỜI DÙNG</div>
           <Box
             className="auth-form"
             component="form"
             sx={{
               "& > :not(style)": {
                 m: 1,
-                width: phoneWidth === "phone" ? "100%" : "40rem",
+                width: phoneWidth === "phone" ? "100%" : "55vw",
               },
             }}
             noValidate
@@ -84,7 +84,7 @@ function Register() {
           >
             <ErrorMessage message={message} setMessage={setMessage} />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               label="Email đăng nhập"
               type="text"
               size="small"
@@ -92,7 +92,7 @@ function Register() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Tên người dùng"
               id="fullWidth"
@@ -103,7 +103,7 @@ function Register() {
               onChange={(e) => setUserName(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Mật khẩu"
               id="fullWidth"
@@ -113,7 +113,7 @@ function Register() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Xác thực mật khẩu"
               id="fullWidth"
@@ -123,7 +123,7 @@ function Register() {
               onChange={(e) => setPasswordVerify(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Ngày nhận lương chính"
               id="fullWidth"
@@ -133,7 +133,7 @@ function Register() {
               onChange={(e) => setSalaryDate(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Quỹ hằng ngày"
               id="fullWidth"
@@ -143,7 +143,7 @@ function Register() {
               onChange={(e) => setWalletLife(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Quỹ tiết kiệm"
               id="fullWidth"
@@ -153,7 +153,7 @@ function Register() {
               onChange={(e) => setWalletInvest(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Quỹ đầu tư"
               id="fullWidth"
@@ -163,7 +163,7 @@ function Register() {
               onChange={(e) => setWalletSaving(e.target.value)}
             />
             <TextField
-              className="auth-text"
+              className="auth-text-res"
               fullWidth
               label="Quỹ tự do"
               id="fullWidth"

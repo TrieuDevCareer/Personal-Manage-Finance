@@ -59,7 +59,7 @@ function Login() {
             sx={{
               "& > :not(style)": {
                 m: 1,
-                width: phoneWidth === "phone" ? "100%" : "40rem",
+                width: phoneWidth === "phone" ? "100%" : "55vw",
                 paddingRight: "2%",
               },
             }}

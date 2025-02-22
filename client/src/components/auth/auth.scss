@@ -4,14 +4,22 @@
         display: grid;
         justify-content: center;
         align-items: center;
-        height: 42rem;
+        height: 100%;
 
         .title-auth {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 2vw;
             font-weight: 500;
             color: var(--background-title-color);
-            margin-bottom: 1rem;
+            margin-bottom: 7vh;
+        }
+
+        .title-auth-res {
+            text-align: center;
+            font-size: 2vw;
+            font-weight: 500;
+            color: var(--background-title-color);
+            margin-bottom: 4vh;
         }
 
         .auth-form {
@@ -24,19 +32,25 @@
             padding-right: 2rem;
             padding-bottom: 0.5rem;
             border-radius: 1rem;
+            width: 60vw;
+            height: 100%;
 
             .auth-text {
+
                 label {
                     color: var(--text-light-color);
+                    font-size: 1vw;
                 }
 
                 div {
                     color: var(--text-light-color);
                     text-align: left;
+                    height: 7vh;
 
                     input {
                         color: var(--text-light-color);
                         text-align: left;
+                        font-size: 1.3vw;
                     }
 
                     fieldset {
@@ -50,6 +64,50 @@
             }
 
             .auth-text:hover {
+                label {
+                    color: var(--text-danger-color);
+                }
+
+                div {
+                    input {
+                        color: var(--text-light-color);
+                    }
+
+                    fieldset {
+                        border-color: var(--text-danger-color);
+                    }
+                }
+            }
+
+            .auth-text-res {
+
+                label {
+                    color: var(--text-light-color);
+                    font-size: 1vw;
+                }
+
+                div {
+                    color: var(--text-light-color);
+                    text-align: left;
+                    height: 5vh;
+
+                    input {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        font-size: 1.3vw;
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                    }
+                }
+            }
+
+            .auth-text-res:hover {
                 label {
                     color: var(--text-danger-color);
                 }
