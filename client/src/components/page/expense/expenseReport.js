@@ -104,8 +104,6 @@ function ExpenseReport() {
       {user && !expenseReportData && !resultByDay && !contentData && <LoadingProgess />}
       {user && expenseReportData && resultByDay && contentData && (
         <div className="expenseRp-container">
-          <ErrorMessage message={message} setMessage={setMessage} />
-
           <div className="expenseRp-ctrl-gr">
             <div className="expenseRp-title">Bảng điều khiển chọn lọc</div>
             <div className="expenseRp-filter-group">

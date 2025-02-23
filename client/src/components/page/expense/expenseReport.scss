@@ -2,29 +2,36 @@
 
 @media only screen and (min-width: 64em) {
     .expenseRp-container {
+        display: grid;
+        grid-template-rows: 13% 87%;
         position: relative;
-        width: 69.5rem;
+        width: 98%;
         border-radius: 1rem;
-        height: 40rem;
-        top: 1rem;
-        left: 1rem;
+        height: 95%;
+        margin-left: 1rem;
+        margin-top: 1rem;
+
+        .expenseRp-title {
+            font-weight: 500;
+            font-size: 1.2vw;
+            margin-left: 1rem;
+            background: rgb(0, 136, 255);
+            background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
+            background-clip: text;
+            color: transparent;
+            z-index: 100;
+        }
 
         .expenseRp-ctrl-gr {
             background-color: var(--background-rdcolor);
-            padding: 1rem;
             border-radius: 1rem;
 
-            .expenseRp-title {
-                font-weight: 400;
-                margin-top: -1.1rem;
-                color: var(--text-title-color);
-
-            }
 
             .expenseRp-filter-group {
-                margin-top: 0.8rem;
+                margin-top: 0.5%;
                 display: grid;
-                grid-template-columns: auto auto auto auto auto;
+                grid-template-columns: 22% 22% 22% 22% 12%;
+                margin-left: 1rem;
 
                 .btn-style-edit {
                     cursor: pointer;
@@ -39,29 +46,33 @@
 
         .expenseRp-root {
             display: grid;
-            grid-template-columns: 24rem 49.6rem;
+            grid-template-columns: 35% 65%;
             margin-top: 1.2rem;
-            height: 30rem;
+            height: 95%;
 
             .expenseRp-table {
+                display: grid;
+                grid-template-rows: 7% 94%;
                 font-size: 0.8rem;
                 border-radius: 1rem;
                 background-color: var(--background-rdcolor);
+                height: 98%;
 
                 .expenseRp-title {
-                    font-size: 1rem;
+                    font-weight: 500;
+                    font-size: 1vw;
                     margin-left: 1rem;
-                    font-weight: 400;
-                    margin-bottom: 0.5rem;
-                    color: var(--text-title-color);
-                    height: 0.5rem;
+                    background: rgb(0, 136, 255);
+                    background: linear-gradient(90deg, rgba(0, 136, 255, 1) 0%, rgba(94, 175, 246, 1) 50%, rgba(177, 218, 252, 1) 100%);
+                    background-clip: text;
+                    color: transparent;
+                    z-index: 100;
                 }
 
                 .box {
-                    margin-top: 1.5rem;
-                    margin-left: 0.8rem;
+                    margin-left: 1rem;
                     display: grid;
-                    grid-template-rows: 5.3rem 5.3rem 5.3rem 5.3rem 5.3rem 5.3rem;
+                    grid-template-rows: 16% 16% 16% 16% 16% 16%;
 
                     .item-box {
                         border-radius: 1rem;
@@ -78,16 +89,16 @@
                             margin-left: 1rem;
                             border: solid 0.2rem var(--text-light-color);
                             border-radius: 50%;
-                            height: 3.5rem;
-                            width: 3.5rem;
+                            height: 3vw;
+                            width: 3vw;
                             justify-content: center;
                             align-items: center;
                             display: flex;
 
                             .icon {
                                 color: var(--text-light-color);
-                                width: 2.2rem;
-                                height: 2.2rem;
+                                width: 2.2vw;
+                                height: 2.2vw;
                             }
                         }
 
@@ -147,20 +158,12 @@
                 border-radius: 1rem;
                 background-color: var(--background-rdcolor);
                 margin-left: 0.8rem;
-                width: 45rem;
-
-                .expenseRp-title {
-                    font-size: 1rem;
-                    margin-left: 1rem;
-                    font-weight: 400;
-                    margin-bottom: 0.5rem;
-                    color: var(--text-title-color);
-                    height: 0.5rem;
-                    margin-bottom: 1.2rem;
-                }
+                display: grid;
+                grid-template-rows: 6% 94%;
+                height: 98%;
 
                 .expenseRp-chart {
-                    height: 32rem;
+                    height: 100%;
                     display: grid;
                     grid-template-rows: auto auto auto auto;
                 }
