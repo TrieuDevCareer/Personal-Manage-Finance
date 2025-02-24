@@ -16,6 +16,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   const [bankListData, setBankListData] = useState();
   const [bankListEditorOpen, setBankListEditorOpen] = useState(false);
   const [editBankListData, setEditBankListData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -40,12 +41,15 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setBankListData();
     else getBankLists();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
       {user && !isCatalogPage && !bankListData && <LoadingProgess />}
       {user && bankListData && (
-        <div className="bankList-container" style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}>
+        <div className="bankList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-bankList">DANH MỤC NGÂN HÀNG</div>}
           </div>
@@ -69,10 +73,12 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
                 oRouter={oRouter}
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#0ecb74"}
+                navFooter={isCatalogPage ? "isCatalogPage" : "/saving"}
+                titleFooter={"DANH SÁCH GỬI TIẾT KIỆM"}
               />
             </>
           )}
-          {!bankListEditorOpen && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

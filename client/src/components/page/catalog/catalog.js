@@ -21,15 +21,11 @@ function Catalog() {
             <div className="catalog-expense">
               <ExpenseList isCatalogPage={true} />
             </div>
-            <div className="catalog-group">
-              <div className="catalog-frs-group">
-                <div className="catalog-saving">
-                  <BankList isCatalogPage={true} />
-                </div>
-                <div className="catalog-invest">
-                  <CoinList isCatalogPage={true} />
-                </div>
-              </div>
+            <div className="catalog-saving">
+              <BankList isCatalogPage={true} />
+            </div>
+            <div className="catalog-invest">
+              <CoinList isCatalogPage={true} />
             </div>
           </div>
         </div>

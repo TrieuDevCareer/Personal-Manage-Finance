@@ -2,41 +2,18 @@
 
 @media only screen and (min-width: 64em) {
     .coinList-container {
-        justify-content: center;
-        justify-items: center;
         display: grid;
+        justify-content: center;
         margin: 1rem;
         text-align: center;
-        grid-auto-rows: max-content auto;
+        height: 98%;
+        grid-auto-rows: 4% 88%;
 
         .title-coinList {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.5vw;
             font-weight: 500;
             color: var(--background-title-color);
-        }
-
-        .title-container {
-            display: flex;
-
-        }
-
-        .footer-link {
-            display: flex;
-            position: relative;
-            bottom: 1.4rem;
-            justify-self: flex-start;
-            color: var(--background-light-color);
-            font-weight: 500;
-
-            .footer-title {
-                margin-left: 0.5rem;
-            }
-        }
-
-        .footer-link:hover {
-            color: var(--background-title-color);
-            cursor: pointer;
         }
     }
 }

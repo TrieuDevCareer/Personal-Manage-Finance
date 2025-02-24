@@ -16,6 +16,7 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   const [coinListData, setCoinListData] = useState();
   const [coinListEditorOpen, setCoinListEditorOpen] = useState(false);
   const [editCoinListData, setEditCoinListData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -40,12 +41,15 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setCoinListData();
     else getCoinLists();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
       {user && !isCatalogPage && !coinListData && <LoadingProgess />}
       {user && coinListData && (
-        <div className="coinList-container" style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}>
+        <div className="coinList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-coinList">DANH MỤC ĐỒNG COIN</div>}
           </div>
@@ -69,10 +73,12 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
                 oRouter={oRouter}
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#ff007f"}
+                navFooter={isCatalogPage ? "isCatalogPage" : "/invest"}
+                titleFooter={"DANH SÁCH ĐẦU TƯ"}
               />
             </>
           )}
-          {!coinListEditorOpen && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

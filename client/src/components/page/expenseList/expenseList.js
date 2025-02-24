@@ -16,6 +16,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   const [expenseListData, setExpenseListData] = useState();
   const [expenseListEditorOpen, setExpenseListEditorOpen] = useState(false);
   const [editExpenseListData, setEditExpenseListData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -40,15 +41,15 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setExpenseListData();
     else getExpenseLists();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
       {user && !isCatalogPage && !expenseListData && <LoadingProgess />}
       {user && expenseListData && (
-        <div
-          className="expenseList-container"
-          style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}
-        >
+        <div className="expenseList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-expenseList">DANH MỤC CHI TIÊU</div>}
           </div>
@@ -71,10 +72,12 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
                 oRouter={oRouter}
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#ff007f"}
+                navFooter={isCatalogPage ? "isCatalogPage" : "/expense"}
+                titleFooter={"DANH SÁCH CÁC KHOẢN CHI"}
               />
             </>
           )}
-          {!expenseListEditorOpen && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

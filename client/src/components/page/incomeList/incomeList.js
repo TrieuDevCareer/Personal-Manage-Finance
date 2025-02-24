@@ -16,6 +16,7 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   const [incomeListData, setIncomeListData] = useState();
   const [incomeListEditorOpen, setIncomeListEditorOpen] = useState(false);
   const [editIncomeListData, setEditIncomeListData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -40,15 +41,15 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setIncomeListData();
     else getIncomeLists();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
       {user && !incomeListData && !isCatalogPage && <LoadingProgess />}
       {user && incomeListData && (
-        <div
-          className="incomeList-container"
-          style={{ marginTop: isCatalogPage ? "auto" : "5rem" }}
-        >
+        <div className="incomeList-container">
           <div className="title-container">
             {!isCatalogPage && <div className="title-incomeList">DANH MỤC THU NHẬP</div>}
           </div>
@@ -71,10 +72,12 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
                 oRouter={oRouter}
                 isCatalogPage={isCatalogPage}
                 colorTitle={"#0ecb74"}
+                navFooter={isCatalogPage ? "isCatalogPage" : "/income"}
+                titleFooter={"DANH SÁCH CÁC KHOẢN THU"}
               />
             </>
           )}
-          {!incomeListEditorOpen && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

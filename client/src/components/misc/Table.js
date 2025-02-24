@@ -155,6 +155,7 @@ function Table({
     }
   }
   useEffect(() => {
+    console.log(navFooter, titleFooter);
     if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }
@@ -206,10 +207,13 @@ function Table({
       {oData.length === 0 && <h2 className="ndata-style">Không có dữ liệu để hiển thị</h2>}
       {!isPhoneWidth && (
         <div className="foot-table">
-          <div className="footer-link" onClick={() => navigate(navFooter)}>
-            <OpenInNewIcon />
-            <div className="footer-title">{titleFooter}</div>
-          </div>
+          {navFooter !== "isCatalogPage" && (
+            <div className="footer-link" onClick={() => navigate(navFooter)}>
+              <OpenInNewIcon />
+              <div className="footer-title">{titleFooter}</div>
+            </div>
+          )}
+          {navFooter === "isCatalogPage" && <div className="footer-link"></div>}
           <div className="foot-ctrl">
             <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
             <ArrowBackIosIcon
