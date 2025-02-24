@@ -209,7 +209,7 @@ function Table({
         <div className="foot-table">
           {navFooter !== "isCatalogPage" && (
             <div className="footer-link" onClick={() => navigate(navFooter)}>
-              <OpenInNewIcon />
+              <OpenInNewIcon className="icon-nav" />
               <div className="footer-title">{titleFooter}</div>
             </div>
           )}

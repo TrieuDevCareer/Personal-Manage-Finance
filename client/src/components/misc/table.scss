@@ -35,24 +35,23 @@
             }
 
             .table-Item {
+                height: 6vh;
+
                 .item-value {
                     border: 1px solid var(--background-title-color);
                     border-collapse: collapse;
                     text-align: center;
-                    height: 6vh;
-                    font-size: 0.9vw;
+                    font-size: 1vw;
                 }
 
                 .btn-style-edit {
-                    height: 3vw;
-                    width: 3vh;
                     cursor: pointer;
                     margin-left: 0.5rem;
+                    font-size: 2vw;
                 }
 
                 .btn-style-edit-disable {
-                    height: 3vw;
-                    width: 3vh;
+                    font-size: 2vw;
                     margin-left: 0.5rem;
                     color: #949494;
                 }
@@ -73,13 +72,17 @@
             .footer-link {
                 display: flex;
                 position: relative;
-                margin-top: -1%;
                 justify-self: flex-start;
                 color: var(--background-light-color);
                 font-weight: 500;
 
+                .icon-nav {
+                    font-size: 1.5vw;
+                }
+
                 .footer-title {
                     margin-left: 0.5rem;
+                    font-size: 1vw;
                 }
             }
 
@@ -95,6 +98,7 @@
                 .btn-style {
                     margin-left: 1rem;
                     cursor: pointer;
+                    font-size: 1.5vw;
                 }
 
                 .btn-style:hover {
@@ -105,6 +109,7 @@
                 .btn-style-delete {
                     margin-left: 1rem;
                     cursor: pointer;
+                    font-size: 1.5vw;
                 }
 
                 .btn-style-delete:hover {
@@ -117,7 +122,6 @@
 
         .ndata-style {
             margin-top: 1rem;
-
         }
     }
 }

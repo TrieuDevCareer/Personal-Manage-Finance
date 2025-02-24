@@ -4,10 +4,12 @@
     .investment-container {
         display: grid;
         justify-content: center;
-        margin: 1rem;
         text-align: center;
-        height: 98%;
-        grid-auto-rows: 5% 10% 83%;
+        width: 100%;
+        height: 100%;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        grid-auto-rows: 5% 13% 83%;
 
         .report-invest {
             display: grid;
@@ -32,12 +34,6 @@
                 color: var(--text-danger-color);
             }
         }
-
-        justify-content: center;
-        justify-items: center;
-        display: grid;
-        margin: 1rem;
-        text-align: center;
 
         .title-investment {
             text-align: center;
