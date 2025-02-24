@@ -192,7 +192,7 @@ function InvestReport() {
                       data: pieChartData.length > 0 ? pieChartData : data,
                       highlightScope: { faded: "global", highlighted: "item" },
                       faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-                      innerRadius: "5%",
+                      innerRadius: "10%",
                       outerRadius: "95%",
                       paddingAngle: 2,
                       cornerRadius: 3,
@@ -206,7 +206,7 @@ function InvestReport() {
                   sx={{
                     [`& .${pieArcLabelClasses.root}`]: {
                       fill: "white",
-                      fontSize: 17,
+                      fontSize: "1vw",
                     },
                   }}
                 />
@@ -221,7 +221,7 @@ function InvestReport() {
                   {investReportData ? (
                     <AreaChartType data={investReportData} pageChart={"invest"} />
                   ) : (
-                    <AreaChartType data={[]} pageChart={"saving"} />
+                    <AreaChartType data={[]} pageChart={"invest"} />
                   )}
                 </div>
               </div>

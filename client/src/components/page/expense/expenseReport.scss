@@ -104,19 +104,19 @@
 
                         .box-title {
                             display: grid;
-                            grid-template-rows: 1rem 2.5rem;
+                            grid-template-rows: 50% 50%;
                             margin-left: 0.5rem;
 
                             .money-title {
-                                font-weight: 600;
-                                font-size: 0.9rem;
+                                font-weight: 500;
+                                font-size: 0.8vw;
                                 color: var(--text-dark-color);
                             }
 
                             .money-value {
                                 align-self: end;
                                 font-weight: 700;
-                                font-size: 1.4rem;
+                                font-size: 1.1vw;
                                 color: var(--text-ndtitle-color);
                             }
                         }

@@ -47,7 +47,6 @@
             display: grid;
             grid-template-columns: 35% 65%;
             margin-top: 1.2rem;
-            height: 98%;
 
             .savingRp-left-container {
                 display: grid;
@@ -61,17 +60,18 @@
                     height: auto;
 
                     .box {
-                        margin-left: 0.8rem;
+                        margin-left: 1rem;
                         display: grid;
-                        grid-template-rows: 25% 25% 25% 25%;
+                        // grid-template-rows: 25% 25% 25% 25%;
+                        grid-template-rows: 23% 23% 23% 23%;
 
                         .item-box {
                             border-radius: 1rem;
-                            margin-bottom: 0.6rem;
                             margin-right: 1rem;
                             justify-items: center;
                             align-items: center;
                             display: flex;
+                            height: 90%;
 
                             .icon-container {
                                 background-color: #e3b393;
@@ -155,11 +155,8 @@
                     display: grid;
                     grid-template-rows: auto auto auto auto;
                 }
-
             }
         }
-
-
     }
 }
 

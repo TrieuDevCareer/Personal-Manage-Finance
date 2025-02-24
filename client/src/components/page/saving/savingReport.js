@@ -201,21 +201,21 @@ function SavingReport() {
                       data: pieChartData.length > 0 ? pieChartData : data,
                       highlightScope: { faded: "global", highlighted: "item" },
                       faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-                      innerRadius: 30,
-                      outerRadius: 100,
-                      paddingAngle: 1.5,
-                      cornerRadius: 2,
+                      innerRadius: "5%",
+                      outerRadius: "95%",
+                      paddingAngle: 2,
+                      cornerRadius: 3,
                       startAngle: -180,
                       endAngle: 180,
-                      cx: 103,
-                      cy: 120,
+                      cx: "50%",
+                      cy: "50%",
                       arcLabel: getArcLabel,
                     },
                   ]}
                   sx={{
                     [`& .${pieArcLabelClasses.root}`]: {
                       fill: "white",
-                      fontSize: 14,
+                      fontSize: "1vw",
                     },
                   }}
                 />
