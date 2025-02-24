@@ -1,10 +1,12 @@
 .progess-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
     width: 100%;
-    display: flex;
-    justify-content: center;
+    height: 100%;
 
     .linear-progress {
-        position: relative;
-        align-content: center;
+        width: 90%;
+        height: 100%
     }
 }

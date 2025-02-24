@@ -17,6 +17,7 @@ function Investment({ isCheck, setIsCheck }) {
   const [investmentEditorOpen, setInvestmentEditorOpen] = useState(false);
   const [editInvestmentData, setEditInvestmentData] = useState(null);
   const [investReportTotal, setInvestReportTotal] = useState();
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const aTitle = [
@@ -120,6 +121,9 @@ function Investment({ isCheck, setIsCheck }) {
       getInvestments();
       handleGetInvestReportTotal();
     }
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
@@ -162,10 +166,12 @@ function Investment({ isCheck, setIsCheck }) {
                 oRouter={oRouter}
                 bStatus={bStatusInvest}
                 colorTitle={"#ff007f"}
+                navFooter={"/coinlist"}
+                titleFooter={"DANH MỤC ĐỒNG COIN"}
               />
             </>
           )}
-          {!investmentEditorOpen && (
+          {isPhoneWidth && (
             <div className="footer-link" onClick={() => navigate("/coinlist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC ĐỒNG COIN</div>

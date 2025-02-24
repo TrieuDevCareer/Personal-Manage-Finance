@@ -16,6 +16,7 @@ function Expense({ isCheck, setIsCheck }) {
   const [expenseData, setExpenseData] = useState();
   const [expenseEditorOpen, setExpenseEditorOpen] = useState(false);
   const [editExpenseData, setEditExpenseData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -52,6 +53,9 @@ function Expense({ isCheck, setIsCheck }) {
   useEffect(() => {
     if (!user) setExpenseData();
     else getExpenses();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
@@ -78,10 +82,12 @@ function Expense({ isCheck, setIsCheck }) {
                 editModel={editExpense}
                 oRouter={oRouter}
                 colorTitle={"#ff007f"}
+                navFooter={"/expenselist"}
+                titleFooter={"DANH MỤC CHI TIÊU"}
               />
             </>
           )}
-          {!expenseEditorOpen && (
+          {isPhoneWidth && (
             <div className="footer-link" onClick={() => navigate("/expenselist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC CHI TIÊU</div>

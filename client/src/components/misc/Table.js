@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import domain from "../../util/domain";
 import ErrorMessage from "./ErrorMessage";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import "./table.scss";
 
 function Table({
@@ -25,6 +26,8 @@ function Table({
   isCatalogPage,
   bStatus,
   colorTitle,
+  navFooter,
+  titleFooter,
 }) {
   const [page, setPage] = useState(0);
   const [chooseData, setChooseData] = useState([]);
@@ -202,24 +205,30 @@ function Table({
       </table>
       {oData.length === 0 && <h2 className="ndata-style">Không có dữ liệu để hiển thị</h2>}
       {!isPhoneWidth && (
-        <div className="foot-table" colSpan="7">
-          <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
-          <ArrowBackIosIcon
-            className="btn-style"
-            onClick={() => handleArrowBackPage(Event, page)}
-          />
-          {!isCatalogPage &&
-            (isCheck ? (
-              <DeleteIcon className="btn-style-delete" onClick={deleteData} />
-            ) : (
-              <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
-            ))}
+        <div className="foot-table">
+          <div className="footer-link" onClick={() => navigate(navFooter)}>
+            <OpenInNewIcon />
+            <div className="footer-title">{titleFooter}</div>
+          </div>
+          <div className="foot-ctrl">
+            <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
+            <ArrowBackIosIcon
+              className="btn-style"
+              onClick={() => handleArrowBackPage(Event, page)}
+            />
+            {!isCatalogPage &&
+              (isCheck ? (
+                <DeleteIcon className="btn-style-delete" onClick={deleteData} />
+              ) : (
+                <AddCircleIcon className="btn-style" onClick={() => editModel(null)} />
+              ))}
 
-          <ArrowForwardIosIcon
-            className="btn-style"
-            onClick={() => handleArrowForwardPage(Event, page)}
-          />
-          <ArrowForwardIcon className="btn-style" onClick={() => handleArrowForwardMaxPage()} />
+            <ArrowForwardIosIcon
+              className="btn-style"
+              onClick={() => handleArrowForwardPage(Event, page)}
+            />
+            <ArrowForwardIcon className="btn-style" onClick={() => handleArrowForwardMaxPage()} />
+          </div>
         </div>
       )}
     </div>

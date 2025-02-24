@@ -17,6 +17,7 @@ function Saving({ isCheck, setIsCheck }) {
   const [savingEditorOpen, setSavingEditorOpen] = useState(false);
   const [editSavingData, setEditSavingData] = useState(null);
   const [savingReportTotal, setSavingReportTotal] = useState();
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -107,6 +108,9 @@ function Saving({ isCheck, setIsCheck }) {
       getSavings();
       handleGetSavingReportTotal();
     }
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
@@ -155,10 +159,12 @@ function Saving({ isCheck, setIsCheck }) {
                 oRouter={oRouter}
                 bStatus={bStatusSaving}
                 colorTitle={"#0ecb74"}
+                navFooter={"/banklist"}
+                titleFooter={"DANH MỤC NGÂN HÀNG"}
               />
             </>
           )}
-          {!savingEditorOpen && (
+          {isPhoneWidth && (
             <div className="footer-link" onClick={() => navigate("/banklist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC NGÂN HÀNG</div>

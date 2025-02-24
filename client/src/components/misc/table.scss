@@ -15,9 +15,9 @@
 
             .table-header {
                 .table-title {
-                    font-size: 0.8rem;
-                    width: 14rem;
-                    height: 2rem;
+                    font-size: 0.9vw;
+                    width: 15vw;
+                    height: 6vh;
                     text-align: center;
                     font-weight: bold;
                     border: 1px solid var(--background-title-color);
@@ -26,11 +26,11 @@
                 }
 
                 .stt-style {
-                    width: 5rem;
+                    width: 2vw;
                 }
 
                 .edit-style {
-                    width: 2rem;
+                    width: 3vw;
                 }
             }
 
@@ -39,20 +39,20 @@
                     border: 1px solid var(--background-title-color);
                     border-collapse: collapse;
                     text-align: center;
-                    height: 2rem;
-                    font-size: 0.9rem;
+                    height: 6vh;
+                    font-size: 0.9vw;
                 }
 
                 .btn-style-edit {
-                    height: 2rem;
-                    width: 2rem;
+                    height: 3vw;
+                    width: 3vh;
                     cursor: pointer;
                     margin-left: 0.5rem;
                 }
 
                 .btn-style-edit-disable {
-                    height: 2rem;
-                    width: 2rem;
+                    height: 3vw;
+                    width: 3vh;
                     margin-left: 0.5rem;
                     color: #949494;
                 }
@@ -65,30 +65,54 @@
         }
 
         .foot-table {
-            display: flex;
-            justify-content: end;
-            margin-top: 1rem;
+            display: grid;
+            margin-top: 3vh;
+            justify-content: space-between;
+            grid-template-columns: 50% 50%;
 
-            .btn-style {
-                margin-left: 1rem;
-                cursor: pointer;
+            .footer-link {
+                display: flex;
+                position: relative;
+                margin-top: -1%;
+                justify-self: flex-start;
+                color: var(--background-light-color);
+                font-weight: 500;
 
+                .footer-title {
+                    margin-left: 0.5rem;
+                }
             }
 
-            .btn-style:hover {
+            .footer-link:hover {
                 color: var(--background-title-color);
-                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-            }
-
-            .btn-style-delete {
-                margin-left: 1rem;
                 cursor: pointer;
             }
 
-            .btn-style-delete:hover {
-                color: var(--text-danger-color);
-                color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
+            .foot-ctrl {
+                display: flex;
+                justify-self: end;
+
+                .btn-style {
+                    margin-left: 1rem;
+                    cursor: pointer;
+                }
+
+                .btn-style:hover {
+                    color: var(--background-title-color);
+                    color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
+                }
+
+                .btn-style-delete {
+                    margin-left: 1rem;
+                    cursor: pointer;
+                }
+
+                .btn-style-delete:hover {
+                    color: var(--text-danger-color);
+                    color: linear-gradient(90deg, rgba(240, 0, 160, 1) 0%, rgba(240, 0, 80, 1) 35%, rgba(255, 0, 0, 1) 100%);
+                }
             }
+
         }
 
         .ndata-style {

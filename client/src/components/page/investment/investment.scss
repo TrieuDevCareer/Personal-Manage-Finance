@@ -2,31 +2,34 @@
 
 @media only screen and (min-width: 64em) {
     .investment-container {
-        grid-auto-rows: max-content auto;
-        grid-auto-columns: 68.8rem;
+        display: grid;
+        justify-content: center;
+        margin: 1rem;
+        text-align: center;
+        height: 98%;
+        grid-auto-rows: 5% 10% 83%;
 
-        .report-investment {
+        .report-invest {
             display: grid;
-            grid-template-rows: auto auto auto auto;
+            grid-template-rows: 25% 25% 25%;
             grid-template-columns: auto;
-            font-size: small;
-            margin-bottom: 1rem;
             justify-content: center;
 
             .report-item {
                 display: flex;
                 justify-content: end;
-                height: 1.5rem;
+                font-size: 1vw;
             }
 
             p {
                 justify-content: flex-end;
-                margin-right: 2rem;
+                margin-right: 1vw;
             }
 
             span {
-                width: 10rem;
+                width: 10vw;
                 text-align: left;
+                color: var(--text-danger-color);
             }
         }
 
@@ -41,25 +44,6 @@
             font-size: 1.5rem;
             font-weight: 500;
             color: var(--background-title-color);
-        }
-
-        .footer-link {
-            display: flex;
-            position: relative;
-            left: 0;
-            bottom: 1.4rem;
-            justify-self: flex-start;
-            color: var(--background-light-color);
-            font-weight: 500;
-
-            .footer-title {
-                margin-left: 0.5rem;
-            }
-        }
-
-        .footer-link:hover {
-            color: var(--background-title-color);
-            cursor: pointer;
         }
     }
 }

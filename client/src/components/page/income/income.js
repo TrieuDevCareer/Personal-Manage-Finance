@@ -15,6 +15,7 @@ function Income({ isCheck, setIsCheck }) {
   const [incomeData, setIncomeData] = useState();
   const [incomeEditorOpen, setIncomeEditorOpen] = useState(false);
   const [editIncomeData, setEditIncomeData] = useState(null);
+  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -50,6 +51,9 @@ function Income({ isCheck, setIsCheck }) {
   useEffect(() => {
     if (!user) setIncomeData();
     else getIncomes();
+    if (window.outerWidth <= 739) {
+      setIsPhoneWidth(true);
+    }
   }, [user]);
   return (
     <>
@@ -77,10 +81,12 @@ function Income({ isCheck, setIsCheck }) {
                 editModel={editIncome}
                 oRouter={oRouter}
                 colorTitle={"#0ecb74"}
+                navFooter={"/incomelist"}
+                titleFooter={"DANH MỤC THU NHẬP"}
               />
             </>
           )}
-          {!incomeEditorOpen && (
+          {isPhoneWidth && (
             <div className="footer-link" onClick={() => navigate("/incomelist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC THU NHẬP</div>

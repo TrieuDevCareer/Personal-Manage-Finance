@@ -127,7 +127,7 @@
                 background-color: var(--background-rdcolor);
                 margin-left: 1rem;
                 border-radius: 1rem;
-                font-size: 0.8rem;
+                font-size: 0.8vw;
                 margin-bottom: 0.5rem;
                 display: grid;
                 grid-template-rows: 7% 91%;
@@ -182,20 +182,20 @@
 
                             .box-title {
                                 display: grid;
-                                grid-template-rows: 1rem 3rem;
+                                grid-template-rows: 30% 70%;
                                 margin-left: 0.5rem;
 
                                 .money-title {
 
                                     font-weight: 500;
-                                    font-size: 0.9rem;
+                                    font-size: 0.9vw;
                                     color: var(--text-dark-color);
                                 }
 
                                 .money-value {
                                     align-self: end;
                                     font-weight: 700;
-                                    font-size: 1.4rem;
+                                    font-size: 1.5vw;
                                     color: var(--text-ndtitle-color);
                                 }
                             }

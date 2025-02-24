@@ -6,7 +6,7 @@ import "./loadingProgess.scss";
 function LoadingProgess() {
   return (
     <div className="progess-container">
-      <Box className="linear-progress" sx={{ width: "90%", height: "38rem" }}>
+      <Box className="linear-progress">
         <LinearProgress />
       </Box>
     </div>
