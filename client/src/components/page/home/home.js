@@ -41,7 +41,6 @@ function Home() {
       month: `${new Date().getMonth() + 1}`,
     });
     setPieChartData(result.data.pieChartData);
-    console.log(result.data.pieChartData);
   }
   async function getUserData() {
     const usersData = await Axios.get(`${domain}/auth`);

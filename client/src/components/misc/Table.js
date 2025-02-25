@@ -155,7 +155,6 @@ function Table({
     }
   }
   useEffect(() => {
-    console.log(navFooter, titleFooter);
     if (window.outerWidth <= 739) {
       setIsPhoneWidth(true);
     }

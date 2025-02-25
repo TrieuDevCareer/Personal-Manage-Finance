@@ -53,7 +53,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   }
   function currencyStringToInt(currencyString) {
     // Remove currency symbol and thousands separator
-    var numberString = currencyString.replace(/[\.,\s€]/g, "");
+    var numberString = currencyString.replace(/[.,\s€]/g, "");
     // Convert to integer
     return parseInt(numberString);
   }

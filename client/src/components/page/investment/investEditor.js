@@ -81,7 +81,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   function currencyStringToInt(currencyString) {
     let result;
     // Remove currency symbol and thousands separator
-    var numberString = currencyString.replace(/[\.,\s€]/g, "");
+    var numberString = currencyString.replace(/[.,\s€]/g, "");
     // result = parseInt(numberString);
     if (numberString.indexOf("$") > -1) {
       numberString = numberString.split("$")[1];
@@ -193,7 +193,6 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
   }, [editInvestmentData]);
   return (
     <>
-      {/* {!isPhoneWidth && <div></div>} */}
       <div className="popup-container-invest">
         {isLoading && <LoadingProgess />}
         {!isLoading && (

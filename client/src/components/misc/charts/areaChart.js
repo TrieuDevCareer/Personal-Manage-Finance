@@ -90,7 +90,7 @@ function AreaChartType({ data, pageChart }) {
                         </div>
                       </>
                     );
-                  }
+                  } else return <></>;
                 })}
               </div>
             </div>
@@ -138,8 +138,7 @@ function AreaChartType({ data, pageChart }) {
                         </div>
                       </>
                     );
-                  }
-                  return;
+                  } else return <></>;
                 })}
               </div>
             </div>

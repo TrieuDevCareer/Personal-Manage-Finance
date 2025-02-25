@@ -23,7 +23,6 @@ function Navbar({
   let [styleInvest, setStyleInvest] = useState("txt-style default-color");
   let [styleContent, setStyleContent] = useState("txt-style default-color");
   let [styleTotal, setStyleTotal] = useState("txt-style default-color");
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
@@ -98,9 +97,6 @@ function Navbar({
       setStyleSaving("txt-style default-color");
       setStyleContent("txt-style default-color");
       setStyleTotal("txt-style default-color");
-    }
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
     }
   }, [clickPattern]);
   return (

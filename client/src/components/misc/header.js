@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import "./ErrorMessage.scss";
+
 import { Link } from "react-router-dom";
 import domain from "../../util/domain";
 import UserContext from "../../context/UserContext";
@@ -12,7 +12,6 @@ function Header({ clickPattern, setClickPattern }) {
   let [styleExpense, setStyleExpense] = useState("box-bg default-btn");
   let [styleSaving, setStyleSaving] = useState("box-bg default-btn");
   let [styleInvest, setStyleInvest] = useState("box-bg default-btn");
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
@@ -59,9 +58,6 @@ function Header({ clickPattern, setClickPattern }) {
       setStyleExpense("box-bg default-btn");
       setStyleInvest("box-bg default-btn");
       setStyleSaving("box-bg default-btn");
-    }
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
     }
   }, [clickPattern, user]);
   return (

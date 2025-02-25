@@ -11,7 +11,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AuthPage from "../../auth/authPage.js";
 import UserContext from "../../../context/UserContext.js";
 import domain from "../../../util/domain.js";
-import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseReport.scss";
 
 function ExpenseReport() {
@@ -22,8 +21,6 @@ function ExpenseReport() {
   const [contentCondition, setContentCondition] = useState([]);
   const [contentData, setContentData] = useState();
   const [resultByDay, setResultByDay] = useState();
-  const [message, setMessage] = useState("");
-
   const { user } = useContext(UserContext);
   var d = new Date();
 
@@ -64,21 +61,12 @@ function ExpenseReport() {
     setContentCondition(typeof value === "string" ? value.split(",") : value);
   }
   async function handleGetDataContent(data) {
-    try {
-      const result = await Axios.post(`${domain}/expenselist/content`, { data: data });
-      let a = [];
-      result.data.forEach((i) => {
-        a.push(`${i.exelstCode}-${i.exeLstContent}`);
-      });
-      setContentData(a);
-    } catch (err) {
-      if (err.response) {
-        if (err.response.data.errorMessage) {
-          setMessage(err.response.data.errorMessage);
-        }
-      }
-      return;
-    }
+    const result = await Axios.post(`${domain}/expenselist/content`, { data: data });
+    let a = [];
+    result.data.forEach((i) => {
+      a.push(`${i.exelstCode}-${i.exeLstContent}`);
+    });
+    setContentData(a);
   }
   async function handleGetExpenseReport() {
     const result = await Axios.post(`${domain}/expense/reportexpense`, {
