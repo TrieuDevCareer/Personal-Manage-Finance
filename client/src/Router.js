@@ -28,7 +28,7 @@ function Router({ isCheck, setIsCheck }) {
       <Route path="/invest" element={<Investment isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/catalog" element={<Catalog isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/generate" element={<Generate />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register_none_defind" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/incomelist"

@@ -157,7 +157,7 @@ function Navbar({
         </li>
         {user && user.role === 1 && (
           <li>
-            <Link className={styleTotal} to="/register">
+            <Link className={styleTotal} to="/register_none_defind">
               <HowToRegIcon className="nav-icon" />
               <p>Tạo tài khoản</p>
             </Link>
