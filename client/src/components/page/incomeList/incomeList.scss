@@ -9,14 +9,17 @@
         height: 100%;
         padding-left: 1vw;
         padding-right: 1vw;
-        grid-auto-rows: 5% 95%;
+        grid-auto-rows: 9% 86%;
 
+        .title-container {
+            align-self: flex-end;
 
-        .title-incomeList {
-            text-align: center;
-            font-size: 1.5vw;
-            font-weight: 500;
-            color: var(--background-title-color);
+            .title-incomeList {
+                text-align: center;
+                font-size: 1.5vw;
+                font-weight: 500;
+                color: var(--background-title-color);
+            }
         }
     }
 }

@@ -2,34 +2,43 @@
 
 
 @media only screen and (min-width: 64em) {
-    .popup-container-expense {
-        margin-top: 4rem;
-        display: flex;
-        /* position: absolute; */
+    .popup-container-expenseList {
+        display: grid;
         justify-content: center;
-        align-items: start;
-        height: 35rem;
+        align-items: center;
+        height: 100%;
 
         .popup-form {
             display: grid;
             justify-content: center;
             background-color: var(--background-rdcolor);
             box-shadow: var(--box-shadow);
-            padding: 1rem;
+            padding-left: 2rem;
+            padding-top: 0.5rem;
+            padding-right: 2rem;
+            padding-bottom: 0.5rem;
             border-radius: 1rem;
+            width: 60vw;
+            height: 50%;
 
             .popup-text {
+                height: 7vh;
+
                 label {
                     color: var(--text-light-color);
+                    font-size: 1vw;
                 }
 
                 div {
                     color: var(--text-light-color);
                     text-align: left;
+                    font-size: 1.1vw;
 
                     input {
                         color: var(--text-light-color);
                         text-align: left;
+                        -webkit-text-fill-color: var(--text-light-color);
+
                     }
 
                     fieldset {

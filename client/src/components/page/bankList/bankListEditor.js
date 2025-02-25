@@ -58,7 +58,11 @@ function BankListEditor({ getBankLists, setBankListEditorOpen, editBankListData 
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+              "& > :not(style)": {
+                m: 1,
+                width: isPhoneWidth ? "20rem" : "55vw",
+                paddingRight: "2%",
+              },
             }}
             noValidate
             autoComplete="off"

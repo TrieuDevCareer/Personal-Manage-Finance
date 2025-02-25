@@ -154,135 +154,142 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
     }
   }, [editSavingData]);
   return (
-    <div className="popup-container-saving">
-      {isLoading && <LoadingProgess />}
-      {!isLoading && (
-        <Box
-          className="popup-form-saving"
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "unset" : "40rem" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={saveInCome}
-        >
-          <ErrorMessage message={message} setMessage={setMessage} />
+    <>
+      {!isPhoneWidth && <div></div>}
+      <div className="popup-container-saving">
+        {isLoading && <LoadingProgess />}
+        {!isLoading && (
+          <Box
+            className="popup-form-saving"
+            component="form"
+            sx={{
+              "& > :not(style)": {
+                m: 1,
+                width: isPhoneWidth ? "unset" : "55vw",
+                paddingRight: "2%",
+              },
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={saveInCome}
+          >
+            <ErrorMessage message={message} setMessage={setMessage} />
 
-          <div className="text-container">
-            <div className="left-group-input">
-              <TextField
-                className="popup-text"
-                required
-                label="Ngày gửi tiết kiệm"
-                id=""
-                type="date"
-                value={savDate}
-                InputLabelProps={{ shrink: true }}
-                onChange={(e) => setSavDate(e.target.value)}
-              />
-              <TextField
-                className="popup-text"
-                id="outlined-select-currency"
-                select
-                label="Ngân hàng gửi"
-                value={bnkName}
-                defaultValue=""
-                onChange={onchangeBank}
-              >
-                {bankListData.map((option) => (
-                  <MenuItem key={option.value} value={`${option.bnkLstID} - ${option.bnkName}`}>
-                    {option.bnkLstID} - {option.bnkName}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                className="popup-text"
-                label="Số tiền gửi"
-                id=""
-                type="number"
-                value={savMoney}
-                onChange={onChangeMoneySave}
-              />
-              <TextField
-                className="popup-text"
-                label="Thời gian gửi (Tháng)"
-                id=""
-                type="input"
-                value={savMonth}
-                onChange={onChangeMonthSave}
-              />
-              <TextField
-                className="popup-text"
-                label="Lãi xuất/năm"
-                id=""
-                type="number"
-                value={savInteret}
-                onChange={onChangeInteretSave}
-              />
+            <div className="text-container">
+              <div className="left-group-input">
+                <TextField
+                  className="popup-text"
+                  required
+                  label="Ngày gửi tiết kiệm"
+                  id=""
+                  type="date"
+                  value={savDate}
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) => setSavDate(e.target.value)}
+                />
+                <TextField
+                  className="popup-text"
+                  id="outlined-select-currency"
+                  select
+                  label="Ngân hàng gửi"
+                  value={bnkName}
+                  defaultValue=""
+                  onChange={onchangeBank}
+                >
+                  {bankListData.map((option) => (
+                    <MenuItem key={option.value} value={`${option.bnkLstID} - ${option.bnkName}`}>
+                      {option.bnkLstID} - {option.bnkName}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  className="popup-text"
+                  label="Số tiền gửi"
+                  id=""
+                  type="number"
+                  value={savMoney}
+                  onChange={onChangeMoneySave}
+                />
+                <TextField
+                  className="popup-text"
+                  label="Thời gian gửi (Tháng)"
+                  id=""
+                  type="input"
+                  value={savMonth}
+                  onChange={onChangeMonthSave}
+                />
+                <TextField
+                  className="popup-text"
+                  label="Lãi xuất/năm"
+                  id=""
+                  type="number"
+                  value={savInteret}
+                  onChange={onChangeInteretSave}
+                />
+              </div>
+              <div className="right-group-input">
+                {" "}
+                <TextField
+                  disabled
+                  className="popup-text"
+                  label="Tổng tiền lãi nhận được"
+                  id=""
+                  type="number"
+                  value={savInteretMoney}
+                />
+                <TextField
+                  disabled
+                  className="popup-text"
+                  label="Tổng tiền nhận được"
+                  id=""
+                  type="number"
+                  value={savTotalMoney}
+                />
+                <TextField
+                  className="popup-text"
+                  id="outlined-select-currency"
+                  select
+                  label="Trạng thái tiết kiệm"
+                  value={savStatus}
+                  defaultValue=""
+                  onChange={(e) => setSavStatus(e.target.value)}
+                >
+                  {StatusSav.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  className="popup-text"
+                  label="Số tiền thực tế khi nhận"
+                  id=""
+                  type="number"
+                  value={savTRealMoney}
+                  onChange={onChangeRealMoney}
+                />
+                <TextField
+                  disabled
+                  className="popup-text"
+                  label="Số tiền chênh lệch sau khi rút"
+                  id=""
+                  type="number"
+                  value={savRealInterMoney}
+                />
+              </div>
             </div>
-            <div className="right-group-input">
-              {" "}
-              <TextField
-                disabled
-                className="popup-text"
-                label="Tổng tiền lãi nhận được"
-                id=""
-                type="number"
-                value={savInteretMoney}
-              />
-              <TextField
-                disabled
-                className="popup-text"
-                label="Tổng tiền nhận được"
-                id=""
-                type="number"
-                value={savTotalMoney}
-              />
-              <TextField
-                className="popup-text"
-                id="outlined-select-currency"
-                select
-                label="Trạng thái tiết kiệm"
-                value={savStatus}
-                defaultValue=""
-                onChange={(e) => setSavStatus(e.target.value)}
-              >
-                {StatusSav.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                className="popup-text"
-                label="Số tiền thực tế khi nhận"
-                id=""
-                type="number"
-                value={savTRealMoney}
-                onChange={onChangeRealMoney}
-              />
-              <TextField
-                disabled
-                className="popup-text"
-                label="Số tiền chênh lệch sau khi rút"
-                id=""
-                type="number"
-                value={savRealInterMoney}
-              />
-            </div>
-          </div>
-          <Stack spacing={1} direction="row" justifyContent="right">
-            <Button variant="outlined" color="success" type="submit">
-              Lưu thay đổi
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-              Hủy thay đổi
-            </Button>
-          </Stack>
-        </Box>
-      )}
-    </div>
+            <Stack spacing={2} direction="row" justifyContent="right">
+              <Button variant="outlined" color="success" type="submit">
+                Lưu thay đổi
+              </Button>
+              <Button variant="outlined" color="error" onClick={() => closeEditor()}>
+                Hủy thay đổi
+              </Button>
+            </Stack>
+          </Box>
+        )}
+      </div>
+    </>
   );
 }
 export default SavingEditor;

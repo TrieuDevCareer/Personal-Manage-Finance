@@ -4,7 +4,7 @@ import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage";
-import "./incomeEditer.scss";
+import "./incomeEditor.scss";
 
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [inlstCode, setInlstCode] = useState("");
@@ -89,14 +89,14 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   }, [editIncomeData]);
 
   return (
-    <div className="popup-container-income">
+    <div className="popup-container-incomeEditor">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box
           className="popup-form"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "55vw", paddingRight: "2%" },
           }}
           noValidate
           autoComplete="off"
@@ -175,7 +175,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
             value={incMoney}
             onChange={onChangeMoney}
           />
-          <Stack spacing={1} direction="row" justifyContent="right">
+          <Stack spacing={2} direction="row" justifyContent="right">
             <Button variant="outlined" color="success" type="submit">
               Lưu thay đổi
             </Button>

@@ -72,12 +72,16 @@ function IncomeListEditor({ getIncomeLists, setIncomeListEditorOpen, editIncomeL
     <>
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <div className="popup-container-income">
+        <div className="popup-container-incomeList">
           <Box
             className="popup-form"
             component="form"
             sx={{
-              "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+              "& > :not(style)": {
+                m: 1,
+                width: isPhoneWidth ? "20rem" : "55vw",
+                paddingRight: "2%",
+              },
             }}
             noValidate
             autoComplete="off"

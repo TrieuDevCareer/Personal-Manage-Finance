@@ -88,14 +88,14 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     }
   }, [editExpenseData]);
   return (
-    <div className="popup-container-expense">
+    <div className="popup-container-expenseEditor">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
         <Box
           className="popup-form"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "55vw", paddingRight: "2%" },
           }}
           noValidate
           autoComplete="off"
