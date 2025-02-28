@@ -117,13 +117,13 @@ function Home() {
                     highlightScope: { faded: "global", highlighted: "item" },
                     faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                     innerRadius: "5%",
-                    outerRadius: isPhoneWidth ? "100%" : "95%",
+                    outerRadius: isPhoneWidth ? "55%" : "95%",
                     paddingAngle: 2,
                     cornerRadius: 3,
                     startAngle: -180,
                     endAngle: 180,
-                    cx: isPhoneWidth ? 500 : "30%",
-                    cy: isPhoneWidth ? 200 : "50%",
+                    cx: isPhoneWidth ? "40%" : "30%",
+                    cy: isPhoneWidth ? "30%" : "50%",
                     arcLabel: getArcLabel,
                   },
                 ]}
@@ -143,20 +143,20 @@ function Home() {
                     highlightScope: { faded: "global", highlighted: "item" },
                     faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                     innerRadius: "5%",
-                    outerRadius: isPhoneWidth ? "100%" : "95%",
+                    outerRadius: isPhoneWidth ? "55%" : "95%",
                     paddingAngle: 2,
                     cornerRadius: 3,
                     startAngle: -180,
                     endAngle: 180,
-                    cx: isPhoneWidth ? 500 : "30%",
-                    cy: isPhoneWidth ? 200 : "50%",
+                    cx: isPhoneWidth ? "40%" : "30%",
+                    cy: isPhoneWidth ? "30%" : "50%",
                     arcLabel: getArcLabel,
                   },
                 ]}
                 sx={{
                   [`& .${pieArcLabelClasses.root}`]: {
                     fill: "white",
-                    fontSize: 14,
+                    fontSize: 17,
                   },
                 }}
               />
@@ -169,7 +169,6 @@ function Home() {
           <div className="bottom-right-container">
             <div className="tk-report-container">
               <div className="title-container top-left">Thống kê mục tiết kiệm</div>
-              <div className="distance-box"></div>
               <div className="box">
                 <div className="first-box item-box">
                   <div className="icon-container">

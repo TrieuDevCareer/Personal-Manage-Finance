@@ -157,7 +157,7 @@
     .header-container {
         width: 100%;
         display: grid;
-        grid-template-columns: auto auto auto auto auto;
+        grid-template-columns: 25% 25% 25% 25%;
         position: fixed;
         padding-bottom: 0.5rem;
         top: 0rem;
@@ -182,11 +182,11 @@
                 align-items: center;
                 grid-template-rows: 1rem;
 
-                p {
-                    margin-top: 0.9rem;
+                div {
                     text-align: left;
                     margin-left: 0.5rem;
-                    font-size: 2.5vw;
+                    font-size: 2.3vw;
+                    font-weight: 400;
                 }
 
                 .nav-icon {
@@ -210,29 +210,6 @@
         .box-bg:hover {
             background: var(--background-title-color);
             background: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-        }
-
-        .title-root {
-            display: flex;
-            justify-content: right;
-            margin-right: 1rem;
-            align-items: center;
-
-            .tile-userName {
-                margin-right: 0.5rem;
-                font-size: 1.2rem;
-            }
-
-            .btn-style-edit {
-                height: 1.5rem;
-                width: 1.5rem;
-                cursor: pointer;
-            }
-
-            .btn-style-edit:hover {
-                color: var(--background-title-color);
-                color: linear-gradient(90deg, rgba(0, 176, 240, 1) 0%, rgba(0, 117, 240, 1) 35%, rgba(51, 0, 255, 1) 100%);
-            }
         }
     }
 }

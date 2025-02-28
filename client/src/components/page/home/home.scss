@@ -311,7 +311,6 @@
                 background-clip: text;
                 color: transparent;
                 z-index: 0;
-                position: absolute;
             }
 
             .distance-box {
@@ -319,76 +318,86 @@
             }
 
             .top-left-container {
+                display: grid;
+                grid-template-rows: 9% 91%;
                 background-color: var(--background-rdcolor);
                 border-radius: 1rem;
-                height: 32rem;
+                height: 30rem;
                 width: 90%;
-                justify-content: center;
-                justify-items: center;
 
                 .box {
-                    margin-top: 4rem;
+                    display: grid;
+                    grid-template-rows: 23% 23% 23% 23%;
                     width: 100%;
                     justify-items: center;
-                    height: 32.5vh;
-
-                    .title {
-                        margin-left: 0.5rem;
-                        margin-top: 0.2rem;
-                        font-size: 1.7rem;
-                        font-weight: 500;
-                    }
-
-                    .money {
-                        right: 11vw;
-                        position: absolute;
-                        font-size: 2rem;
-                        font-weight: 500;
-                        margin-top: -2vw;
-                    }
-
-                    .bank {
-                        margin-left: 0.5rem;
-                        font-size: 1.3rem;
-                        color: var(--text-warning-color);
-                        margin-top: 1.6rem;
-                        font-weight: 500;
-                    }
+                    align-content: center;
+                    height: 100%;
 
                     .box-SO-container {
+                        display: grid;
+                        grid-template-rows: 33% 33% 33%;
                         border-radius: 1rem;
-                        margin-bottom: 1rem;
-                        height: 6rem;
+                        margin-bottom: 2rem;
+                        height: 85%;
                         width: 90%;
                         background: rgb(195, 34, 128);
                         background: radial-gradient(circle, rgba(195, 34, 128, 1) 0%, rgba(194, 34, 195, 1) 100%);
                     }
 
                     .box-TK-container {
+                        display: grid;
+                        grid-template-rows: 33% 33% 33%;
                         border-radius: 1rem;
-                        margin-bottom: 1rem;
-                        height: 6rem;
+                        margin-bottom: 2rem;
+                        height: 85%;
                         width: 90%;
                         background: rgb(93, 195, 34);
                         background: linear-gradient(0deg, rgba(93, 195, 34, 1) 0%, rgba(34, 193, 195, 1) 100%);
                     }
 
                     .box-DT-container {
+                        display: grid;
+                        grid-template-rows: 33% 33% 33%;
                         border-radius: 1rem;
-                        margin-bottom: 1rem;
-                        height: 6rem;
+                        margin-bottom: 2rem;
+                        height: 85%;
                         width: 90%;
                         background: rgb(16, 90, 199);
                         background: linear-gradient(90deg, rgba(16, 90, 199, 1) 0%, rgba(27, 111, 173, 1) 50%, rgba(25, 182, 196, 1) 100%);
                     }
 
                     .box-TD-container {
+                        display: grid;
+                        grid-template-rows: 33% 33% 33%;
                         border-radius: 1rem;
-                        margin-bottom: 1rem;
-                        height: 6rem;
+                        margin-bottom: 2rem;
+                        height: 85%;
                         width: 90%;
                         background: rgb(113, 27, 173);
                         background: linear-gradient(90deg, rgba(113, 27, 173, 1) 0%, rgba(158, 114, 189, 1) 50%, rgba(233, 230, 235, 1) 100%);
+                    }
+
+                    .title {
+                        margin-left: 0.5rem;
+                        margin-top: 0.2rem;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        align-content: center;
+                    }
+
+                    .money {
+                        justify-self: end;
+                        align-content: center;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        margin-right: 0.5rem;
+                    }
+
+                    .bank {
+                        align-content: center;
+                        margin-left: 0.5rem;
+                        color: var(--text-warning-color);
+                        font-size: 1rem;
                     }
                 }
             }
@@ -418,6 +427,8 @@
             }
 
             .bottom-left-container {
+                display: grid;
+                grid-template-rows: 9% 91%;
                 background-color: var(--background-rdcolor);
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
@@ -426,62 +437,6 @@
                 font-size: 0.8rem;
                 height: 40rem;
                 width: 90%;
-
-                .table-report {
-                    width: 95%;
-                    height: 95%;
-                    justify-self: center;
-                    margin-top: 5vw;
-
-                    thead {
-                        th {
-                            font-size: 3vw;
-                            height: 3rem;
-                            text-align: center;
-                            border-bottom: 1px solid var(--text-title-color);
-                        }
-                    }
-
-                    tbody {
-                        font-size: 3vw;
-
-                        .item-table-income {
-                            color: var(--text-green-color);
-                            font-weight: 450;
-                        }
-
-                        .item-table-expense {
-                            color: var(--text-danger-color);
-                            font-weight: 450;
-                        }
-
-                        .item-table-different {
-                            color: var(--text-title-color);
-                            font-weight: 450;
-                            text-align: right;
-                        }
-                    }
-
-                    tfoot {
-                        font-size: 3vw;
-
-                        td {
-                            height: 3rem;
-                            border-top: 1px solid var(--text-title-color);
-                            font-weight: 500;
-                            color: var(--text-warning-color);
-                        }
-                    }
-
-                    td {
-                        height: 2.2rem;
-                        text-align: center;
-                    }
-
-                    #home {
-                        height: 1.5rem;
-                    }
-                }
             }
 
             .bottom-right-container {
@@ -496,6 +451,8 @@
                     background-color: var(--background-rdcolor);
                     margin-bottom: 1rem;
                     border-radius: 1rem;
+                    display: grid;
+                    grid-template-rows: 5% 91%;
 
                     .box {
                         margin-top: 1rem;
