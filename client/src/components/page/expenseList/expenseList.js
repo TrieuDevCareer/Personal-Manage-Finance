@@ -77,7 +77,7 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && !expenseListEditorOpen && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

@@ -164,7 +164,7 @@ function Saving({ isCheck, setIsCheck }) {
               />
             </>
           )}
-          {isPhoneWidth && (
+          {isPhoneWidth && !savingEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/banklist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC NGÂN HÀNG</div>

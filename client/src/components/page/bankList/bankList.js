@@ -78,7 +78,7 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && !bankListEditorOpen && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

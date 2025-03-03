@@ -77,7 +77,7 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && (
+          {isPhoneWidth && !isCatalogPage && !incomeListEditorOpen && (
             <div
               className="footer-link"
               style={{ left: isCatalogPage ? "0rem" : "0rem" }}

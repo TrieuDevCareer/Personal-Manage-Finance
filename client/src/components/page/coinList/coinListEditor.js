@@ -61,7 +61,7 @@ function CoinListEditor({ getCoinLists, setCoinListEditorOpen, editCoinListData 
             sx={{
               "& > :not(style)": {
                 m: 1,
-                width: isPhoneWidth ? "20rem" : "55vw",
+                width: isPhoneWidth ? "70vw" : "55vw",
                 paddingRight: "2%",
               },
             }}

@@ -202,7 +202,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
             sx={{
               "& > :not(style)": {
                 m: 1,
-                width: isPhoneWidth ? "unset" : "55vw",
+                width: isPhoneWidth ? "70vw" : "55vw",
                 paddingRight: "2%",
               },
             }}

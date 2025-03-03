@@ -171,7 +171,7 @@ function Investment({ isCheck, setIsCheck }) {
               />
             </>
           )}
-          {isPhoneWidth && (
+          {isPhoneWidth && !investmentEditorOpen && (
             <div className="footer-link" onClick={() => navigate("/coinlist")}>
               <OpenInNewIcon />
               <div className="footer-title">DANH MỤC ĐỒNG COIN</div>
