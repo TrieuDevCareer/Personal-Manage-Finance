@@ -77,16 +77,6 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && !incomeListEditorOpen && (
-            <div
-              className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
-              onClick={() => navigate("/income")}
-            >
-              <OpenInNewIcon />
-              <div className="footer-title">DANH SÁCH CÁC KHOẢN THU</div>
-            </div>
-          )}
         </div>
       )}
 

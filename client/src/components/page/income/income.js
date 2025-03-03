@@ -86,12 +86,6 @@ function Income({ isCheck, setIsCheck }) {
               />
             </>
           )}
-          {isPhoneWidth && !incomeEditorOpen && (
-            <div className="footer-link" onClick={() => navigate("/incomelist")}>
-              <OpenInNewIcon />
-              <div className="footer-title">DANH MỤC THU NHẬP</div>
-            </div>
-          )}
         </div>
       )}
 

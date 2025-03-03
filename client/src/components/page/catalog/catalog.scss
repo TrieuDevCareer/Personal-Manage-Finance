@@ -63,24 +63,11 @@
         }
 
         .catalog-table-container {
+
             display: grid;
-            grid-template-rows: 76rem 76rem auto;
+            grid-auto-rows: auto; // Các hàng tự động co giãn theo nội dung
+            gap: 1rem; // Khoảng cách cố định giữa các bảng
 
-            // .catalog-income {
-            //     margin-right: 1rem;
-            // }
-
-            // .catalog-expense {
-            //     margin-right: 1rem;
-            // }
-
-            .catalog-group {
-                .catalog-frs-group {
-                    display: grid;
-                    grid-template-rows: 76rem 76rem;
-                }
-            }
         }
-
     }
 }

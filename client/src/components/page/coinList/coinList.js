@@ -78,16 +78,6 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && !coinListEditorOpen && (
-            <div
-              className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
-              onClick={() => navigate("/invest")}
-            >
-              <OpenInNewIcon />
-              <div className="footer-title">DANH SÁCH ĐẦU TƯ</div>
-            </div>
-          )}
         </div>
       )}
 

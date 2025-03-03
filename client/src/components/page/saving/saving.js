@@ -164,12 +164,6 @@ function Saving({ isCheck, setIsCheck }) {
               />
             </>
           )}
-          {isPhoneWidth && !savingEditorOpen && (
-            <div className="footer-link" onClick={() => navigate("/banklist")}>
-              <OpenInNewIcon />
-              <div className="footer-title">DANH MỤC NGÂN HÀNG</div>
-            </div>
-          )}
         </div>
       )}
       {user === null && <AuthPage />}

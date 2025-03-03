@@ -164,6 +164,13 @@ function Table({
       <ErrorMessage message={message} setMessage={setMessage} />
       {isPhoneWidth && (
         <div className="foot-table" colSpan="7">
+          {navFooter !== "isCatalogPage" && (
+            <div className="footer-link" onClick={() => navigate(navFooter)}>
+              <OpenInNewIcon className="icon-nav" />
+              <div className="footer-title">{titleFooter}</div>
+            </div>
+          )}
+          {navFooter === "isCatalogPage" && <div className="footer-link"></div>}
           <ArrowBackIcon className="btn-style" onClick={() => handleArrowBackMaxPage()} />
           <ArrowBackIosIcon
             className="btn-style"

@@ -87,12 +87,6 @@ function Expense({ isCheck, setIsCheck }) {
               />
             </>
           )}
-          {isPhoneWidth && !expenseEditorOpen && (
-            <div className="footer-link" onClick={() => navigate("/expenselist")}>
-              <OpenInNewIcon />
-              <div className="footer-title">DANH MỤC CHI TIÊU</div>
-            </div>
-          )}
         </div>
       )}
 

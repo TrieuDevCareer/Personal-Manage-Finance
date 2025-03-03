@@ -78,16 +78,6 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
               />
             </>
           )}
-          {isPhoneWidth && !isCatalogPage && !bankListEditorOpen && (
-            <div
-              className="footer-link"
-              style={{ left: isCatalogPage ? "0rem" : "0rem" }}
-              onClick={() => navigate("/saving")}
-            >
-              <OpenInNewIcon />
-              <div className="footer-title">DANH SÁCH GỬI TIẾT KIỆM</div>
-            </div>
-          )}
         </div>
       )}
 
