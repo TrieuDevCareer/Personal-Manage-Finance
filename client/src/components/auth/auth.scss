@@ -153,6 +153,14 @@
                 width: 95%;
             }
 
+            .title-auth-res {
+                text-align: center;
+                font-size: 5vw;
+                font-weight: 500;
+                color: var(--background-title-color);
+                width: 95%;
+            }
+
             .auth-form {
                 display: grid;
                 background-color: var(--background-rdcolor);
@@ -198,6 +206,52 @@
                 }
 
                 .auth-text:hover {
+                    label {
+                        color: var(--text-danger-color);
+                    }
+
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                        }
+                    }
+                }
+
+                .auth-text-res {
+                    margin-bottom: 1rem;
+                    width: 88vw;
+
+                    label {
+                        z-index: 0;
+                        color: var(--text-light-color);
+                        font-size: 3vw;
+                    }
+
+                    div {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        font-size: 4vw;
+
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                        }
+                    }
+                }
+
+                .auth-text-test:hover {
                     label {
                         color: var(--text-danger-color);
                     }
