@@ -308,6 +308,8 @@
                 }
 
                 .savingRp-left-bottom {
+                    display: grid;
+                    grid-template-rows: 10% 90%;
                     background-color: var(--background-rdcolor);
                     border-radius: 1rem;
                     margin-top: 1.2rem;

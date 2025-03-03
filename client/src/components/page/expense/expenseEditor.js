@@ -95,7 +95,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
           className="popup-form"
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "55vw", paddingRight: "2%" },
+            "& > :not(style)": { m: 1, width: isPhoneWidth ? "70vw" : "55vw", paddingRight: "2%" },
           }}
           noValidate
           autoComplete="off"

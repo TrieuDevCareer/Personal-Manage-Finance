@@ -193,7 +193,7 @@ function InvestReport() {
                       highlightScope: { faded: "global", highlighted: "item" },
                       faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
                       innerRadius: "10%",
-                      outerRadius: "95%",
+                      outerRadius: "80%",
                       paddingAngle: 2,
                       cornerRadius: 3,
                       startAngle: -180,

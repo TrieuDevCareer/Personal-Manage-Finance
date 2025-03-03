@@ -1,7 +1,5 @@
 @import url("../../../style/mixins.scss");
 
-
-
 @media only screen and (min-width: 64em) {
     .popup-container-expenseEditor {
         display: grid;
@@ -76,9 +74,9 @@
 }
 
 @media only screen and (max-width: 46.200625em) {
-    .popup-container-expense {
-        height: 38rem;
-        width: 23.4rem;
+    .popup-container-expenseEditor {
+        width: 100%;
+        height: auto;
 
         .popup-form {
             display: grid;
