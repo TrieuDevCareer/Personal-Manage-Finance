@@ -63,11 +63,57 @@
         }
 
         .catalog-table-container {
-
             display: grid;
-            grid-auto-rows: auto; // Các hàng tự động co giãn theo nội dung
-            gap: 1rem; // Khoảng cách cố định giữa các bảng
+            grid-auto-rows: auto;
+            gap: 1rem;
 
+            .catalog-income {
+                .incomeList-container {
+                    margin-top: 1rem;
+
+                    .table-root {
+                        .foot-table {
+                            justify-content: end;
+                        }
+                    }
+                }
+            }
+
+            .catalog-expense {
+                .expenseList-container {
+                    margin-top: 1rem;
+
+                    .table-root {
+                        .foot-table {
+                            justify-content: end;
+                        }
+                    }
+                }
+            }
+
+            .catalog-saving {
+                .bankList-container {
+                    margin-top: 1rem;
+
+                    .table-root {
+                        .foot-table {
+                            justify-content: end;
+                        }
+                    }
+                }
+            }
+
+            .catalog-invest {
+                .coinList-container {
+                    margin-top: 1rem;
+
+                    .table-root {
+                        .foot-table {
+                            justify-content: end;
+                        }
+                    }
+                }
+            }
         }
     }
 }
