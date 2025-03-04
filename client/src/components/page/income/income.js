@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/table.js";
 import IncomeEditor from "./incomeEditor.js";
 import AuthPage from "../../auth/authPage.js";
@@ -18,7 +15,6 @@ function Income({ isCheck, setIsCheck }) {
   const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const aTitle = ["NGÀY THÁNG", "DANH MỤC THU", " QUỸ-TÀI KHOẢN", "NỘI DUNG THU", "SỐ TIỀN THU"];
   const aKeyItem = ["stt", "incDate", "inLstContent", "inlstCode", "incDetail", "incMoney"];
