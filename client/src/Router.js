@@ -17,6 +17,7 @@ import ExpenseReport from "./components/page/expense/expenseReport";
 import SavingReport from "./components/page/saving/savingReport";
 import InvestReport from "./components/page/investment/investReport";
 import Login from "./components/auth/login";
+import User from "./components/page/user/user";
 
 function Router({ isCheck, setIsCheck }) {
   return (
@@ -56,7 +57,7 @@ function Router({ isCheck, setIsCheck }) {
         path="/investreport"
         element={<InvestReport isCheck={isCheck} setIsCheck={setIsCheck} />}
       />
-      <Route path="/user" element={<Income isCheck={isCheck} setIsCheck={setIsCheck} />} />
+      <Route path="/user" element={<User isCheck={isCheck} setIsCheck={setIsCheck} />} />
     </Routes>
   );
 }

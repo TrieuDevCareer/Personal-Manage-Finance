@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { Box, TextField, Stack, Button, MenuItem } from "@mui/material";
+import Box from "@mui/material/Box";
+import { Stack, Button, TextField } from "@mui/material";
+import domain from "../../../util/domain";
 import LoadingProgess from "../../misc/loadingProgess.js";
-import domain from "../../../util/domain.js";
-import ErrorMessage from "../../misc/ErrorMessage.js";
-import "./incomeEditer.scss";
+import ErrorMessage from "../../misc/ErrorMessage";
+import "./user.scss";
 
-function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
-  const [inlstCode, setInlstCode] = useState("");
-  const [inLstContent, setInLstContent] = useState("");
-  const [incDate, setIncDate] = useState(null);
-  const [incDetail, setIncDetail] = useState("");
-  const [incMoney, setIncMoney] = useState(0);
-  const [incomeListData, setIncomeListData] = useState([]);
-  const [incDMoney, setIncDMoney] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+function User() {
+  const [modeEdit, setModeEdit] = useState(false);
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [salaryDate, setSalaryDate] = useState(0);
+  const [walletLife, setWalletLife] = useState(0);
+  const [walletInvest, setWalletInvest] = useState(0);
+  const [walletSaving, setWalletSaving] = useState(0);
+  const [walletFree, setWalletFree] = useState(0);
   const [message, setMessage] = useState("");
-  const [isLockContent, setIsLockContent] = useState(true);
-  const lstCodeData = ["Nguồn sống", "Tự do", "Tiết kiệm", "Đầu tư"];
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
-  function closeEditor() {
-    setIncomeEditorOpen(false);
-  }
+  const [isLoading, setIsLoading] = useState(false);
+  const [phoneWidth, setPhoneWidth] = useState("windown");
 
-  async function saveInCome(e) {
+  const navigate = useNavigate();
+
+  async function updateUserInfo(e) {
     e.preventDefault();
     setIsLoading(true);
-    const oIncomeData = {
-      inlstCode,
-      inLstContent,
-      incDate,
-      incDetail,
-      incMoney,
-      incDMoney,
+    const updateData = {
+      salaryDate,
+      walletLife,
+      walletInvest,
+      walletSaving,
+      walletFree,
     };
 
     try {
-      if (!editIncomeData) await Axios.post(`${domain}/income/`, oIncomeData);
-      else await Axios.put(`${domain}/income/${editIncomeData._id}`, oIncomeData);
+      await Axios.put(`${domain}/auth/`, updateData);
+      navigate(0);
     } catch (err) {
       setIsLoading(false);
       if (err.response) {
@@ -47,145 +46,144 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
       }
       return;
     }
+  }
 
-    getIncomes();
-    closeEditor();
-  }
-  function currencyStringToInt(currencyString) {
-    // Remove currency symbol and thousands separator
-    var numberString = currencyString.replace(/[.,\s€]/g, "");
-    // Convert to integer
-    return parseInt(numberString);
-  }
-  function onChangeLstCode(e) {
-    setInlstCode(e.target.value);
-
-    getIncomeLists(e.target.value);
-  }
-  async function getIncomeLists(data) {
-    const incomeLists = await Axios.post(`${domain}/incomelist/content`, { data: [data] });
-    setIncomeListData(incomeLists.data);
-    setIsLockContent(false);
-  }
-  function onChangeMoney(e) {
-    if (editIncomeData) {
-      setIncDMoney(parseInt(e.target.value) - currencyStringToInt(editIncomeData.incMoney));
+  async function getUserInfo() {
+    const userInfo = await Axios.get(`${domain}/auth/`);
+    if (userInfo.data) {
+      setEmail(userInfo.data.email ? userInfo.data.email : "");
+      setUserName(userInfo.data.userName ? userInfo.data.userName : "");
+      setSalaryDate(userInfo.data.salaryDate ? userInfo.data.salaryDate : null);
+      setWalletLife(userInfo.data.walletLife ? userInfo.data.walletLife : 0);
+      setWalletInvest(userInfo.data.walletInvest ? userInfo.data.walletInvest : 0);
+      setWalletSaving(userInfo.data.walletSaving ? userInfo.data.walletSaving : 0);
+      setWalletFree(userInfo.data.walletFree ? userInfo.data.walletFree : 0);
     }
-    setIncMoney(e.target.value);
+  }
+
+  function handleModeSystem(changeMode) {
+    setModeEdit(changeMode ? changeMode : !modeEdit);
   }
   useEffect(() => {
-    if (editIncomeData) {
-      setInlstCode(editIncomeData.inlstCode ? editIncomeData.inlstCode : "");
-      setInLstContent(editIncomeData.inLstContent ? editIncomeData.inLstContent : "");
-      setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
-      setIncDetail(editIncomeData.incDetail ? editIncomeData.incDetail : "");
-      setIncMoney(editIncomeData.incMoney ? currencyStringToInt(editIncomeData.incMoney) : 0);
-      setIsLockContent(false);
-      getIncomeLists(editIncomeData.inlstCode);
-    }
     if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
-  }, [editIncomeData]);
+      setPhoneWidth("phone");
+    } else setPhoneWidth("windown");
+    getUserInfo();
+  }, [phoneWidth, isLoading]);
 
   return (
-    <div className="popup-container-income">
+    <div className="auth-container">
       {isLoading && <LoadingProgess />}
       {!isLoading && (
-        <Box
-          className="popup-form"
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: isPhoneWidth ? "20rem" : "40rem" },
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={saveInCome}
-        >
-          <ErrorMessage message={message} setMessage={setMessage} />
-          <TextField
-            className="popup-text"
-            required
-            fullWidth
-            label="Ngày nhận thu nhập"
-            id="fullWidth"
-            type="date"
-            value={incDate}
-            InputLabelProps={{ shrink: true }}
-            onChange={(e) => setIncDate(e.target.value)}
-          />
-          <TextField
-            className="popup-text"
-            fullWidth
-            select
-            label="Nguồn quỹ"
-            id="fullWidth"
-            type="input"
-            value={inlstCode}
-            onChange={onChangeLstCode}
+        <div className="box-container">
+          <div className="title-auth-res">THÔNG TIN NGƯỜI DÙNG</div>
+          <Box
+            className="auth-form"
+            component="form"
+            sx={{
+              "& > :not(style)": {
+                m: 1,
+                width: phoneWidth === "phone" ? "100%" : "55vw",
+              },
+            }}
+            noValidate
+            autoComplete="on"
+            onSubmit={updateUserInfo}
           >
-            {lstCodeData.map((option) => (
-              <MenuItem
-                key={option}
-                value={
-                  option === "Nguồn sống"
-                    ? "SO"
-                    : option === "Tự do"
-                    ? "TD"
-                    : option === "Tiết kiệm"
-                    ? "TK"
-                    : "DT"
-                }
+            <ErrorMessage message={message} setMessage={setMessage} />
+            <TextField
+              className="auth-text-disable"
+              label="Email đăng nhập"
+              type="text"
+              size="small"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              className="auth-text-disable"
+              fullWidth
+              label="Tên người dùng"
+              id="fullWidth"
+              type="text"
+              size="small"
+              color="success"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <TextField
+              className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+              fullWidth
+              label="Ngày nhận lương chính"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={salaryDate}
+              onChange={(e) => setSalaryDate(e.target.value)}
+            />
+            <TextField
+              className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+              fullWidth
+              label="Quỹ hằng ngày"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={walletLife}
+              onChange={(e) => setWalletLife(e.target.value)}
+            />
+            <TextField
+              className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+              fullWidth
+              label="Quỹ tiết kiệm"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={walletInvest}
+              onChange={(e) => setWalletInvest(e.target.value)}
+            />
+            <TextField
+              className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+              fullWidth
+              label="Quỹ đầu tư"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={walletSaving}
+              onChange={(e) => setWalletSaving(e.target.value)}
+            />
+            <TextField
+              className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+              fullWidth
+              label="Quỹ tự do"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={walletFree}
+              onChange={(e) => setWalletFree(e.target.value)}
+            />
+            <Stack spacing={2} direction="row" justifyContent="right" className="btn-control">
+              {modeEdit && (
+                <Button
+                  variant="contained"
+                  color="success"
+                  size={phoneWidth === "phone" ? "small" : "medium"}
+                  type="submit"
+                >
+                  Đăng ký
+                </Button>
+              )}
+              <Button
+                variant="contained"
+                color={modeEdit ? "error" : "secondary"}
+                size={phoneWidth === "phone" ? "small" : "medium"}
+                onClick={() => handleModeSystem()}
               >
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            disabled={isLockContent}
-            className="popup-text"
-            id="outlined-select-currency"
-            fullWidth
-            select
-            label="Danh mục thu nhập"
-            value={inLstContent}
-            onChange={(e) => setInLstContent(e.target.value)}
-          >
-            {incomeListData.map((option) => (
-              <MenuItem key={option.inLstContent} value={`${option.inLstContent}`}>
-                {option.inLstContent}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Nội dung thu nhập"
-            id="fullWidth"
-            type="input"
-            value={incDetail}
-            onChange={(e) => setIncDetail(e.target.value)}
-          />
-          <TextField
-            className="popup-text"
-            fullWidth
-            label="Số tiền thu nhập"
-            id="fullWidth"
-            type="number"
-            value={incMoney}
-            onChange={onChangeMoney}
-          />
-          <Stack spacing={1} direction="row" justifyContent="right">
-            <Button variant="outlined" color="success" type="submit">
-              Lưu thay đổi
-            </Button>
-            <Button variant="outlined" color="error" onClick={() => closeEditor()}>
-              Hủy thay đổi
-            </Button>
-          </Stack>
-        </Box>
+                {modeEdit ? "Hủy thay đổi" : "Chỉnh sửa"}
+              </Button>
+            </Stack>
+          </Box>
+        </div>
       )}
     </div>
   );
 }
-export default IncomeEditor;
+export default User;

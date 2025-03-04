@@ -22,7 +22,9 @@ function Navbar({
   let [styleSaving, setStyleSaving] = useState("txt-style default-color");
   let [styleInvest, setStyleInvest] = useState("txt-style default-color");
   let [styleContent, setStyleContent] = useState("txt-style default-color");
-  let [styleTotal, setStyleTotal] = useState("txt-style default-color");
+  let [styleAggregation, setStyleAggregation] = useState("txt-style default-color");
+  let [styleUser, setStyleUser] = useState("txt-style default-color");
+  let [styleAccount, setStyleAccount] = useState("txt-style default-color");
   const { user } = useContext(UserContext);
 
   function onClickHeaderBtn(typeBtn) {
@@ -36,7 +38,9 @@ function Navbar({
         setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style default-color");
         setStyleContent("txt-style default-color");
-        setStyleTotal("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
         break;
       case "Expense":
         setStyleIncome("txt-style default-color");
@@ -44,7 +48,9 @@ function Navbar({
         setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style default-color");
         setStyleContent("txt-style default-color");
-        setStyleTotal("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
         break;
       case "Saving":
         setStyleIncome("txt-style default-color");
@@ -52,7 +58,19 @@ function Navbar({
         setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style gradient-color");
         setStyleContent("txt-style default-color");
-        setStyleTotal("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
+        break;
+      case "Invest":
+        setStyleIncome("txt-style default-color");
+        setStyleExpense("txt-style default-color");
+        setStyleInvest("txt-style gradient-color");
+        setStyleSaving("txt-style default-color");
+        setStyleContent("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
         break;
       case "Content":
         setStyleIncome("txt-style default-color");
@@ -60,23 +78,49 @@ function Navbar({
         setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style default-color");
         setStyleContent("txt-style gradient-color");
-        setStyleTotal("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
         break;
-      case "Total":
+      case "Aggregation":
         setStyleIncome("txt-style default-color");
         setStyleExpense("txt-style default-color");
         setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style default-color");
         setStyleContent("txt-style default-color");
-        setStyleTotal("txt-style gradient-color");
+        setStyleAggregation("txt-style gradient-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
+        break;
+      case "User":
+        setStyleIncome("txt-style default-color");
+        setStyleExpense("txt-style default-color");
+        setStyleInvest("txt-style default-color");
+        setStyleSaving("txt-style default-color");
+        setStyleContent("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style gradient-color");
+        setStyleAccount("txt-style default-color");
+        break;
+      case "Account":
+        setStyleIncome("txt-style default-color");
+        setStyleExpense("txt-style default-color");
+        setStyleInvest("txt-style default-color");
+        setStyleSaving("txt-style default-color");
+        setStyleContent("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style gradient-color");
         break;
       default:
         setStyleIncome("txt-style default-color");
         setStyleExpense("txt-style default-color");
-        setStyleInvest("txt-style gradient-color");
+        setStyleInvest("txt-style default-color");
         setStyleSaving("txt-style default-color");
         setStyleContent("txt-style default-color");
-        setStyleTotal("txt-style default-color");
+        setStyleAggregation("txt-style default-color");
+        setStyleUser("txt-style default-color");
+        setStyleAccount("txt-style default-color");
         break;
     }
     return;
@@ -96,7 +140,7 @@ function Navbar({
       setStyleInvest("txt-style default-color");
       setStyleSaving("txt-style default-color");
       setStyleContent("txt-style default-color");
-      setStyleTotal("txt-style default-color");
+      setStyleAggregation("txt-style default-color");
     }
   }, [clickPattern]);
   return (
@@ -140,20 +184,28 @@ function Navbar({
           </Link>
         </li>
         <li>
-          <Link className={styleTotal} to="/generate" onClick={() => onClickHeaderBtn("Total")}>
+          <Link
+            className={styleAggregation}
+            to="/generate"
+            onClick={() => onClickHeaderBtn("Aggregation")}
+          >
             <img src={"/images/total.png"} alt="..." className="nav-icon" />
             <p>Tổng hợp</p>
           </Link>
         </li>
         <li>
-          <Link className={styleTotal} to="/user" onClick={() => onClickHeaderBtn("Total")}>
+          <Link className={styleUser} to="/user" onClick={() => onClickHeaderBtn("User")}>
             <PersonIcon className="nav-icon" />
             <p>Cá nhân</p>
           </Link>
         </li>
         {user && user.role === 1 && (
           <li>
-            <Link className={styleTotal} to="/register_none_defind">
+            <Link
+              className={styleAccount}
+              to="/register_none_defind"
+              onClick={() => onClickHeaderBtn("Account")}
+            >
               <HowToRegIcon className="nav-icon" />
               <p>Tạo tài khoản</p>
             </Link>

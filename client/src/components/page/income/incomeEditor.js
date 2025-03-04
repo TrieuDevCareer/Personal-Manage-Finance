@@ -99,7 +99,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
             "& > :not(style)": { m: 1, width: isPhoneWidth ? "70vw" : "55vw", paddingRight: "2%" },
           }}
           noValidate
-          autoComplete="off"
+          autoComplete="on"
           onSubmit={saveInCome}
         >
           <ErrorMessage message={message} setMessage={setMessage} />

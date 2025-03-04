@@ -161,8 +161,8 @@ router.post("/login", async (req, res) => {
 router.put("/", auth, async (req, res) => {
   try {
     const {
-      password,
-      oldPassword,
+      // password,
+      // oldPassword,
       walletLife,
       walletInvest,
       walletSaving,
@@ -172,10 +172,10 @@ router.put("/", auth, async (req, res) => {
 
     // hash the password
 
-    const salt = await bcrypt.genSalt();
+    // const salt = await bcrypt.genSalt();
 
     const oUpdateData = {
-      password: await bcrypt.hash(password, salt),
+      // password: await bcrypt.hash(password, salt),
       walletLife,
       walletInvest,
       walletSaving,
@@ -184,29 +184,29 @@ router.put("/", auth, async (req, res) => {
     };
     const sUserID = req.user;
 
-    if (oldPassword) {
-      // get user account
-      const existingUser = await User.findById(sUserID);
-      const correctPassword = await bcrypt.compare(oldPassword, existingUser.passwordHash);
+    // if (oldPassword) {
+    //   // get user account
+    //   const existingUser = await User.findById(sUserID);
+    //   const correctPassword = await bcrypt.compare(oldPassword, existingUser.passwordHash);
 
-      if (!correctPassword)
-        return res.status(401).json({
-          errorMessage: "Mật khẩu xác thực không chính xác, hãy thử lại!",
-        });
-    }
+    //   if (!correctPassword)
+    //     return res.status(401).json({
+    //       errorMessage: "Mật khẩu xác thực không chính xác, hãy thử lại!",
+    //     });
+    // }
     const sUpdateEntity = await commonUtil.updateDataCase(
       req,
       res,
       oUpdateData,
       User,
       sUserID,
-      "thông tin cá nhân"
+      "Thông tin"
     );
     if (sUpdateEntity.status === 200) {
       res.json(`${sUpdateEntity.message}`);
     } else {
       res.status(400).json({
-        errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+        errorMessage: sUpdateEntity.message,
       });
     }
   } catch (error) {
