@@ -6,8 +6,9 @@ import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage";
 import "./incomeEditor.scss";
 
-function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
+function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData, user }) {
   const [inlstCode, setInlstCode] = useState("");
+  const [incSOType, setIncSOType] = useState("CD");
   const [inLstContent, setInLstContent] = useState("");
   const [incDate, setIncDate] = useState(null);
   const [incDetail, setIncDetail] = useState("");
@@ -18,6 +19,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
   const [message, setMessage] = useState("");
   const [isLockContent, setIsLockContent] = useState(true);
   const lstCodeData = ["Nguồn sống", "Tự do", "Tiết kiệm", "Đầu tư"];
+  const lstSOData = ["Cố định", "Chi tiêu"];
   const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   function closeEditor() {
     setIncomeEditorOpen(false);
@@ -51,16 +53,42 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
     getIncomes();
     closeEditor();
   }
+
   function currencyStringToInt(currencyString) {
     // Remove currency symbol and thousands separator
     var numberString = currencyString.replace(/[.,\s€]/g, "");
     // Convert to integer
     return parseInt(numberString);
   }
+
   function onChangeLstCode(e) {
     setInlstCode(e.target.value);
 
+    if (e.target.value !== "SO") {
+      setIncSOType("CD");
+      setIncMoney(0);
+    }
+
     getIncomeLists(e.target.value);
+  }
+
+  function onChangeLstSOType(e) {
+    setIncSOType(e.target.value);
+
+    if (e.target.value === "CT") {
+      const today = new Date();
+      const todayDay = today.getDate();
+      let targetDate;
+
+      if (user.salaryDate > todayDay) {
+        targetDate = new Date(today.getFullYear(), today.getMonth(), user.salaryDate);
+      } else {
+        targetDate = new Date(today.getFullYear(), today.getMonth() + 1, user.salaryDate);
+      }
+
+      const diffTime = targetDate - today;
+      setIncMoney(user.dailyBudget * Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
   }
   async function getIncomeLists(data) {
     const incomeLists = await Axios.post(`${domain}/incomelist/content`, { data: [data] });
@@ -141,6 +169,24 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
               </MenuItem>
             ))}
           </TextField>
+          {inlstCode === "SO" && (
+            <TextField
+              className="popup-text"
+              fullWidth
+              select
+              label="Loại nguồn Sống"
+              id="fullWidth"
+              type="input"
+              value={incSOType}
+              onChange={onChangeLstSOType}
+            >
+              {lstSOData.map((option) => (
+                <MenuItem key={option} value={option === "Cố định" ? "CD" : "CT"}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
           <TextField
             disabled={isLockContent}
             className="popup-text"
@@ -167,7 +213,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData }) {
             onChange={(e) => setIncDetail(e.target.value)}
           />
           <TextField
-            className="popup-text"
+            className={incSOType === "CD" ? "popup-text" : "popup-text-disable"}
             fullWidth
             label="Số tiền thu nhập"
             id="fullWidth"

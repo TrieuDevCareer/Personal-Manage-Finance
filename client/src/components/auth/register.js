@@ -13,6 +13,7 @@ function Register() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
+  const [dailyBudget, setDailyBudget] = useState(0);
   const [salaryDate, setSalaryDate] = useState(0);
   const [walletLife, setWalletLife] = useState(0);
   const [walletInvest, setWalletInvest] = useState(0);
@@ -33,6 +34,7 @@ function Register() {
       userName,
       password,
       passwordVerify,
+      dailyBudget,
       salaryDate,
       walletLife,
       walletInvest,
@@ -54,8 +56,6 @@ function Register() {
       }
       return;
     }
-
-    // await getUser();
   }
   useEffect(() => {
     if (window.outerWidth <= 739) {
@@ -121,6 +121,16 @@ function Register() {
               size="small"
               value={passwordVerify}
               onChange={(e) => setPasswordVerify(e.target.value)}
+            />
+            <TextField
+              className="auth-text-res"
+              fullWidth
+              label="Budget hằng ngày"
+              id="fullWidth"
+              type="number"
+              size="small"
+              value={dailyBudget}
+              onChange={(e) => setDailyBudget(e.target.value)}
             />
             <TextField
               className="auth-text-res"

@@ -64,6 +64,7 @@ function Income({ isCheck, setIsCheck }) {
               getIncomes={getIncomes}
               setIncomeEditorOpen={setIncomeEditorOpen}
               editIncomeData={editIncomeData}
+              user={user}
             />
           ) : (
             <>

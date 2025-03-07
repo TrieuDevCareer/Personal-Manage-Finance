@@ -69,6 +69,39 @@
                     }
                 }
             }
+
+            .popup-text-disable {
+                height: 7vh;
+                pointer-events: none;
+
+                label {
+                    color: var(--text-light-color);
+                    font-size: 1vw;
+                }
+
+                div {
+                    color: var(--text-warning-color);
+                    text-align: left;
+                    font-size: 1.1vw;
+
+                    input {
+                        color: var(--text-warning-color);
+                        text-align: left;
+                        -webkit-text-fill-color: var(--text-warning-color);
+
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
         }
     }
 }
@@ -102,6 +135,35 @@
 
                     input {
                         color: var(--text-light-color);
+                        text-align: left;
+                        -webkit-text-fill-color: var(--text-light-color);
+                    }
+
+                    fieldset {
+                        border-color: var(--text-title-color);
+                        ;
+                    }
+
+                    svg {
+                        color: var(--text-title-color);
+                        ;
+                    }
+                }
+            }
+
+            .popup-text-disable {
+                pointer-events: none;
+
+                label {
+                    color: var(--text-light-color);
+                }
+
+                div {
+                    color: var(--text-warning-color);
+                    text-align: left;
+
+                    input {
+                        color: var(--text-warning-color);
                         text-align: left;
                         -webkit-text-fill-color: var(--text-light-color);
                     }

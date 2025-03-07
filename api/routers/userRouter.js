@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
       walletInvest,
       walletSaving,
       walletFree,
+      dailyBudget,
     } = req.body;
     // validation
 
@@ -65,6 +66,7 @@ router.post("/", async (req, res) => {
       userName,
       passwordHash,
       salaryDate: parseInt(salaryDate),
+      dailyBudget: dailyBudget ? dailyBudget : 0,
       walletLife: walletLife ? walletLife : 0,
       walletInvest: walletInvest ? walletInvest : 0,
       walletSaving: walletSaving ? walletSaving : 0,
@@ -88,7 +90,9 @@ router.post("/", async (req, res) => {
       `Chúng tôi đã gửi email ${email} xác thực đến bạn, hãy kiểm tra và xác thực tài khoản của mình!`
     );
   } catch (error) {
-    res.status(500).send();
+    res.status(500).json({
+      errorMessage: error.message,
+    });
   }
 });
 
@@ -98,14 +102,12 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // validation
-
     if (!email || !password)
       return res.status(400).json({
         errorMessage: "Nhập đầy đủ thông tin đăng nhập để vào hệ thống!",
       });
 
     // get user account
-
     const existingUser = await User.findOne({ email });
     if (!existingUser)
       return res.status(401).json({
@@ -123,18 +125,40 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({
         errorMessage: `Tài khoản chưa được xác thực. Vui lòng check mail ${email} để kích hoạt tài khoản!`,
       });
+    let iSODaily = 0;
+    const day = new Date().getDate();
+    if (existingUser.salaryDate > day) {
+      iSODaily =
+        existingUser.walletLife - existingUser.dailyBudget * (existingUser.salaryDate - day);
+    } else {
+      iSODaily =
+        existingUser.walletLife -
+        existingUser.dailyBudget *
+          (new Date(year, month, 0).getDate() - day + existingUser.salaryDate);
+    }
+    if (iSODaily > 0) {
+      await User.updateOne(
+        { _id: existingUser._id },
+        {
+          $inc: {
+            walletFree: iSODaily,
+            walletLife: -iSODaily,
+          },
+        }
+      );
+    }
 
     // create a JWT token
-
     const token = jwt.sign(
       {
         id: existingUser._id,
         userName: existingUser.userName,
+        dailyBudget: existingUser.dailyBudget,
         salaryDate: existingUser.salaryDate,
-        walletLife: existingUser.walletLife,
+        walletLife: iSODaily > 0 ? existingUser.walletLife - iSODaily : existingUser.walletLife,
         walletInvest: existingUser.walletInvest,
         walletSaving: existingUser.walletSaving,
-        walletFree: existingUser.walletFree,
+        walletFree: iSODaily > 0 ? existingUser.walletFree + iSODaily : existingUser.walletFree,
         role: existingUser.role,
       },
       process.env.JWT_SECRET
@@ -153,7 +177,9 @@ router.post("/login", async (req, res) => {
       })
       .send();
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json({
+      errorMessage: err.message,
+    });
   }
 });
 
@@ -210,7 +236,9 @@ router.put("/", auth, async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({
+      errorMessage: error.message,
+    });
   }
 });
 

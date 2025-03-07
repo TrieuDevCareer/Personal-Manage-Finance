@@ -15,6 +15,7 @@ function User() {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [salaryDate, setSalaryDate] = useState(0);
+  const [dailyBudget, setDailyBudget] = useState(0);
   const [walletLife, setWalletLife] = useState(0);
   const [walletInvest, setWalletInvest] = useState(0);
   const [walletSaving, setWalletSaving] = useState(0);
@@ -36,6 +37,7 @@ function User() {
       walletInvest,
       walletSaving,
       walletFree,
+      dailyBudget,
     };
 
     try {
@@ -62,6 +64,7 @@ function User() {
       setWalletInvest(userInfo.data.walletInvest ? userInfo.data.walletInvest : 0);
       setWalletSaving(userInfo.data.walletSaving ? userInfo.data.walletSaving : 0);
       setWalletFree(userInfo.data.walletFree ? userInfo.data.walletFree : 0);
+      setDailyBudget(userInfo.data.dailyBudget ? userInfo.data.dailyBudget : 0);
     }
   }
 
@@ -116,6 +119,16 @@ function User() {
                   color="success"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
+                />
+                <TextField
+                  className={modeEdit ? "auth-text-res" : "auth-text-disable"}
+                  fullWidth
+                  label="Budget hằng ngày"
+                  id="fullWidth"
+                  type="number"
+                  size="small"
+                  value={dailyBudget}
+                  onChange={(e) => setDailyBudget(e.target.value)}
                 />
                 <TextField
                   className={modeEdit ? "auth-text-res" : "auth-text-disable"}
