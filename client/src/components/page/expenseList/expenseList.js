@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import AuthPage from "../../auth/authPage.js";
 import ExpenseListEditor from "./expenseListEditor.js";
@@ -16,10 +13,8 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   const [expenseListData, setExpenseListData] = useState();
   const [expenseListEditorOpen, setExpenseListEditorOpen] = useState(false);
   const [editExpenseListData, setEditExpenseListData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const aTitle = isCatalogPage ? ["QUỸ", "NỘI DUNG CHI TIÊU"] : ["NGUỒN QUỸ", "NỘI DUNG CHI TIÊU"];
   const aKeyItem = ["stt", "exelstCode", "exeLstContent"];
@@ -41,9 +36,6 @@ function ExpenseList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setExpenseListData();
     else getExpenseLists();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>

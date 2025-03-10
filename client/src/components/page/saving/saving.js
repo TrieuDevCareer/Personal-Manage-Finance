@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import SavingEditor from "./savingEditor.js";
 import AuthPage from "../../auth/authPage.js";
@@ -17,10 +14,8 @@ function Saving({ isCheck, setIsCheck }) {
   const [savingEditorOpen, setSavingEditorOpen] = useState(false);
   const [editSavingData, setEditSavingData] = useState(null);
   const [savingReportTotal, setSavingReportTotal] = useState();
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
   const aTitle = [
     "NGÀY THÁNG",
     "DANH MỤC GTK",
@@ -107,9 +102,6 @@ function Saving({ isCheck, setIsCheck }) {
     else {
       getSavings();
       handleGetSavingReportTotal();
-    }
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
     }
   }, [user]);
   return (

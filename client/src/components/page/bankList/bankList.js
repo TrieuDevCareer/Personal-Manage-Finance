@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import BankListEditor from "./bankListEditor.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
@@ -16,10 +13,8 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   const [bankListData, setBankListData] = useState();
   const [bankListEditorOpen, setBankListEditorOpen] = useState(false);
   const [editBankListData, setEditBankListData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const aTitle = isCatalogPage ? ["MÃ NGÂN HÀNG", "TÊN NGÂN HÀNG"] : ["MÃ", "NGÂN HÀNG"];
   const aKeyItem = ["stt", "bnkLstID", "bnkName"];
@@ -41,9 +36,6 @@ function BankList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setBankListData();
     else getBankLists();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>

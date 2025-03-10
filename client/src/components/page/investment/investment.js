@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import InvestEditor from "./investEditor.js";
 import AuthPage from "../../auth/authPage.js";
@@ -17,9 +14,8 @@ function Investment({ isCheck, setIsCheck }) {
   const [investmentEditorOpen, setInvestmentEditorOpen] = useState(false);
   const [editInvestmentData, setEditInvestmentData] = useState(null);
   const [investReportTotal, setInvestReportTotal] = useState();
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
+
   const aTitle = [
     "NGÀY MUA",
     "MÃ COIN",
@@ -120,9 +116,6 @@ function Investment({ isCheck, setIsCheck }) {
     else {
       getInvestments();
       handleGetInvestReportTotal();
-    }
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
     }
   }, [user]);
   return (

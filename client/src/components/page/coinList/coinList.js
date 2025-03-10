@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
 import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import CoinListEditor from "./coinListEditor.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
@@ -16,7 +14,6 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   const [coinListData, setCoinListData] = useState();
   const [coinListEditorOpen, setCoinListEditorOpen] = useState(false);
   const [editCoinListData, setEditCoinListData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -41,9 +38,6 @@ function CoinList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setCoinListData();
     else getCoinLists();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>

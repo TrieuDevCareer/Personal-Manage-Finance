@@ -12,7 +12,6 @@ function Income({ isCheck, setIsCheck }) {
   const [incomeData, setIncomeData] = useState();
   const [incomeEditorOpen, setIncomeEditorOpen] = useState(false);
   const [editIncomeData, setEditIncomeData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
 
@@ -47,9 +46,6 @@ function Income({ isCheck, setIsCheck }) {
   useEffect(() => {
     if (!user) setIncomeData();
     else getIncomes();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>

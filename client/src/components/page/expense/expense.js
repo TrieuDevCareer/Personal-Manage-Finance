@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import ExpenseEditor from "./expenseEditor.js";
 import AuthPage from "../../auth/authPage.js";
@@ -16,10 +13,8 @@ function Expense({ isCheck, setIsCheck }) {
   const [expenseData, setExpenseData] = useState();
   const [expenseEditorOpen, setExpenseEditorOpen] = useState(false);
   const [editExpenseData, setEditExpenseData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const aKeyItem = ["stt", "expDate", "exeLstContent", "exelstCode", "expDetail", "expMoney"];
 
@@ -53,9 +48,6 @@ function Expense({ isCheck, setIsCheck }) {
   useEffect(() => {
     if (!user) setExpenseData();
     else getExpenses();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>

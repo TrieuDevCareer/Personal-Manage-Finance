@@ -1,10 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-// import "./ErrorMessage.scss";
-import { useNavigate } from "react-router-dom";
 import AuthPage from "../../auth/authPage.js";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Table from "../../misc/Table.js";
 import IncomeListEditor from "./incomeListEditor.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
@@ -16,10 +13,8 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   const [incomeListData, setIncomeListData] = useState();
   const [incomeListEditorOpen, setIncomeListEditorOpen] = useState(false);
   const [editIncomeListData, setEditIncomeListData] = useState(null);
-  const [isPhoneWidth, setIsPhoneWidth] = useState(false);
 
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const aTitle = isCatalogPage ? ["QUỸ", "NỘI DUNG THU NHẬP"] : ["NGUỒN QUỸ", "NỘI DUNG THU NHẬP"];
   const aKeyItem = ["stt", "inlstCode", "inLstContent"];
@@ -41,9 +36,6 @@ function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
   useEffect(() => {
     if (!user) setIncomeListData();
     else getIncomeLists();
-    if (window.outerWidth <= 739) {
-      setIsPhoneWidth(true);
-    }
   }, [user]);
   return (
     <>
