@@ -5,7 +5,7 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthPage from "../../auth/authPage.js";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import Table from "../../misc/table.js";
+import Table from "../../misc/Table.js";
 import IncomeListEditor from "./incomeListEditor.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";

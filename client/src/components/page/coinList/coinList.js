@@ -4,7 +4,7 @@ import Axios from "axios";
 // import "./ErrorMessage.scss";
 import { useNavigate } from "react-router-dom";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import Table from "../../misc/table.js";
+import Table from "../../misc/Table.js";
 import CoinListEditor from "./coinListEditor.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import AuthPage from "../../auth/authPage.js";

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
-import Table from "../../misc/table.js";
+import Table from "../../misc/Table.js";
 import IncomeEditor from "./incomeEditor.js";
 import AuthPage from "../../auth/authPage.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
