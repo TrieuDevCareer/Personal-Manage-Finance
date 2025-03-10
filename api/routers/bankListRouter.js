@@ -3,63 +3,92 @@ const BankList = require("../models/bankListModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get data router
+/**
+ * Error response helper function
+ * @param {object} res - Express response object
+ * @param {number} status - HTTP status code
+ * @param {string} message - Error message
+ */
+const sendResponse = (res, status, message) => {
+  if (status === 200) {
+    return res.status(status).json(message);
+  }
+  return res.status(status).json({
+    errorMessage: message,
+  });
+};
+
+/**
+ * Route handlers
+ */
+// Get all banks
 router.get("/", auth, async (req, res) => {
-  await commonUtil.getAllResult(req, res, BankList);
+  try {
+    await commonUtil.getAllData(req, res, BankList);
+  } catch (error) {
+    sendResponse(res, 500, `Lỗi truy xuất dữ liệu danh sách Ngân hàng: ${error.message}`);
+  }
 });
 
-// create data router
+// Create new bank
 router.post("/", auth, async (req, res) => {
   try {
     const { bnkLstID, bnkName } = req.body;
-    const oCreateData = { bnkLstID, bnkName };
-    const result = await commonUtil.createDataCase(req, res, oCreateData, BankList, "Ngân hàng");
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+
+    // Validate required fields
+    if (!bnkLstID || !bnkName) {
+      return sendResponse(res, 400, "ID Ngân hàng và tên Ngân hàng là bắt buộc");
+    }
+
+    const bankData = { bnkLstID, bnkName };
+    const result = await commonUtil.createData(req, res, bankData, BankList, "Ngân hàng");
+
+    sendResponse(res, result.status, result.message);
   } catch (error) {
-    res.status(500).send(error);
+    sendResponse(res, 500, `Lỗi khi tạo dữ liệu Ngân hàng: ${error.message}`);
   }
 });
 
-// update data router
+// Update bank
 router.put("/:id", auth, async (req, res) => {
   try {
     const { bnkLstID, bnkName } = req.body;
-    const oUpdateData = { bnkLstID, bnkName };
-    const sBankId = req.params.id;
-    const result = await commonUtil.updateDataCase(
-      req,
-      res,
-      oUpdateData,
-      BankList,
-      sBankId,
-      "ngân hàng"
-    );
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+    const bankId = req.params.id;
+
+    // Validate required fields
+    if (!bnkLstID || !bnkName) {
+      return sendResponse(res, 400, "ID Ngân hàng và tên Ngân hàng là bắt buộc");
+    }
+
+    // Check if bank ID exists
+    if (!bankId) {
+      return sendResponse(res, 400, "ID Ngân hàng là bắt buộc");
+    }
+
+    const updateData = { bnkLstID, bnkName };
+    const result = await commonUtil.updateData(req, res, updateData, BankList, bankId, "Ngân hàng");
+
+    sendResponse(res, result.status, result.message);
   } catch (error) {
-    res.status(500).json({ error });
+    sendResponse(res, 500, `Lỗi khi cập nhập dữ liệu Ngân hàng: ${error.message}`);
   }
 });
 
-// delete data router
+// Delete bank
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const oBankId = req.params.id;
-    const result = await commonUtil.deleteDataCase(req, res, BankList, oBankId, "ngân hàng");
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+    const bankId = req.params.id;
+
+    // Check if bank ID exists
+    if (!bankId) {
+      return sendResponse(res, 400, "ID Ngân hàng là bắt buộc");
+    }
+
+    const result = await commonUtil.deleteData(req, res, BankList, bankId, "Ngân hàng");
+
+    sendResponse(res, result.status, result.message);
   } catch (error) {
-    res.status(500).json({ error });
+    sendResponse(res, 500, `Lỗi khi xóa dữ liệu Ngân hàng: ${error.message}`);
   }
 });
 

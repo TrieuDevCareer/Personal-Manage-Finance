@@ -4,276 +4,338 @@ const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get data router
-router.get("/", auth, async (req, res) => {
-  await commonUtil.getAllResult(req, res, Expense);
-});
+// Constants
+const CURRENCY_FORMAT = {
+  style: "currency",
+  currency: "VND",
+};
 
-// get Report day by day Expense
-router.get("/byday", auth, async (req, res) => {
-  const resultData = {
-    SO: 0,
-    TD: 0,
-  };
-  const day = new Date().getDate();
-  const month = new Date().getMonth() + 1;
+const EXPENSE_TYPES = {
+  LIVING: "SO", // Nguồn sống
+  FREE: "TD", // Tự do
+};
+
+const COLOR_PALETTE = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#0ecb74", "#ff007f", "#FDDE55"];
+
+// Helpers
+const formatCurrency = (amount) => {
+  return amount.toLocaleString("it-IT", CURRENCY_FORMAT);
+};
+
+const getMonthLastDay = (year, month) => {
+  return new Date(year, month, 0).getDate();
+};
+
+const calculateDaysUntilSalary = (currentDay, salaryDate) => {
+  if (salaryDate > currentDay) {
+    return salaryDate - currentDay;
+  }
+
   const year = new Date().getFullYear();
-  let aResultData = await Expense.find({ user: req.user });
-  let userData = await User.findById(req.user);
-  aResultData = aResultData.filter((item) => item.expDate.getMonth() === new Date().getMonth());
-  aResultData.forEach((item) => {
-    if (day === item.expDate.getDate()) {
-      resultData.SO += item.exelstCode === "SO" ? item.expMoney : 0;
-      resultData.TD += item.exelstCode === "TD" ? item.expMoney : 0;
-    }
-  });
+  const month = new Date().getMonth() + 1;
+  return getMonthLastDay(year, month) - currentDay + salaryDate;
+};
 
-  const oResultData = {
-    SoDay: Math.round(
-      userData.walletLife /
-        (userData.salaryDate > day
-          ? userData.salaryDate - day
-          : new Date(year, month, 0).getDate() - day + userData.salaryDate)
-    ).toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-    TdDay: Math.round(
-      userData.walletFree /
-        (userData.salaryDate > day
-          ? userData.salaryDate - day
-          : new Date(year, month, 0).getDate() - day + userData.salaryDate)
-    ).toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-    SO: resultData.SO.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-    TD: resultData.TD.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-    walletLife: userData.walletLife.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-    walletFree: userData.walletFree.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    }),
-  };
+const calculateDailyAllowance = (totalAmount, daysRemaining) => {
+  return Math.round(totalAmount / daysRemaining);
+};
 
-  res.json(oResultData);
+// Routes
+// Get all expenses
+router.get("/", auth, async (req, res) => {
+  try {
+    await commonUtil.getAllData(req, res, Expense);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
 });
 
-// get Expense Data report list
+// Get daily expense report
+router.get("/byday", auth, async (req, res) => {
+  try {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    const userData = await User.findById(req.user);
+    if (!userData) {
+      return res.status(404).json({ errorMessage: "User not found" });
+    }
+
+    // Get current month's expenses
+    const expenses = await Expense.find({
+      user: req.user,
+      expDate: {
+        $gte: new Date(year, month, 1),
+        $lt: new Date(year, month + 1, 1),
+      },
+    });
+
+    // Calculate today's expenses by type
+    const todayExpenses = {
+      [EXPENSE_TYPES.LIVING]: 0,
+      [EXPENSE_TYPES.FREE]: 0,
+    };
+
+    // Filter for today's expenses and sum by type
+    expenses
+      .filter((item) => item.expDate.getDate() === day)
+      .forEach((item) => {
+        if (item.exelstCode in todayExpenses) {
+          todayExpenses[item.exelstCode] += item.expMoney;
+        }
+      });
+
+    // Calculate days until next salary
+    const daysUntilSalary = calculateDaysUntilSalary(day, userData.salaryDate);
+
+    // Calculate daily allowances
+    const livingDailyAllowance = calculateDailyAllowance(userData.walletLife, daysUntilSalary);
+    const freeDailyAllowance = calculateDailyAllowance(userData.walletFree, daysUntilSalary);
+
+    // Format response data
+    const response = {
+      SoDay: formatCurrency(livingDailyAllowance),
+      TdDay: formatCurrency(freeDailyAllowance),
+      SO: formatCurrency(todayExpenses[EXPENSE_TYPES.LIVING]),
+      TD: formatCurrency(todayExpenses[EXPENSE_TYPES.FREE]),
+      walletLife: formatCurrency(userData.walletLife),
+      walletFree: formatCurrency(userData.walletFree),
+    };
+
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ errorMessage: "Error fetching daily report", error: error.message });
+  }
+});
+
+// Generate expense report
 router.post("/reportexpense", auth, async (req, res) => {
-  const { date, month, capitalSource, contentData } = req.body;
-  const aExpenseData = await Expense.find({ user: req.user });
+  try {
+    const { date, month, capitalSource, contentData } = req.body;
+    const expenses = await Expense.find({ user: req.user });
 
-  // Hàm để kiểm tra điều kiện
-  const matches = (item, field, values, transform = (v) => v) => {
-    return !values || values.length === 0 || values.includes(transform(item[field]));
-  };
+    // Filter expenses based on criteria
+    const filteredExpenses = expenses.filter((item) => {
+      // Date filter
+      const dayMatches =
+        !date ||
+        date.length === 0 ||
+        date.includes(
+          item.expDate.getDate() < 10
+            ? "0" + item.expDate.getDate().toString()
+            : item.expDate.getDate().toString()
+        );
 
-  // Hàm để lọc dữ liệu
-  const filterData = (item) => {
-    return (
-      matches(item, "expDate", date, (d) =>
-        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
-      ) &&
-      matches(item, "expDate", month, (d) => (d.getMonth() + 1).toString()) &&
-      matches(item, "exelstCode", capitalSource) &&
-      (!contentData ||
+      // Month filter
+      const monthMatches =
+        !month || month.length === 0 || month.includes((item.expDate.getMonth() + 1).toString());
+
+      // Category filter
+      const sourceMatches =
+        !capitalSource || capitalSource.length === 0 || capitalSource.includes(item.exelstCode);
+
+      // Content filter
+      const contentMatches =
+        !contentData ||
         contentData.length === 0 ||
         contentData.some(
           (keyword) => keyword.includes(item.exelstCode) && keyword.includes(item.exeLstContent)
-        ))
-    );
-  };
+        );
 
-  const filteredData = aExpenseData.filter(filterData);
-
-  // Tách dữ liệu theo exelstCode
-  const dataByCode = {
-    SO: [],
-    TD: [],
-  };
-
-  filteredData.forEach((item) => {
-    if (dataByCode[item.exelstCode]) {
-      dataByCode[item.exelstCode].push(item);
-    }
-  });
-
-  // Hàm để giảm dữ liệu
-  const reduceData = (data) => {
-    return data.reduce((acc, current) => {
-      const existing = acc.find(
-        (item) =>
-          item.exelstCode === current.exelstCode && item.exeLstContent === current.exeLstContent
-      );
-
-      if (existing) {
-        existing.expMoney += current.expMoney;
-      } else {
-        acc.push({ ...current._doc });
-      }
-
-      return acc;
-    }, []);
-  };
-
-  const reducedData = {
-    SO: reduceData(dataByCode.SO),
-    TD: reduceData(dataByCode.TD),
-  };
-
-  const maxLengthArr = Math.max(reducedData.SO.length, reducedData.TD.length);
-
-  let resultData = new Array(maxLengthArr).fill().map((_, i) => ({
-    name: i + 1,
-    [`Nguồn sống`]: reducedData.SO[i]?.expMoney || 0,
-    [`Tự do`]: reducedData.TD[i]?.expMoney || 0,
-    [`SOContent`]: reducedData.SO[i]?.exeLstContent || "",
-    [`TDContent`]: reducedData.TD[i]?.exeLstContent || "",
-  }));
-  let percentData = [];
-  const colorBackground = [
-    "#0088FE",
-    "#00C49F",
-    "#FFBB28",
-    "#FF8042",
-    "#0ecb74",
-    "#ff007f",
-    "#FDDE55",
-  ];
-  percentData.push(...reducedData.SO);
-  percentData.push(...reducedData.TD);
-  let pieChartData = [];
-  percentData.forEach((item, i) => {
-    item.label = item.exelstCode + "-" + item.exeLstContent;
-    item.value = item.expMoney;
-    item.color = colorBackground[(i + 1) % colorBackground.length];
-    pieChartData.push({
-      label: item.label,
-      value: item.value,
-      color: item.color,
+      return dayMatches && monthMatches && sourceMatches && contentMatches;
     });
-  });
-  res.json({ resultData, pieChartData });
+
+    // Group expenses by type
+    const expensesByType = {
+      [EXPENSE_TYPES.LIVING]: [],
+      [EXPENSE_TYPES.FREE]: [],
+    };
+
+    filteredExpenses.forEach((item) => {
+      if (item.exelstCode in expensesByType) {
+        expensesByType[item.exelstCode].push(item);
+      }
+    });
+
+    // Aggregate expenses by content
+    const aggregateByContent = (expenses) => {
+      return expenses.reduce((result, current) => {
+        const existingIndex = result.findIndex(
+          (item) =>
+            item.exelstCode === current.exelstCode && item.exeLstContent === current.exeLstContent
+        );
+
+        if (existingIndex >= 0) {
+          result[existingIndex].expMoney += current.expMoney;
+        } else {
+          result.push({ ...current._doc });
+        }
+
+        return result;
+      }, []);
+    };
+
+    const aggregatedExpenses = {
+      [EXPENSE_TYPES.LIVING]: aggregateByContent(expensesByType[EXPENSE_TYPES.LIVING]),
+      [EXPENSE_TYPES.FREE]: aggregateByContent(expensesByType[EXPENSE_TYPES.FREE]),
+    };
+
+    // Prepare chart data
+    const maxRows = Math.max(
+      aggregatedExpenses[EXPENSE_TYPES.LIVING].length,
+      aggregatedExpenses[EXPENSE_TYPES.FREE].length
+    );
+
+    // Table data for bar chart
+    const tableData = Array(maxRows)
+      .fill()
+      .map((_, i) => ({
+        name: i + 1,
+        [`Nguồn sống`]: aggregatedExpenses[EXPENSE_TYPES.LIVING][i]?.expMoney || 0,
+        [`Tự do`]: aggregatedExpenses[EXPENSE_TYPES.FREE][i]?.expMoney || 0,
+        [`SOContent`]: aggregatedExpenses[EXPENSE_TYPES.LIVING][i]?.exeLstContent || "",
+        [`TDContent`]: aggregatedExpenses[EXPENSE_TYPES.FREE][i]?.exeLstContent || "",
+      }));
+
+    // Pie chart data
+    const allExpenseCategories = [
+      ...aggregatedExpenses[EXPENSE_TYPES.LIVING],
+      ...aggregatedExpenses[EXPENSE_TYPES.FREE],
+    ];
+
+    const pieChartData = allExpenseCategories.map((item, index) => ({
+      label: `${item.exelstCode}-${item.exeLstContent}`,
+      value: item.expMoney,
+      color: COLOR_PALETTE[index % COLOR_PALETTE.length],
+    }));
+
+    res.json({ resultData: tableData, pieChartData });
+  } catch (error) {
+    res.status(500).json({ errorMessage: "Error generating expense report", error: error.message });
+  }
 });
-// create data router
+
+// Create expense
 router.post("/", auth, async (req, res) => {
   try {
     const { exelstCode, exeLstContent, expDate, expDetail, expMoney } = req.body;
-    const oCreateData = {
-      exelstCode,
-      exeLstContent,
-      expDate,
-      expDetail,
-      expMoney,
-    };
-    const sNotice = await commonUtil.createDataCase(
+
+    // Create expense record
+    const expenseData = { exelstCode, exeLstContent, expDate, expDetail, expMoney };
+    const expenseResult = await commonUtil.createData(
       req,
       res,
-      oCreateData,
+      expenseData,
       Expense,
       "bảng chi tiêu"
     );
-    // update wallet of User
-    const SNoticeUser = await commonUtil.UpdateUserWalletNew(
+
+    if (expenseResult.status !== 200) {
+      return res.status(400).json({ errorMessage: expenseResult.message });
+    }
+
+    // Update user wallet (reduce balance)
+    const walletResult = await commonUtil.updateWalletAfterCreation(
       req,
       res,
-      req.body.exelstCode,
-      0 - parseInt(req.body.expMoney),
+      exelstCode,
+      -parseInt(expMoney),
       User
     );
 
-    if (SNoticeUser.status === 200 && sNotice.status === 200) {
-      res.json(`${sNotice.message} và ${SNoticeUser.message}`);
-    } else {
-      if (sNotice.status !== 200 && SNoticeUser.status === 200)
-        res.status(400).json({
-          errorMessage: sNotice.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
+    if (walletResult.status !== 200) {
+      return res.status(400).json({
+        errorMessage: "Hãy liên hệ nhà phát triễn ứng dụng để xử lý",
+      });
     }
+
+    res.json(`${expenseResult.message} và ${walletResult.message}`);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ errorMessage: "Lỗi khi tạo chi tiêu", error: error.message });
   }
 });
 
-// update data router
+// Update expense
 router.put("/:id", auth, async (req, res) => {
   try {
+    const expenseId = req.params.id;
     const { exelstCode, exeLstContent, expDate, expDetail, expMoney } = req.body;
-    const oUpdateData = { exelstCode, exeLstContent, expDate, expDetail, expMoney };
-    const sExpenseId = req.params.id;
-    const sUpdateEntity = await commonUtil.updateDataCase(
+
+    // Update expense record
+    const updateData = { exelstCode, exeLstContent, expDate, expDetail, expMoney };
+    const updateResult = await commonUtil.updateData(
       req,
       res,
-      oUpdateData,
+      updateData,
       Expense,
-      sExpenseId,
+      expenseId,
       "bảng chi tiêu"
     );
-    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
+
+    if (updateResult.status !== 200) {
+      return res.status(400).json({ errorMessage: updateResult.message });
+    }
+
+    // Update user wallet
+    const walletResult = await commonUtil.updateWalletAfterUpdate(
       req,
       res,
-      req.body.exelstCode,
-      0 - parseInt(req.body.expDMoney),
+      exelstCode,
+      -parseInt(req.body.expDMoney),
       User
     );
-    if (sUpdateEntity.status === 200 && sUpdateWalletUser.status === 200) {
-      res.json(`${sUpdateEntity.message} và ${sUpdateWalletUser.message}`);
-    } else {
-      if (sUpdateEntity.status !== 200 && sUpdateWalletUser.status === 200)
-        res.status(400).json({
-          errorMessage: sUpdateEntity.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
+
+    if (walletResult.status !== 200) {
+      return res.status(400).json({
+        errorMessage: "Hãy liên hệ nhà phát triễn ứng dụng để xử lý",
+      });
     }
+
+    res.json(`${updateResult.message} và ${walletResult.message}`);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({
+      errorMessage: "Lỗi khi cập nhật chi tiêu",
+      error: error.message,
+    });
   }
 });
 
-// delete data router
+// Delete expense
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const sExpenseId = req.params.id;
-    const data = req.body;
-    const result = await commonUtil.deleteDataCase(req, res, Expense, sExpenseId, "bảng chi tiêu");
-    const minusAmountMoney = await commonUtil.UpdateWalletUser(
+    const expenseId = req.params.id;
+    const expenseData = req.body;
+
+    // Delete expense record
+    const deleteResult = await commonUtil.deleteData(req, res, Expense, expenseId, "bảng chi tiêu");
+
+    if (deleteResult.status !== 200) {
+      return res.status(400).json({ errorMessage: deleteResult.message });
+    }
+
+    // Update user wallet (add amount back)
+    const walletResult = await commonUtil.updateWalletBatch(
       req,
       "exelstCode",
       "expMoney",
-      data,
+      expenseData,
       User
     );
-    if (result.status === 200 && minusAmountMoney.status === 200) {
-      res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
-    } else {
-      if (result.status !== 200 && minusAmountMoney.status === 200)
-        res.status(400).json({
-          errorMessage: result.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
+
+    if (walletResult.status !== 200) {
+      return res.status(400).json({
+        errorMessage: "Hãy liên hệ nhà phát triễn ứng dụng để xử lý",
+      });
     }
+
+    res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({
+      errorMessage: "Lỗi khi xóa chi tiêu",
+      error: error.message,
+    });
   }
 });
 

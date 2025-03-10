@@ -5,13 +5,66 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get user data
+// Constants
+const ERRORS = {
+  MISSING_FIELDS: "Vui lòng điền đủ thông tin!",
+  INVALID_SALARY_DATE: "Ngày nhận lương phải nằm trong tháng, vui lòng nhập lại!",
+  SHORT_PASSWORD: "Mật khẩu phải ít nhất 6 kỳ tự!",
+  PASSWORD_MISMATCH: "Mật khẩu xác thực chưa trùng khớp. Hãy nhập giống mật khẩu bạn đã dặt!",
+  EMAIL_EXISTS: (email) => `Tài khoản với email ${email} đã tồn tại!`,
+  INVALID_CREDENTIALS: "Email hoặc mật khẩu sai! Vui lòng thử lại!",
+  UNVERIFIED_ACCOUNT: (email) =>
+    `Tài khoản chưa được xác thực. Vui lòng check mail ${email} để kích hoạt tài khoản!`,
+  LOGIN_REQUIRED: "Nhập đầy đủ thông tin đăng nhập để vào hệ thống!",
+};
+
+// Helper functions
+const createToken = (payload) => {
+  return jwt.sign(payload, process.env.JWT_SECRET);
+};
+
+const getSecureCookieOptions = () => {
+  const isDevelopment = process.env.NODE_ENV === "development";
+  return {
+    httpOnly: true,
+    sameSite: isDevelopment ? "lax" : process.env.NODE_ENV === "production" && "none",
+    secure: !isDevelopment && process.env.NODE_ENV === "production",
+  };
+};
+
+const calculateWalletAdjustment = (user) => {
+  const day = new Date().getDate();
+  let daysLeft = 0;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  if (user.salaryDate > day) {
+    daysLeft = user.salaryDate - day;
+  } else {
+    daysLeft = daysInMonth - day + user.salaryDate;
+  }
+
+  const adjustment = user.walletLife - user.dailyBudget * daysLeft;
+  return adjustment > 0 ? adjustment : 0;
+};
+
+// Routes
+// Get user data
 router.get("/", auth, async (req, res) => {
-  const aResultData = await User.findById(req.user);
-  res.json(aResultData);
+  try {
+    const userData = await User.findById(req.user);
+    if (!userData) {
+      return res.status(404).json({ errorMessage: "User not found" });
+    }
+    res.json(userData);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
 });
 
-// register user
+// Register user
 router.post("/", async (req, res) => {
   try {
     const {
@@ -20,271 +73,204 @@ router.post("/", async (req, res) => {
       password,
       passwordVerify,
       salaryDate,
-      walletLife,
-      walletInvest,
-      walletSaving,
-      walletFree,
-      dailyBudget,
+      walletLife = 0,
+      walletInvest = 0,
+      walletSaving = 0,
+      walletFree = 0,
+      dailyBudget = 0,
     } = req.body;
-    // validation
 
-    if (!email || !userName || !password || !passwordVerify || !salaryDate)
-      return res.status(400).json({
-        errorMessage: "Vui lòng điền đủ thông tin!",
-      });
-    if (parseInt(salaryDate) < 0 || parseInt(salaryDate) > 31)
-      return res.status(400).json({
-        errorMessage: "Ngày nhận lương phải nằm trong tháng, vui lòng nhập lại!",
-      });
+    // Validation
+    if (!email || !userName || !password || !passwordVerify || !salaryDate) {
+      return res.status(400).json({ errorMessage: ERRORS.MISSING_FIELDS });
+    }
 
-    if (password.length < 6)
-      return res.status(400).json({
-        errorMessage: "Mật khẩu phải ít nhất 6 kỳ tự!",
-      });
+    const salaryDateNum = parseInt(salaryDate);
+    if (salaryDateNum < 1 || salaryDateNum > 31) {
+      return res.status(400).json({ errorMessage: ERRORS.INVALID_SALARY_DATE });
+    }
 
-    if (password !== passwordVerify)
-      return res.status(400).json({
-        errorMessage: "Mật khẩu xác thực chưa trùng khớp. Hãy nhập giống mật khẩu bạn đã dặt!",
-      });
-    // verify: none account exist for this email
+    if (password.length < 6) {
+      return res.status(400).json({ errorMessage: ERRORS.SHORT_PASSWORD });
+    }
 
+    if (password !== passwordVerify) {
+      return res.status(400).json({ errorMessage: ERRORS.PASSWORD_MISMATCH });
+    }
+
+    // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({
-        errorMessage: `Tài khoản với email ${email} đã tồn tại!`,
-      });
+      return res.status(400).json({ errorMessage: ERRORS.EMAIL_EXISTS(email) });
     }
-    // hash the password
 
+    // Hash password and create user
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
-
-    // save the user in the database
 
     const newUser = new User({
       email,
       userName,
       passwordHash,
-      salaryDate: parseInt(salaryDate),
-      dailyBudget: dailyBudget ? dailyBudget : 0,
-      walletLife: walletLife ? walletLife : 0,
-      walletInvest: walletInvest ? walletInvest : 0,
-      walletSaving: walletSaving ? walletSaving : 0,
-      walletFree: walletFree ? walletFree : 0,
+      salaryDate: salaryDateNum,
+      dailyBudget,
+      walletLife,
+      walletInvest,
+      walletSaving,
+      walletFree,
       role: 0,
+      verifyMail: false,
     });
 
     const savedUser = await newUser.save();
 
-    // create a JWT token
+    // Send verification email
+    const token = createToken({
+      id: savedUser._id,
+    });
+    const verificationLink = `${req.protocol}://${req.get("host")}/auth/${token}`;
+    await commonUtil.sendVerificationEmail(email, verificationLink, userName);
 
-    const token = jwt.sign(
-      {
-        id: savedUser._id,
-      },
-      process.env.JWT_SECRET
-    );
-    const link = `${req.protocol}://${req.get("host")}/auth/${token}`;
-    await commonUtil.verifyMail(email, link, userName);
     res.json(
       `Chúng tôi đã gửi email ${email} xác thực đến bạn, hãy kiểm tra và xác thực tài khoản của mình!`
     );
   } catch (error) {
-    res.status(500).json({
-      errorMessage: error.message,
-    });
+    res.status(500).json({ errorMessage: error.message });
   }
 });
 
-// login user
+// Login user
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // validation
-    if (!email || !password)
-      return res.status(400).json({
-        errorMessage: "Nhập đầy đủ thông tin đăng nhập để vào hệ thống!",
-      });
-
-    // get user account
-    const existingUser = await User.findOne({ email });
-    if (!existingUser)
-      return res.status(401).json({
-        errorMessage: "Email hoặc mật khẩu sai! Vui lòng thử lại!",
-      });
-
-    const correctPassword = await bcrypt.compare(password, existingUser.passwordHash);
-
-    if (!correctPassword)
-      return res.status(401).json({
-        errorMessage: "Email hoặc mật khẩu sai! Vui lòng thử lại!",
-      });
-
-    if (!existingUser.verifyMail)
-      return res.status(400).json({
-        errorMessage: `Tài khoản chưa được xác thực. Vui lòng check mail ${email} để kích hoạt tài khoản!`,
-      });
-    let iSODaily = 0;
-    const day = new Date().getDate();
-    if (existingUser.salaryDate > day) {
-      iSODaily =
-        existingUser.walletLife - existingUser.dailyBudget * (existingUser.salaryDate - day);
-    } else {
-      iSODaily =
-        existingUser.walletLife -
-        existingUser.dailyBudget *
-          (new Date(year, month, 0).getDate() - day + existingUser.salaryDate);
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({ errorMessage: ERRORS.LOGIN_REQUIRED });
     }
-    if (iSODaily > 0) {
+
+    // Authentication
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ errorMessage: ERRORS.INVALID_CREDENTIALS });
+    }
+
+    const correctPassword = await bcrypt.compare(password, user.passwordHash);
+    if (!correctPassword) {
+      return res.status(401).json({ errorMessage: ERRORS.INVALID_CREDENTIALS });
+    }
+
+    if (!user.verifyMail) {
+      return res.status(400).json({ errorMessage: ERRORS.UNVERIFIED_ACCOUNT(email) });
+    }
+
+    // Calculate wallet adjustments
+    const walletAdjustment = calculateWalletAdjustment(user);
+
+    if (walletAdjustment > 0) {
       await User.updateOne(
-        { _id: existingUser._id },
+        { _id: user._id },
         {
           $inc: {
-            walletFree: iSODaily,
-            walletLife: -iSODaily,
+            walletFree: walletAdjustment,
+            walletLife: -walletAdjustment,
           },
         }
       );
     }
 
-    // create a JWT token
-    const token = jwt.sign(
-      {
-        id: existingUser._id,
-        userName: existingUser.userName,
-        dailyBudget: existingUser.dailyBudget,
-        salaryDate: existingUser.salaryDate,
-        walletLife: iSODaily > 0 ? existingUser.walletLife - iSODaily : existingUser.walletLife,
-        walletInvest: existingUser.walletInvest,
-        walletSaving: existingUser.walletSaving,
-        walletFree: iSODaily > 0 ? existingUser.walletFree + iSODaily : existingUser.walletFree,
-        role: existingUser.role,
-      },
-      process.env.JWT_SECRET
-    );
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        sameSite:
-          process.env.NODE_ENV === "development"
-            ? "lax"
-            : process.env.NODE_ENV === "production" && "none",
-        secure:
-          process.env.NODE_ENV === "development"
-            ? false
-            : process.env.NODE_ENV === "production" && true,
-      })
-      .send();
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: err.message,
+    // Create JWT token with user data
+    const token = createToken({
+      id: user._id,
+      userName: user.userName,
+      dailyBudget: user.dailyBudget,
+      salaryDate: user.salaryDate,
+      walletLife: walletAdjustment > 0 ? user.walletLife - walletAdjustment : user.walletLife,
+      walletInvest: user.walletInvest,
+      walletSaving: user.walletSaving,
+      walletFree: walletAdjustment > 0 ? user.walletFree + walletAdjustment : user.walletFree,
+      role: user.role,
     });
+
+    // Set cookie and send response
+    res.cookie("token", token, getSecureCookieOptions()).send();
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
   }
 });
 
-// update data router
+// Update user data
 router.put("/", auth, async (req, res) => {
   try {
-    const {
-      // password,
-      // oldPassword,
-      walletLife,
-      walletInvest,
-      walletSaving,
-      walletFree,
-      salaryDate,
-    } = req.body;
+    const { walletLife, walletInvest, walletSaving, walletFree, salaryDate } = req.body;
 
-    // hash the password
-
-    // const salt = await bcrypt.genSalt();
-
-    const oUpdateData = {
-      // password: await bcrypt.hash(password, salt),
+    const updateData = {
       walletLife,
       walletInvest,
       walletSaving,
       walletFree,
       salaryDate,
     };
-    const sUserID = req.user;
 
-    // if (oldPassword) {
-    //   // get user account
-    //   const existingUser = await User.findById(sUserID);
-    //   const correctPassword = await bcrypt.compare(oldPassword, existingUser.passwordHash);
-
-    //   if (!correctPassword)
-    //     return res.status(401).json({
-    //       errorMessage: "Mật khẩu xác thực không chính xác, hãy thử lại!",
-    //     });
-    // }
-    const sUpdateEntity = await commonUtil.updateDataCase(
+    const userId = req.user;
+    const updateResult = await commonUtil.updateData(
       req,
       res,
-      oUpdateData,
+      updateData,
       User,
-      sUserID,
+      userId,
       "Thông tin"
     );
-    if (sUpdateEntity.status === 200) {
-      res.json(`${sUpdateEntity.message}`);
+
+    if (updateResult.status === 200) {
+      res.json(updateResult.message);
     } else {
-      res.status(400).json({
-        errorMessage: sUpdateEntity.message,
-      });
+      res.status(400).json({ errorMessage: updateResult.message });
     }
   } catch (error) {
-    res.status(500).json({
-      errorMessage: error.message,
-    });
+    res.status(500).json({ errorMessage: error.message });
   }
 });
 
-// get userID after login
+// Check logged in status
 router.get("/loggedIn", (req, res) => {
   try {
     const token = req.cookies.token;
-
     if (!token) return res.json(null);
 
     const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
     res.json(validatedUser);
-  } catch (err) {
+  } catch (error) {
     return res.json(null);
   }
 });
 
-// logout user
+// Logout user
 router.get("/logOut", (req, res) => {
   try {
-    res
-      .cookie("token", "", {
-        httpOnly: true,
-        sameSite:
-          process.env.NODE_ENV === "development"
-            ? "lax"
-            : process.env.NODE_ENV === "production" && "none",
-        secure:
-          process.env.NODE_ENV === "development"
-            ? false
-            : process.env.NODE_ENV === "production" && true,
-        expires: new Date(0),
-      })
-      .send();
-  } catch (err) {
-    return res.json(null);
+    const cookieOptions = {
+      ...getSecureCookieOptions(),
+      expires: new Date(0),
+    };
+
+    res.cookie("token", "", cookieOptions).send();
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
   }
 });
 
+// Verify email
 router.get("/:token", async (req, res) => {
-  const token = req.params.token;
-  const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
-  await User.updateOne({ _id: validatedUser.id }, { $set: { verifyMail: true } });
-  res.json(
-    "Đã xác thực tài khoản thành công! Hãy tắt trang này và đăng nhập để sử dụng ứng dụng của chúng tôi"
-  );
+  try {
+    const token = req.params.token;
+    const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
+    await User.updateOne({ _id: validatedUser.id }, { $set: { verifyMail: true } });
+    res.json(
+      "Đã xác thực tài khoản thành công! Hãy tắt trang này và đăng nhập để sử dụng ứng dụng của chúng tôi"
+    );
+  } catch (error) {
+    res.status(400).json({ errorMessage: "Invalid or expired verification token" });
+  }
 });
 
 module.exports = router;

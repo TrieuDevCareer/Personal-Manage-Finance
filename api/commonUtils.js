@@ -1,311 +1,387 @@
 const nodemailer = require("nodemailer");
 
-//validate for case Create data
-async function _validateDataCaseCreate(oValidateData, oValidateEntity, sNameEntity) {
-  const oResultValidate = { status: true, message: "" };
-  // validate input all data
-  const aGetDataObj = Object.values(oValidateData);
-  const bResultCheck = aGetDataObj.some(
-    (item) => item === undefined || item === null || item === ""
-  );
-  if (bResultCheck) {
-    oResultValidate.status = false;
-    oResultValidate.message = "Vui lòng điền đủ thông tin!";
-    return oResultValidate;
+/**
+ * Validates data before creation
+ * @param {Object} data - Data to validate
+ * @param {Object} entity - Database entity model
+ * @param {String} entityName - Entity name for error messages
+ * @returns {Object} Validation result with status and message
+ */
+async function validateForCreation(data, entity, entityName) {
+  const result = { status: true, message: "" };
+
+  // Check for empty fields
+  if (Object.values(data).some((item) => item === undefined || item === null || item === "")) {
+    result.status = false;
+    result.message = "Vui lòng điền đủ thông tin!";
+    return result;
   }
 
-  // // validate existing data in database
-  // const oExistEntity = await oValidateEntity.findOne(oValidateData);
-  // if (oExistEntity) {
-  //   oResultValidate.status = false;
-  //   oResultValidate.message = `Dữ liệu ${sNameEntity} đang tạo mới đã có trên hệ thống!`;
-  //   return oResultValidate;
-  // }
-  return oResultValidate;
+  return result;
 }
 
-// validate for case Update data
-async function _validateDataCaseUpdate(req, oUpdateData, oEntity, sItemId, sNameEntity) {
-  // declare varian to store result of function
-  const oResultValidate = { status: true, message: "" };
+/**
+ * Validates data before update
+ * @param {Object} req - Request object
+ * @param {Object} updateData - Data to update
+ * @param {Object} entity - Database entity model
+ * @param {String} itemId - ID of item to update
+ * @param {String} entityName - Entity name for error messages
+ * @returns {Object} Validation result with status and message
+ */
+async function validateForUpdate(req, updateData, entity, itemId, entityName) {
+  const result = { status: true, message: "" };
 
-  // Validate input all data
-  const aGetDataObj = Object.values(oUpdateData);
-  const bResultCheck = aGetDataObj.some((item) => item === undefined);
-  if (bResultCheck) {
-    oResultValidate.status = false;
-    oResultValidate.message = "Vui lòng điền đủ thông tin!";
-    return oResultValidate;
+  // Check for undefined fields
+  if (Object.values(updateData).some((item) => item === undefined)) {
+    result.status = false;
+    result.message = "Vui lòng điền đủ thông tin!";
+    return result;
   }
 
-  // validate check item's ID exist or not
-  if (!sItemId) {
-    oResultValidate.status = false;
-    oResultValidate.message = `Không xác thực được ID ${sNameEntity}! Vui lòng liên hệ nhà phát triển ứng dụng`;
-    return oResultValidate;
+  // Check if ID exists
+  if (!itemId) {
+    result.status = false;
+    result.message = `Không xác thực được ID ${entityName}! Vui lòng liên hệ nhà phát triển ứng dụng`;
+    return result;
   }
 
-  // validate check exist item with item'ID
-  const oCurrentItem = await oEntity.findById(sItemId);
-  if (!oCurrentItem) {
-    oResultValidate.status = false;
-    oResultValidate.message = `Không tìm thấy mã ${sNameEntity} nào khớp với ID đang được cung cấp! Vui lòng liên hệ nhà phát triển ứng dụng!`;
-    return oResultValidate;
+  // Check if item exists
+  const currentItem = await entity.findById(itemId);
+  if (!currentItem) {
+    result.status = false;
+    result.message = `Không tìm thấy mã ${entityName} nào khớp với ID đang được cung cấp! Vui lòng liên hệ nhà phát triển ứng dụng!`;
+    return result;
   }
 
-  // validate user fix item
-  if (oCurrentItem.user && oCurrentItem.user.toString() !== req.user) {
-    oResultValidate.status = false;
-    oResultValidate.message = "Lỗi xác thực! Vui lòng liên hệ nhà phát triển ứng dụng!";
-    return oResultValidate;
+  // Check if user has permission
+  if (currentItem.user && currentItem.user.toString() !== req.user) {
+    result.status = false;
+    result.message = "Lỗi xác thực! Vui lòng liên hệ nhà phát triển ứng dụng!";
+    return result;
   }
 
-  const aExistUpdateData = await oEntity.findOne(oUpdateData);
-  if (aExistUpdateData && aExistUpdateData._id !== oCurrentItem._id) {
-    oResultValidate.status = false;
-    oResultValidate.message = `${sNameEntity} này đã có trên hệ thống`;
-    return oResultValidate;
+  // Check for duplicates
+  const existingItem = await entity.findOne(updateData);
+  if (existingItem && existingItem._id !== currentItem._id) {
+    result.status = false;
+    result.message = `${entityName} này đã có trên hệ thống`;
+    return result;
   }
-  oResultValidate.oCurrentItem = oCurrentItem;
-  return oResultValidate;
+
+  result.currentItem = currentItem;
+  return result;
 }
 
-// validate for case Delete data
-async function _validateDatacaseDelete(req, oEntity, sItemId, sNameEntity) {
-  // declare varian to store result of function
-  const oResultValidate = { status: true, message: "" };
+/**
+ * Validates data before deletion
+ * @param {Object} req - Request object
+ * @param {Object} entity - Database entity model
+ * @param {String} itemId - ID of item to delete
+ * @param {String} entityName - Entity name for error messages
+ * @returns {Object} Validation result with status and message
+ */
+async function validateForDeletion(req, entity, itemId, entityName) {
+  const result = { status: true, message: "" };
 
-  // validate case not found item's ID need to delete
-  if (!sItemId) {
-    oResultValidate.status = false;
-    oResultValidate.message = `Không xác thực được ID ${sNameEntity}! Vui lòng liên hệ nhà phát triển ứng dụng`;
-    return oResultValidate;
-  }
-  // validate case not found Item data need to delete with item's Id
-  const oCurrentItem = await oEntity.findById(sItemId);
-  if (!oCurrentItem) {
-    oResultValidate.status = false;
-    oResultValidate.message = `Không tìm thấy mã ${sNameEntity} nào khớp với ID đang được cung cấp! Vui lòng liên hệ nhà phát triển ứng dụng!`;
-    return oResultValidate;
+  // Check if ID exists
+  if (!itemId) {
+    result.status = false;
+    result.message = `Không xác thực được ID ${entityName}! Vui lòng liên hệ nhà phát triển ứng dụng`;
+    return result;
   }
 
-  //validate check item's ID exist or not
-  if (oCurrentItem.user.toString() !== req.user) {
-    oResultValidate.status = false;
-    oResultValidate.message = "Lỗi xác thực! Vui lòng liên hệ nhà phát triển ứng dụng!";
-    return oResultValidate;
+  // Check if item exists
+  const currentItem = await entity.findById(itemId);
+  if (!currentItem) {
+    result.status = false;
+    result.message = `Không tìm thấy mã ${entityName} nào khớp với ID đang được cung cấp! Vui lòng liên hệ nhà phát triển ứng dụng!`;
+    return result;
   }
-  oResultValidate.oCurrentItem = oCurrentItem;
-  return oResultValidate;
+
+  // Check if user has permission
+  if (currentItem.user.toString() !== req.user) {
+    result.status = false;
+    result.message = "Lỗi xác thực! Vui lòng liên hệ nhà phát triển ứng dụng!";
+    return result;
+  }
+
+  result.currentItem = currentItem;
+  return result;
 }
 
-function _currencyStringToInt(currencyString) {
-  // Remove currency symbol and thousands separator
-  var numberString = currencyString.replace(/[.,\s€]/g, "");
-  // Convert to integer
-  return parseInt(numberString);
+/**
+ * Converts currency string to integer
+ * @param {String} currencyString - Currency string to convert
+ * @returns {Number} Converted integer value
+ */
+function currencyStringToInt(currencyString) {
+  return parseInt(currencyString.replace(/[.,\s€]/g, ""));
 }
 
-// get all data from Entity
-async function getAllDataEntity(req, res, oEntity) {
+/**
+ * Fetches all data for an entity
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Object} entity - Database entity model
+ */
+async function getAllData(req, res, entity) {
   try {
-    const aResultData = await oEntity.find({ user: req.user });
-    res.json(aResultData);
+    const data = await entity.find({ user: req.user });
+    res.json(data);
   } catch (error) {
     res.status(500).send();
   }
 }
 
-// create data from  Entity
-async function createData(req, res, oCreateData, oEntity, sNameEntity) {
-  // validate before create data
-  let resultLogic = { status: 200, message: "" };
-  const oResultValidation = await _validateDataCaseCreate(oCreateData, oEntity, sNameEntity);
-  if (!oResultValidation.status) {
-    return (resultLogic = { status: 400, message: oResultValidation.message });
-  }
-  oCreateData.user = req.user;
-  // create data
-  const oNewData = new oEntity(oCreateData);
-  await oNewData.save();
-  return (resultLogic = { status: 200, message: `${sNameEntity} được tạo mới thành công` });
-}
-
-// update data from Entity
-async function updateData(req, res, oUpdateData, oEntity, sItemId, sNameEntity) {
-  // validate data before update
-  let resultLogic = { status: 200, message: "" };
-  const oResultValidate = await _validateDataCaseUpdate(
-    req,
-    oUpdateData,
-    oEntity,
-    sItemId,
-    sNameEntity
-  );
-  if (!oResultValidate.status) {
-    return (resultLogic = { status: 400, message: oResultValidate.message });
+/**
+ * Creates a new entity
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Object} createData - Data to create
+ * @param {Object} entity - Database entity model
+ * @param {String} entityName - Entity name for messages
+ * @returns {Object} Result with status and message
+ */
+async function createData(req, res, createData, entity, entityName) {
+  // Validate data
+  const validationResult = await validateForCreation(createData, entity, entityName);
+  if (!validationResult.status) {
+    return { status: 400, message: validationResult.message };
   }
 
-  // update data
-  await oEntity.findOneAndUpdate({ _id: sItemId }, oUpdateData);
-  return (resultLogic = { status: 200, message: `${sNameEntity} được cập nhập thành công` });
+  // Create data
+  createData.user = req.user;
+  const newData = new entity(createData);
+  await newData.save();
+
+  return { status: 200, message: `${entityName} được tạo mới thành công` };
 }
 
-// delete data from Entity
-async function deleteData(req, res, oEntity, sItemId, sNameEntity) {
-  // validate before delete data
-  let resultLogic = { status: 200, message: "" };
-  const oResultValidate = await _validateDatacaseDelete(req, oEntity, sItemId, sNameEntity);
-  if (!oResultValidate.status) {
-    return (resultLogic = { status: 400, message: oResultValidate.message });
+/**
+ * Updates an entity
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Object} updateData - Data to update
+ * @param {Object} entity - Database entity model
+ * @param {String} itemId - ID of item to update
+ * @param {String} entityName - Entity name for messages
+ * @returns {Object} Result with status and message
+ */
+async function updateData(req, res, updateData, entity, itemId, entityName) {
+  // Validate data
+  const validationResult = await validateForUpdate(req, updateData, entity, itemId, entityName);
+
+  if (!validationResult.status) {
+    return { status: 400, message: validationResult.message };
   }
-  await oResultValidate.oCurrentItem.deleteOne();
-  return (resultLogic = { status: 200, message: `${sNameEntity} được cập nhập thành công` });
+
+  // Update data
+  await entity.findOneAndUpdate({ _id: itemId }, updateData);
+  return { status: 200, message: `${entityName} được cập nhập thành công` };
 }
-//  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseCreate(req, res, listCode, iChangeMoney, oEntity) {
-  let resultLogic = { status: 200, message: "" };
+
+/**
+ * Deletes an entity
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Object} entity - Database entity model
+ * @param {String} itemId - ID of item to delete
+ * @param {String} entityName - Entity name for messages
+ * @returns {Object} Result with status and message
+ */
+async function deleteData(req, res, entity, itemId, entityName) {
+  // Validate data
+  const validationResult = await validateForDeletion(req, entity, itemId, entityName);
+  if (!validationResult.status) {
+    return { status: 400, message: validationResult.message };
+  }
+
+  await validationResult.currentItem.deleteOne();
+  return { status: 200, message: `${entityName} được xóa thành công` };
+}
+
+/**
+ * Updates user wallet after creation
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {String} listCode - Wallet type code
+ * @param {Number} changeMoney - Amount to change
+ * @param {Object} entity - User entity model
+ * @returns {Object} Result with status and message
+ */
+async function updateWalletAfterCreation(req, res, listCode, changeMoney, entity) {
   try {
-    let oUserData = await oEntity.findById(req.user);
+    const userData = await entity.findById(req.user);
+
+    // Update appropriate wallet based on code
     switch (listCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife + iChangeMoney;
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletLife += changeMoney;
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving + iChangeMoney;
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletSaving += changeMoney;
         break;
       case "DT":
-        oUserData.walletInvest = oUserData.walletInvest + iChangeMoney;
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletInvest += changeMoney;
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree + iChangeMoney;
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
-        break;
-      default:
+        userData.walletFree += changeMoney;
         break;
     }
-    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
+
+    await entity.findOneAndUpdate({ _id: req.user }, userData);
+    return { status: 200, message: "Đã cập nhập ví của bạn" };
   } catch (error) {
-    return (resultLogic = { status: 500, message: error });
+    return { status: 500, message: error };
   }
 }
-//  wallet when user add income or get saving aor invesment
-async function UpdateUserWalletCaseUpdate(req, res, listCode, iChangeMoney, oEntity) {
-  let resultLogic = { status: 200, message: "" };
+
+/**
+ * Updates user wallet after update
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {String} listCode - Wallet type code
+ * @param {Number} changeMoney - Amount to change
+ * @param {Object} entity - User entity model
+ * @returns {Object} Result with status and message
+ */
+async function updateWalletAfterUpdate(req, res, listCode, changeMoney, entity) {
   try {
-    let oUserData = await oEntity.findById(req.user);
+    const userData = await entity.findById(req.user);
+    const amount = parseInt(changeMoney);
+
+    // Update appropriate wallet based on code
     switch (listCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife + parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletLife += amount;
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving + parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletSaving += amount;
         break;
       case "DT":
-        oUserData.walletInvest = oUserData.walletInvest + parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletInvest += amount;
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree + parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
-        break;
-      default:
+        userData.walletFree += amount;
         break;
     }
-    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
+
+    await entity.findOneAndUpdate({ _id: req.user }, userData);
+    return { status: 200, message: "Đã cập nhập ví của bạn" };
   } catch (error) {
-    return (resultLogic = { status: 400, message: error });
+    return { status: 400, message: error };
   }
 }
-async function UpdateUserWalletCaseDelete(req, res, data, oCodeDis, oChangeMoney, oEntity) {
-  let resultLogic = { status: 200, message: "" };
-  try {
-    const sSourceCode = data[oCodeDis];
-    const iChangeMoney = _currencyStringToInt(data[oChangeMoney]);
-    const oUserData = await oEntity.findById(req.user);
 
-    switch (sSourceCode) {
+/**
+ * Updates user wallet after deletion
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Object} data - Item data
+ * @param {String} codeField - Field name containing code
+ * @param {String} moneyField - Field name containing amount
+ * @param {Object} entity - User entity model
+ * @returns {Object} Result with status and message
+ */
+async function updateWalletAfterDeletion(req, res, data, codeField, moneyField, entity) {
+  try {
+    const sourceCode = data[codeField];
+    const amount = parseInt(currencyStringToInt(data[moneyField]));
+    const userData = await entity.findById(req.user);
+
+    // Update appropriate wallet based on code
+    switch (sourceCode) {
       case "SO":
-        oUserData.walletLife = oUserData.walletLife - parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletLife -= amount;
         break;
       case "TK":
-        oUserData.walletSaving = oUserData.walletSaving - parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletSaving -= amount;
         break;
       case "DT":
-        oUserData.walletInvest = oUserData.walletInvest - parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
+        userData.walletInvest -= amount;
         break;
       case "TD":
-        oUserData.walletFree = oUserData.walletFree - parseInt(iChangeMoney);
-        await oEntity.findOneAndUpdate({ _id: req.user }, oUserData);
-        break;
-      default:
+        userData.walletFree -= amount;
         break;
     }
-    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
+
+    await entity.findOneAndUpdate({ _id: req.user }, userData);
+    return { status: 200, message: "Đã cập nhập ví của bạn" };
   } catch (error) {
-    return (resultLogic = { status: 400, message: error });
+    return { status: 400, message: error };
   }
 }
 
-async function UpdateWalletUser(req, title, iMoney, data, User) {
+/**
+ * Updates wallet based on multiple entries
+ * @param {Object} req - Request object
+ * @param {String} codeField - Field name containing code
+ * @param {String} moneyField - Field name containing amount
+ * @param {Array} data - Array of items
+ * @param {Object} User - User entity model
+ * @returns {Object} Result with status and message
+ */
+async function updateWalletBatch(req, codeField, moneyField, data, User) {
   try {
+    // Initialize totals for each wallet type
     const totals = {
       SO: 0,
       DT: 0,
       TK: 0,
       TD: 0,
     };
-    switch (title) {
+
+    // Calculate totals based on operation type
+    switch (codeField) {
       case "exelstCode":
-        data.forEach((element) => {
-          totals[element[title]] += parseInt(_currencyStringToInt(element[iMoney]));
+        data.forEach((item) => {
+          totals[item[codeField]] += parseInt(currencyStringToInt(item[moneyField]));
         });
         break;
       case "inlstCode":
-        data.forEach((element) => {
-          totals[element[title]] -= parseInt(_currencyStringToInt(element[iMoney]));
+        data.forEach((item) => {
+          totals[item[codeField]] -= parseInt(currencyStringToInt(item[moneyField]));
         });
         break;
       case "bnkLstID":
-        data.forEach((element) => {
-          if (!element.savStatus) {
-            totals.TK += parseInt(_currencyStringToInt(element[iMoney]));
+        data.forEach((item) => {
+          if (!item.savStatus) {
+            totals.TK += parseInt(currencyStringToInt(item[moneyField]));
           }
         });
         break;
       case "coinLstID":
-        data.forEach((element) => {
-          if (!element.investStatus) {
-            totals.DT += parseInt(_currencyStringToInt(element[iMoney]));
+        data.forEach((item) => {
+          if (!item.investStatus) {
+            totals.DT += parseInt(currencyStringToInt(item[moneyField]));
           }
         });
         break;
-      default:
-        break;
     }
 
-    const oUserData = await User.findById(req.user);
-    oUserData.walletLife += totals.SO;
-    oUserData.walletSaving += totals.TK;
-    oUserData.walletInvest += totals.DT;
-    oUserData.walletFree += totals.TD;
+    // Apply changes to user's wallets
+    const userData = await User.findById(req.user);
+    userData.walletLife += totals.SO;
+    userData.walletSaving += totals.TK;
+    userData.walletInvest += totals.DT;
+    userData.walletFree += totals.TD;
 
-    await User.findOneAndUpdate({ _id: req.user }, oUserData);
-    return (resultLogic = { status: 200, message: "Đã cập nhập ví của bạn" });
+    await User.findOneAndUpdate({ _id: req.user }, userData);
+    return { status: 200, message: "Đã cập nhập ví của bạn" };
   } catch (error) {
-    return (resultLogic = { status: 400, message: error });
+    return { status: 400, message: error };
   }
 }
 
-async function verifyMail(email, link, userName) {
+/**
+ * Sends verification email
+ * @param {String} email - Recipient email
+ * @param {String} link - Verification link
+ * @param {String} userName - User's name
+ */
+
+async function sendVerificationEmail(email, link, userName) {
   try {
     const transporter = nodemailer.createTransport({
       service: "Gmail",
@@ -314,62 +390,85 @@ async function verifyMail(email, link, userName) {
         pass: "bcmj mkpd hfdy wctm",
       },
     });
-    //send mail
-    let info = await transporter.sendMail({
+
+    const htmlTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kích hoạt tài khoản Personal Economic</title>
+</head>
+<body style="font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; margin: 0; padding: 0;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #eaeaea;">
+      <!-- Nếu có logo, thêm vào đây -->
+      <!-- <img src="https://example.com/logo.png" alt="Personal Economic Logo" style="width: 150px; height: auto; margin-bottom: 15px;"> -->
+      <h1 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">PERSONAL ECONOMIC</h1>
+    </div>
+    
+    <div style="padding: 30px 20px;">
+      <p style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #2c3e50;">Xin chào bạn ${userName},</p>
+      
+      <p style="margin-bottom: 25px;">
+        Chúng tôi xin gửi lời cảm ơn chân thành vì bạn đã lựa chọn sử dụng dịch vụ Personal Economic!
+      </p>
+      
+      <p style="margin-bottom: 25px;">
+        Chỉ còn một bước nữa thôi, bạn sẽ có thể sử dụng đầy đủ các tính năng của ứng dụng để quản lý tài chính cá nhân một cách hiệu quả.
+      </p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${link}" style="display: inline-block; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Kích hoạt tài khoản ngay</a>
+      </div>
+      
+      <p style="margin-bottom: 25px;">
+        Nếu bạn không thể nhấp vào nút trên, vui lòng sao chép đường link dưới đây và dán vào trình duyệt:
+      </p>
+      
+      <p style="word-break: break-all; text-align: center; font-size: 12px; background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
+        ${link}
+      </p>
+    </div>
+    
+    <div style="font-style: italic; font-weight: 600; margin: 30px 0 15px; color: #3498db; text-align: center;">
+      Personal Economic - Đồng hành cùng tài chính của bạn
+    </div>
+    
+    <div style="border-top: 1px dashed #e0e0e0; margin: 20px 0;"></div>
+    
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid #eaeaea; font-size: 12px; color: #7f8c8d;">
+      <p>Đây là email tự động. Vui lòng không trả lời email này.</p>
+      <p>&copy; 2025 Personal Economic. Tất cả các quyền được bảo lưu.</p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    await transporter.sendMail({
       from: "manageeconomic@gmail.com",
       to: email,
-      subject: "KÍCH HOẠT TÀI KHOẢN NGƯỜI DÙNG PERSONAL ECONOMIC", // Subject line
-      text: "Xin chào!", // plain text body
-      html: `
-      <div>
-            <h2>Xin chào bạn ${userName}</h2>
-      <p
-        style="
-    margin-top: 20px;"
-      >
-        Đầu tiên, chúng tôi gửi lời cảm ơn đến bạn đã sử dụng dịch vụ Personal Economic!
-      </p>
-      <p
-        style="
-    margin-top: 20px;"
-      >
-        Để kích hoạt tài khoản, bạn vui lòng click vào đường link tại đây:
-        <a href=${link}> kích hoạt</a>
-      </p>
-      <div
-        style="
-    font-weight: 600;
-    font-style: italic;"
-      >
-        Personal Economic & with love
-      </div>
-      <div>
-        <h8
-          style="
-    font-weight: 600;
-    font-style: italic;
-    margin-top: 30px;
-    font-size: 77%;"
-        >
-          ------------------------------------------------
-        </h8>
-        <p>Đây là mail tự động. Vui lòng không reply lại mail này!</p>
-      </div>
-      </div>
-      `, // html body
+      subject: "KÍCH HOẠT TÀI KHOẢN NGƯỜI DÙNG PERSONAL ECONOMIC",
+      text: `Xin chào bạn ${userName}! Cảm ơn bạn đã sử dụng dịch vụ Personal Economic. Để kích hoạt tài khoản, vui lòng truy cập vào đường link: ${link}`,
+      html: htmlTemplate,
     });
+
+    console.log(`Verification email sent successfully to ${email}`);
   } catch (error) {
-    res.status(500).send(error);
+    console.error("Failed to send email:", error);
+    throw error;
   }
 }
+
 module.exports = {
-  getAllResult: getAllDataEntity,
-  createDataCase: createData,
-  updateDataCase: updateData,
-  deleteDataCase: deleteData,
-  UpdateUserWalletNew: UpdateUserWalletCaseCreate,
-  UpdateUserWalletUpdate: UpdateUserWalletCaseUpdate,
-  UpdateWalletUser: UpdateWalletUser,
-  UpdateUserWalletDelete: UpdateUserWalletCaseDelete,
-  verifyMail: verifyMail,
+  getAllData,
+  createData,
+  updateData,
+  deleteData,
+  updateWalletAfterCreation: updateWalletAfterCreation,
+  updateWalletAfterUpdate: updateWalletAfterUpdate,
+  updateWalletBatch,
+  updateWalletAfterDeletion,
+  sendVerificationEmail,
 };

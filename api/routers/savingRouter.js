@@ -4,185 +4,207 @@ const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get data router
+// Constants
+const CURRENCY_FORMAT = {
+  style: "currency",
+  currency: "VND",
+  locale: "it-IT",
+};
+
+const RENDER_COLORS = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
+
+// Helper Functions
+const formatCurrency = (amount) => {
+  return amount.toLocaleString(CURRENCY_FORMAT.locale, {
+    style: CURRENCY_FORMAT.style,
+    currency: CURRENCY_FORMAT.currency,
+  });
+};
+
+const processOperationResult = (res, entityResult, walletResult) => {
+  if (entityResult.status === 200 && walletResult.status === 200) {
+    return res.json(`${entityResult.message} và ${walletResult.message}`);
+  }
+
+  if (entityResult.status !== 200 && walletResult.status === 200) {
+    return res.status(400).json({ errorMessage: entityResult.message });
+  }
+
+  return res.status(400).json({
+    errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
+  });
+};
+
+// Routes
+// Get all savings
 router.get("/", auth, async (req, res) => {
-  await commonUtil.getAllResult(req, res, Saving);
+  try {
+    await commonUtil.getAllData(req, res, Saving);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
 });
 
-// get Saving report total data
+// Get saving report total data
 router.get("/reporttotaldata", auth, async (req, res) => {
   try {
-    let resultData = {
+    const resultData = {
       iReportStartMon: 0,
       iReportTotalMon: 0,
       iUnsavedAmount: 0,
       iSavingAmount: 0,
       iAmountOfInterest: 0,
     };
-    const aSavingData = await Saving.find({ user: req.user, savStatus: false });
-    const oUserLogin = await User.findById(req.user);
-    aSavingData.forEach((item) => {
+
+    const activeSavings = await Saving.find({ user: req.user, savStatus: false });
+    const userLogin = await User.findById(req.user);
+
+    // Calculate totals from active savings
+    activeSavings.forEach((item) => {
       resultData.iReportStartMon += item.savMoney;
       resultData.iAmountOfInterest += item.savInteretMoney;
       resultData.iReportTotalMon += item.savTRealMoney;
     });
+
+    // Add wallet data
     resultData.iSavingAmount = resultData.iReportStartMon;
-    resultData.iReportStartMon += oUserLogin.walletSaving;
-    resultData.iReportTotalMon += oUserLogin.walletSaving;
-    resultData.iUnsavedAmount += oUserLogin.walletSaving;
-    res.json(
-      (resultData = {
-        iReportStartMon: resultData.iReportStartMon.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        }),
-        iReportTotalMon: resultData.iReportTotalMon.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        }),
-        iUnsavedAmount: resultData.iUnsavedAmount.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        }),
-        iSavingAmount: resultData.iSavingAmount.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        }),
-        iAmountOfInterest: resultData.iAmountOfInterest.toLocaleString("it-IT", {
-          style: "currency",
-          currency: "VND",
-        }),
-      })
-    );
+    resultData.iReportStartMon += userLogin.walletSaving;
+    resultData.iReportTotalMon += userLogin.walletSaving;
+    resultData.iUnsavedAmount += userLogin.walletSaving;
+
+    // Format currency values
+    const formattedData = {
+      iReportStartMon: formatCurrency(resultData.iReportStartMon),
+      iReportTotalMon: formatCurrency(resultData.iReportTotalMon),
+      iUnsavedAmount: formatCurrency(resultData.iUnsavedAmount),
+      iSavingAmount: formatCurrency(resultData.iSavingAmount),
+      iAmountOfInterest: formatCurrency(resultData.iAmountOfInterest),
+    };
+
+    res.json(formattedData);
   } catch (error) {
     res.status(500).json({ error });
   }
 });
 
-// get Saving Data report list
+// Get saving data report list
 router.post("/reportsaving", auth, async (req, res) => {
-  const { date, month, bank, status } = req.body;
-  const aSavingData = await Saving.find({ user: req.user });
+  try {
+    const { date, month, bank, status } = req.body;
+    const allSavings = await Saving.find({ user: req.user });
 
-  // Hàm để kiểm tra điều kiện
-  const matches = (item, field, values, transform = (v) => v) => {
-    return !values || values.length === 0 || values.includes(transform(item[field]));
-  };
+    // Filter functions
+    const matches = (item, field, values, transform = (v) => v) => {
+      return !values || values.length === 0 || values.includes(transform(item[field]));
+    };
 
-  // Hàm để lọc dữ liệu
-  const filterData = (item) => {
-    return (
-      matches(item, "savDate", date, (d) =>
-        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
-      ) &&
-      matches(item, "savDate", month, (d) => (d.getMonth() + 1).toString()) &&
-      matches(item, "bnkName", bank) &&
-      (!status ||
-        status.length === 0 ||
-        status.some((keyword) =>
-          keyword.includes(item.savStatus ? "Đã rút tiết kiệm" : "Đang gửi tiết kiệm")
-        ))
-    );
-  };
+    const dateToDay = (d) =>
+      d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString();
+    const dateToMonth = (d) => (d.getMonth() + 1).toString();
 
-  const filteredData = aSavingData.filter(filterData);
-  const filterPieChartData = aSavingData.filter((i) => i.savStatus === false);
-
-  // Tách dữ liệu theo bnkLstID
-  let dataByCode = {};
-  let dataByPie = {};
-
-  filteredData.forEach((item) => {
-    if (dataByCode[item.bnkName]) {
-      dataByCode[item.bnkName].push(item);
-    } else {
-      Object.assign(dataByCode, {
-        [`${item.bnkName}`]: [item],
-      });
-    }
-  });
-  filterPieChartData.forEach((item) => {
-    if (dataByPie[item.bnkName]) {
-      dataByPie[item.bnkName].push(item);
-    } else {
-      Object.assign(dataByPie, {
-        [`${item.bnkName}`]: [item],
-      });
-    }
-  });
-
-  // Hàm để giảm dữ liệu
-  const reduceData = (data) => {
-    return data.reduce((acc, current) => {
-      const existing = acc.find(
-        (item) => item.bnkLstID === current.bnkLstID && item.bnkName === current.bnkName
+    const filterData = (item) => {
+      return (
+        matches(item, "savDate", date, dateToDay) &&
+        matches(item, "savDate", month, dateToMonth) &&
+        matches(item, "bnkName", bank) &&
+        (!status ||
+          status.length === 0 ||
+          status.some((keyword) =>
+            keyword.includes(item.savStatus ? "Đã rút tiết kiệm" : "Đang gửi tiết kiệm")
+          ))
       );
+    };
 
-      if (existing) {
-        existing.savMoney += current.savMoney;
-        existing.savInteretMoney += current.savInteretMoney;
-        existing.savTotalMoney += current.savTotalMoney;
-        existing.savTRealMoney += current.savTRealMoney;
-        existing.savRealInterMoney += current.savRealInterMoney;
-      } else {
-        acc.push({ ...current._doc });
+    const filteredData = allSavings.filter(filterData);
+    const activeSavings = allSavings.filter((i) => i.savStatus === false);
+
+    // Group data by bank name
+    const groupDataByBank = (data) => {
+      const result = {};
+      data.forEach((item) => {
+        if (!result[item.bnkName]) {
+          result[item.bnkName] = [];
+        }
+        result[item.bnkName].push(item);
+      });
+      return result;
+    };
+
+    const dataByBank = groupDataByBank(filteredData);
+    const pieDataByBank = groupDataByBank(activeSavings);
+
+    // Reduce function to consolidate data
+    const reduceData = (data) => {
+      return data.reduce((acc, current) => {
+        const existing = acc.find(
+          (item) => item.bnkLstID === current.bnkLstID && item.bnkName === current.bnkName
+        );
+
+        if (existing) {
+          existing.savMoney += current.savMoney;
+          existing.savInteretMoney += current.savInteretMoney;
+          existing.savTotalMoney += current.savTotalMoney;
+          existing.savTRealMoney += current.savTRealMoney;
+          existing.savRealInterMoney += current.savRealInterMoney;
+        } else {
+          acc.push({ ...current._doc });
+        }
+
+        return acc;
+      }, []);
+    };
+
+    // Reduce each bank group
+    const reduceBankGroups = (groups) => {
+      const reducedGroups = {};
+      for (const [key, value] of Object.entries(groups)) {
+        reducedGroups[key] = reduceData(value)[0];
       }
+      return reducedGroups;
+    };
 
-      return acc;
-    }, []);
-  };
+    const reducedData = reduceBankGroups(dataByBank);
+    const reducedPieData = reduceBankGroups(pieDataByBank);
 
-  const reducedData = {};
-  const reducedPieData = {};
+    // Prepare table data
+    const bankNames = Object.keys(reducedData);
+    const emptyRow = {
+      name: "",
+      ...bankNames.reduce((acc, key) => ({ ...acc, [key]: 0 }), {}),
+    };
 
-  for (const [key] of Object.entries(dataByCode)) {
-    Object.assign(reducedData, {
-      [key]: reduceData(dataByCode[key])[0],
-    });
-  }
-  for (const [key] of Object.entries(dataByPie)) {
-    Object.assign(reducedPieData, {
-      [key]: reduceData(dataByPie[key])[0],
-    });
-  }
-  let initialData = {
-    name: "",
-    ...Object.keys(reducedData).reduce((acc, key) => ({ ...acc, [key]: 0 }), {}),
-  };
-  let resultData = [
-    { ...initialData },
-    { name: "Số tiền tiết kiệm" },
-    { name: "Thực nhận" },
-    { name: "Số tiền sau rút" },
-    { name: "Lãi dự kiến" },
-    { name: "Lãi/lỗ sau rút" },
-    { ...initialData },
-  ];
+    const resultData = [
+      { ...emptyRow },
+      { name: "Số tiền tiết kiệm" },
+      { name: "Thực nhận" },
+      { name: "Số tiền sau rút" },
+      { name: "Lãi dự kiến" },
+      { name: "Lãi/lỗ sau rút" },
+      { ...emptyRow },
+    ];
 
-  for (const [key, value] of Object.entries(reducedData)) {
-    resultData[1][key] = value.savMoney;
-    resultData[2][key] = value.savTotalMoney;
-    resultData[3][key] = value.savTRealMoney;
-    resultData[4][key] = value.savInteretMoney;
-    resultData[5][key] = value.savRealInterMoney;
-  }
+    for (const [key, value] of Object.entries(reducedData)) {
+      resultData[1][key] = value.savMoney;
+      resultData[2][key] = value.savTotalMoney;
+      resultData[3][key] = value.savTRealMoney;
+      resultData[4][key] = value.savInteretMoney;
+      resultData[5][key] = value.savRealInterMoney;
+    }
 
-  let pieResultData = [];
-  const rendercolor = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
-  let i = 1;
-  for (const [key, value] of Object.entries(reducedData)) {
-    pieResultData.push({
+    // Prepare pie chart data
+    const pieResultData = Object.entries(reducedData).map(([key, value], index) => ({
       label: key,
       value: value.savMoney,
-      color: `${rendercolor[(i + 1) % rendercolor.length]}`,
-    });
-    i++;
-  }
+      color: RENDER_COLORS[(index + 1) % RENDER_COLORS.length],
+    }));
 
-  res.json({ resultData, pieResultData });
+    res.json({ resultData, pieResultData });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 });
 
-// create data router
+// Create new saving
 router.post("/", auth, async (req, res) => {
   try {
     const {
@@ -198,7 +220,8 @@ router.post("/", auth, async (req, res) => {
       savTRealMoney,
       savRealInterMoney,
     } = req.body;
-    const oCreateData = {
+
+    const savingData = {
       bnkLstID,
       bnkName,
       savDate,
@@ -211,38 +234,30 @@ router.post("/", auth, async (req, res) => {
       savTRealMoney,
       savRealInterMoney,
     };
-    const sNotice = await commonUtil.createDataCase(
+
+    const savingResult = await commonUtil.createData(
       req,
       res,
-      oCreateData,
+      savingData,
       Saving,
       "Bảng tiết kiệm"
     );
-    const SNoticeUser = await commonUtil.UpdateUserWalletNew(
+
+    const walletResult = await commonUtil.updateWalletAfterCreation(
       req,
       res,
       "TK",
-      0 - parseInt(req.body.savMoney),
+      -parseInt(savMoney),
       User
     );
-    if (SNoticeUser.status === 200 && sNotice.status === 200) {
-      res.json(`${sNotice.message} và ${SNoticeUser.message}`);
-    } else {
-      if (sNotice.status !== 200 && SNoticeUser.status === 200)
-        res.status(400).json({
-          errorMessage: sNotice.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+
+    processOperationResult(res, savingResult, walletResult);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// update data router
+// Update saving
 router.put("/:id", auth, async (req, res) => {
   try {
     const {
@@ -257,8 +272,10 @@ router.put("/:id", auth, async (req, res) => {
       savStatus,
       savTRealMoney,
       savRealInterMoney,
+      savDMoney,
     } = req.body;
-    const oUpdateData = {
+
+    const savingData = {
       bnkLstID,
       bnkName,
       savDate,
@@ -271,65 +288,50 @@ router.put("/:id", auth, async (req, res) => {
       savTRealMoney,
       savRealInterMoney,
     };
-    const sBankId = req.params.id;
-    const sUpdateEntity = await commonUtil.updateDataCase(
+
+    const savingId = req.params.id;
+    const updateAmount = savStatus === true ? parseInt(savTRealMoney) : -parseInt(savDMoney);
+
+    const savingResult = await commonUtil.updateData(
       req,
       res,
-      oUpdateData,
+      savingData,
       Saving,
-      sBankId,
+      savingId,
       "Bảng tiết kiệm"
     );
-    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
+
+    const walletResult = await commonUtil.updateWalletAfterUpdate(
       req,
       res,
       "TK",
-      savStatus === true ? parseInt(req.body.savTRealMoney) : 0 - parseInt(req.body.savDMoney),
+      updateAmount,
       User
     );
 
-    if (sUpdateEntity.status === 200 && sUpdateWalletUser.status === 200) {
-      res.json(`${sUpdateEntity.message} và ${sUpdateWalletUser.message}`);
-    } else {
-      if (sUpdateEntity.status !== 200 && sUpdateWalletUser.status === 200)
-        res.status(400).json({
-          errorMessage: sUpdateEntity.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+    processOperationResult(res, savingResult, walletResult);
   } catch (error) {
     res.status(500).json({ error });
   }
 });
 
-// delete data router
+// Delete saving
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const oBankId = req.params.id;
+    const savingId = req.params.id;
     const data = req.body;
-    const result = await commonUtil.deleteDataCase(req, res, Saving, oBankId, "Bảng tiết kiệm");
-    const minusAmountMoney = await commonUtil.UpdateWalletUser(
+
+    const savingResult = await commonUtil.deleteData(req, res, Saving, savingId, "Bảng tiết kiệm");
+
+    const walletResult = await commonUtil.updateWalletBatch(
       req,
       "bnkLstID",
       "savMoney",
       data,
       User
     );
-    if (result.status === 200 && minusAmountMoney.status === 200) {
-      res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
-    } else {
-      if (result.status !== 200 && minusAmountMoney.status === 200)
-        res.status(400).json({
-          errorMessage: result.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+
+    processOperationResult(res, savingResult, walletResult);
   } catch (error) {
     res.status(500).json({ error });
   }

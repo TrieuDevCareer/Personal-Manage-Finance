@@ -17,6 +17,7 @@
     "globals": "^15.3.0"
   },
     "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
   }
 }

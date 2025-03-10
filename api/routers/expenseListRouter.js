@@ -3,84 +3,130 @@ const ExpenseList = require("../models/expenseListModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get data router
+/**
+ * Hàm xử lý phản hồi
+ * @param {object} res - Đối tượng response của Express
+ * @param {number} status - Mã HTTP status
+ * @param {string|object} message - Thông điệp hoặc dữ liệu phản hồi
+ * @param {boolean} isError - Xác định đây có phải là phản hồi lỗi hay không
+ */
+const sendResponse = (res, status, message, isError = false) => {
+  if (isError) {
+    return res.status(status).json({ errorMessage: message });
+  }
+  return res.status(status).json(message);
+};
+
+/**
+ * Các route xử lý danh mục tiêu dùng
+ */
+
+// Lấy tất cả danh mục tiêu dùng
 router.get("/", auth, async (req, res) => {
-  await commonUtil.getAllResult(req, res, ExpenseList);
+  try {
+    await commonUtil.getAllData(req, res, ExpenseList);
+  } catch (error) {
+    sendResponse(res, 500, `Lỗi khi lấy danh mục tiêu dùng: ${error.message}`, true);
+  }
 });
 
-// get content by capital
+// Lấy danh mục theo mã
 router.post("/content", auth, async (req, res) => {
-  let { data } = req.body;
-  data = data[0] === "All" ? ["SO", "TK", "DT", "TD"] : data;
-  const aResultData = await ExpenseList.find({ user: req.user, exelstCode: { $in: data } });
+  try {
+    let { data } = req.body;
 
-  res.json(aResultData);
+    // Kiểm tra dữ liệu đầu vào
+    if (!data || !Array.isArray(data)) {
+      return sendResponse(res, 400, "Dữ liệu phải là một mảng", true);
+    }
+
+    // Xử lý trường hợp "All"
+    data = data[0] === "All" ? ["SO", "TK", "DT", "TD"] : data;
+
+    // Truy vấn cơ sở dữ liệu
+    const resultData = await ExpenseList.find({
+      user: req.user,
+      exelstCode: { $in: data },
+    });
+
+    sendResponse(res, 200, resultData);
+  } catch (error) {
+    sendResponse(res, 500, `Lỗi khi lấy danh mục theo mã: ${error.message}`, true);
+  }
 });
 
-// create data router
+// Tạo danh mục tiêu dùng mới
 router.post("/", auth, async (req, res) => {
   try {
     const { exelstCode, exeLstContent } = req.body;
-    const oCreateData = { exelstCode, exeLstContent };
-    const result = await commonUtil.createDataCase(
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!exelstCode || !exeLstContent) {
+      return sendResponse(res, 400, "Mã và nội dung danh mục là bắt buộc", true);
+    }
+
+    const createData = { exelstCode, exeLstContent };
+    const result = await commonUtil.createData(
       req,
       res,
-      oCreateData,
+      createData,
       ExpenseList,
-      "danh mục tiêu dùng"
+      "Danh mục tiêu dùng"
     );
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+
+    sendResponse(res, result.status, result.message, result.status !== 200);
   } catch (error) {
-    res.status(500).send();
+    sendResponse(res, 500, `Lỗi khi tạo danh mục tiêu dùng: ${error.message}`, true);
   }
 });
 
-// update data router
+// Cập nhật danh mục tiêu dùng
 router.put("/:id", auth, async (req, res) => {
   try {
     const { exelstCode, exeLstContent } = req.body;
-    const oUpdateData = { exelstCode, exeLstContent };
-    const oExeId = req.params.id;
-    const result = await commonUtil.updateDataCase(
+    const exeId = req.params.id;
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!exelstCode || !exeLstContent) {
+      return sendResponse(res, 400, "Mã và nội dung danh mục là bắt buộc", true);
+    }
+
+    // Kiểm tra ID
+    if (!exeId) {
+      return sendResponse(res, 400, "ID danh mục là bắt buộc", true);
+    }
+
+    const updateData = { exelstCode, exeLstContent };
+    const result = await commonUtil.updateData(
       req,
       res,
-      oUpdateData,
+      updateData,
       ExpenseList,
-      oExeId,
-      "danh mục tiêu dùng"
+      exeId,
+      "Danh mục tiêu dùng"
     );
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+
+    sendResponse(res, result.status, result.message, result.status !== 200);
   } catch (error) {
-    res.status(500).json({ error });
+    sendResponse(res, 500, `Lỗi khi cập nhật danh mục tiêu dùng: ${error.message}`, true);
   }
 });
 
-// delete data router
+// Xóa danh mục tiêu dùng
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const oExeId = req.params.id;
-    const result = await commonUtil.deleteDataCase(
-      req,
-      res,
-      ExpenseList,
-      oExeId,
-      "danh mục tiêu dùng"
-    );
-    result.status === 200
-      ? res.json(result.message)
-      : res.status(400).json({
-          errorMessage: result.message,
-        });
+    const exeId = req.params.id;
+
+    // Kiểm tra ID
+    if (!exeId) {
+      return sendResponse(res, 400, "ID danh mục là bắt buộc", true);
+    }
+
+    const result = await commonUtil.deleteData(req, res, ExpenseList, exeId, "danh mục tiêu dùng");
+
+    sendResponse(res, result.status, result.message, result.status !== 200);
   } catch (error) {
-    res.status(500).json({ error });
+    sendResponse(res, 500, `Lỗi khi xóa danh mục tiêu dùng: ${error.message}`, true);
   }
 });
 

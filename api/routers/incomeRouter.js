@@ -6,50 +6,72 @@ const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// get data router
-router.get("/", auth, async (req, res) => {
-  await commonUtil.getAllResult(req, res, Income);
-});
+const handleMultipleResults = (res, results) => {
+  const hasErrors = results.some((result) => result.status !== 200);
 
-// get Income - Expense in year
-router.get("/reporttotal", auth, async (req, res) => {
+  if (!hasErrors) {
+    const messages = results
+      .filter((r) => r.message)
+      .map((r) => r.message)
+      .join(" và ");
+    return res.json(messages || "Thao tác thành công");
+  }
+
+  const errorResult = results.find((r) => r.status !== 200);
+  return res.status(errorResult.status).json({
+    errorMessage: errorResult.message || "Hãy liên hệ nhà phát triễn ứng để xử lý",
+  });
+};
+
+// Data processing functions
+const processMonthlyData = async (req) => {
   const resultData = new Array(12).fill().map(() => ({ incomeSite: 0, expenseSite: 0 }));
-  const aIncomeData = await Income.find({ user: req.user });
-  const aExpenseData = await Expense.find({ user: req.user });
-  const aSavingData = await Saving.find({ user: req.user, savStatus: false });
-  const aInvestData = await Saving.find({ user: req.user, investStatus: false });
+
+  // Fetch all data in parallel
+  const [aIncomeData, aExpenseData, aSavingData, aInvestData] = await Promise.all([
+    Income.find({ user: req.user }),
+    Expense.find({ user: req.user }),
+    Saving.find({ user: req.user, savStatus: false }),
+    Saving.find({ user: req.user, investStatus: false }),
+  ]);
+
+  // Process income data
   aIncomeData.forEach((income) => {
     const month = income.incDate.getMonth();
     resultData[month].incomeSite += income.incMoney;
   });
+
+  // Process expense data
   aExpenseData.forEach((expense) => {
     const month = expense.expDate.getMonth();
     resultData[month].expenseSite += expense.expMoney;
   });
+
+  // Process saving data
   aSavingData.forEach((saving) => {
     const month = saving.savDate.getMonth();
     resultData[month].expenseSite += saving.savMoney;
   });
+
+  // Process investment data
   aInvestData.forEach((invest) => {
     const month = invest.investDate.getMonth();
     resultData[month].expenseSite += invest.investMoney;
   });
-  res.json(resultData);
-});
 
-// get Income Data report list
-router.post("/reportincome", auth, async (req, res) => {
-  const { date, month, capitalSource, contentData } = req.body;
-  const aIncomeData = await Income.find({ user: req.user });
+  return resultData;
+};
 
-  // Hàm để kiểm tra điều kiện
+const filterIncomeData = (data, filters) => {
+  const { date, month, capitalSource, contentData } = filters;
+
+  // Check if item matches filter criteria
   const matches = (item, field, values, transform = (v) => v) => {
     return !values || values.length === 0 || values.includes(transform(item[field]));
   };
 
-  // Hàm để lọc dữ liệu
-  const filterData = (item) => {
-    return (
+  return data.filter(
+    (item) =>
       matches(item, "incDate", date, (d) =>
         d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
       ) &&
@@ -60,18 +82,16 @@ router.post("/reportincome", auth, async (req, res) => {
         contentData.some(
           (keyword) => keyword.includes(item.inlstCode) && keyword.includes(item.inLstContent)
         ))
-    );
-  };
+  );
+};
 
-  const filteredData = aIncomeData.filter(filterData);
-
-  // Tách dữ liệu theo inlstCode
-  const dataByCode = {
-    SO: [],
-    TD: [],
-    DT: [],
-    TK: [],
-  };
+const groupAndReduceIncomeData = (filteredData) => {
+  // Group data by code
+  const codeCategories = ["SO", "TD", "DT", "TK"];
+  const dataByCode = codeCategories.reduce((acc, code) => {
+    acc[code] = [];
+    return acc;
+  }, {});
 
   filteredData.forEach((item) => {
     if (dataByCode[item.inlstCode]) {
@@ -79,7 +99,7 @@ router.post("/reportincome", auth, async (req, res) => {
     }
   });
 
-  // Hàm để giảm dữ liệu
+  // Reduce data within each category
   const reduceData = (data) => {
     return data.reduce((acc, current) => {
       const existing = acc.find(
@@ -96,136 +116,121 @@ router.post("/reportincome", auth, async (req, res) => {
     }, []);
   };
 
-  const reducedData = {
-    SO: reduceData(dataByCode.SO),
-    TD: reduceData(dataByCode.TD),
-    DT: reduceData(dataByCode.DT),
-    TK: reduceData(dataByCode.TK),
-  };
+  // Apply reduction to each category
+  const reducedData = {};
+  codeCategories.forEach((code) => {
+    reducedData[code] = reduceData(dataByCode[code]);
+  });
 
-  const maxLengthArr = Math.max(
-    reducedData.SO.length,
-    reducedData.TD.length,
-    reducedData.TK.length,
-    reducedData.DT.length
-  );
+  return reducedData;
+};
 
-  let resultData = new Array(maxLengthArr).fill().map((_, i) => ({
+const formatIncomeReport = (reducedData) => {
+  const maxLength = Math.max(...Object.values(reducedData).map((arr) => arr.length));
+
+  return new Array(maxLength).fill().map((_, i) => ({
     name: i + 1,
-    [`Nguồn sống`]: reducedData.SO[i]?.incMoney || 0,
-    [`Tiết kiệm`]: reducedData.TK[i]?.incMoney || 0,
-    [`Đầu tư`]: reducedData.DT[i]?.incMoney || 0,
-    [`Tự do`]: reducedData.TD[i]?.incMoney || 0,
-    [`SOContent`]: reducedData.SO[i]?.inLstContent || "",
-    [`TKContent`]: reducedData.TK[i]?.inLstContent || "",
-    [`DTContent`]: reducedData.DT[i]?.inLstContent || "",
-    [`TDContent`]: reducedData.TD[i]?.inLstContent || "",
+    "Nguồn sống": reducedData.SO[i]?.incMoney || 0,
+    "Tiết kiệm": reducedData.TK[i]?.incMoney || 0,
+    "Đầu tư": reducedData.DT[i]?.incMoney || 0,
+    "Tự do": reducedData.TD[i]?.incMoney || 0,
+    SOContent: reducedData.SO[i]?.inLstContent || "",
+    TKContent: reducedData.TK[i]?.inLstContent || "",
+    DTContent: reducedData.DT[i]?.inLstContent || "",
+    TDContent: reducedData.TD[i]?.inLstContent || "",
   }));
-  res.json({ resultData });
+};
+
+// Route handlers
+
+// Get all income data
+router.get("/", auth, async (req, res) => {
+  try {
+    await commonUtil.getAllData(req, res, Income);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
 });
 
-// create data router
+// Get Income - Expense report by month
+router.get("/reporttotal", auth, async (req, res) => {
+  try {
+    const resultData = await processMonthlyData(req);
+    return res.json(resultData);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// Get Income Data report list
+router.post("/reportincome", auth, async (req, res) => {
+  try {
+    const aIncomeData = await Income.find({ user: req.user });
+    const filteredData = filterIncomeData(aIncomeData, req.body);
+    const reducedData = groupAndReduceIncomeData(filteredData);
+    const resultData = formatIncomeReport(reducedData);
+
+    return res.json({ resultData });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+});
+
+// Create income data
 router.post("/", auth, async (req, res) => {
   try {
     const { inlstCode, inLstContent, incDate, incDetail, incMoney } = req.body;
-    const oCreateData = {
-      inlstCode,
-      inLstContent,
-      incDate,
-      incDetail,
-      incMoney,
-    };
-    const sNotice = await commonUtil.createDataCase(req, res, oCreateData, Income, "bảng thu nhập");
-    // update wallet of User
-    const SNoticeUser = await commonUtil.UpdateUserWalletNew(
-      req,
-      res,
-      req.body.inlstCode,
-      parseInt(req.body.incMoney),
-      User
-    );
-    if (SNoticeUser.status === 200 && sNotice.status === 200) {
-      res.json(`${sNotice.message} và ${SNoticeUser.message}`);
-    } else {
-      if (sNotice.status !== 200 && SNoticeUser.status === 200)
-        res.status(400).json({
-          errorMessage: sNotice.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+    const oCreateData = { inlstCode, inLstContent, incDate, incDetail, incMoney };
+
+    const results = await Promise.all([
+      commonUtil.createData(req, res, oCreateData, Income, "bảng thu nhập"),
+      commonUtil.updateWalletAfterCreation(req, res, inlstCode, parseInt(incMoney), User),
+    ]);
+
+    return handleMultipleResults(res, results);
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).json({ errorMessage: error.message });
   }
 });
 
-// update data router
+// Update income data
 router.put("/:id", auth, async (req, res) => {
   try {
-    const { inlstCode, inLstContent, incDate, incDetail, incMoney } = req.body;
+    const { inlstCode, inLstContent, incDate, incDetail, incMoney, incDMoney } = req.body;
     const oUpdateData = { inlstCode, inLstContent, incDate, incDetail, incMoney };
     const sIncomeId = req.params.id;
-    const sUpdateEntity = await commonUtil.updateDataCase(
-      req,
-      res,
-      oUpdateData,
-      Income,
-      sIncomeId,
-      "bảng thu nhập"
-    );
-    const sUpdateWalletUser = await commonUtil.UpdateUserWalletUpdate(
-      req,
-      res,
-      req.body.inlstCode,
-      parseInt(req.body.incDMoney),
-      User
-    );
-    if (sUpdateEntity.status === 200 && sUpdateWalletUser.status === 200) {
-      res.json(`${sUpdateEntity.message} và ${sUpdateWalletUser.message}`);
-    } else {
-      if (sUpdateEntity.status !== 200 && sUpdateWalletUser.status === 200)
-        res.status(400).json({
-          errorMessage: sUpdateEntity.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+
+    const results = await Promise.all([
+      commonUtil.updateData(req, res, oUpdateData, Income, sIncomeId, "bảng thu nhập"),
+      commonUtil.updateWalletAfterUpdate(
+        req,
+        res,
+        inlstCode,
+        parseInt(incDMoney || incMoney),
+        User
+      ),
+    ]);
+
+    return handleMultipleResults(res, results);
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).json({ errorMessage: error.message });
   }
 });
 
-// delete data router
+// Delete income data
 router.delete("/:id/", auth, async (req, res) => {
   try {
     const sIncomeId = req.params.id;
     const data = req.body;
-    const result = await commonUtil.deleteDataCase(req, res, Income, sIncomeId, "bảng thu nhập");
-    const minusAmountMoney = await commonUtil.UpdateWalletUser(
-      req,
-      "inlstCode",
-      "incMoney",
-      data,
-      User
-    );
-    if (result.status === 200 && minusAmountMoney.status === 200) {
-      res.json("Đã xóa thu nhập và cập nhập Ví của bạn");
-    } else {
-      if (result.status !== 200 && minusAmountMoney.status === 200)
-        res.status(400).json({
-          errorMessage: result.message,
-        });
-      else
-        res.status(400).json({
-          errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-        });
-    }
+
+    const results = await Promise.all([
+      commonUtil.deleteData(req, res, Income, sIncomeId, "bảng thu nhập"),
+      commonUtil.updateWalletBatch(req, "inlstCode", "incMoney", data, User),
+    ]);
+
+    return handleMultipleResults(res, results);
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).json({ errorMessage: error.message });
   }
 });
 
