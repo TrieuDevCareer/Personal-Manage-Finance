@@ -64,7 +64,6 @@ function Table({
 
   function renderDataTable() {
     let sortedItem = [...oData];
-    console.log(sortedItem)
     sortedItem = sortedItem.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
