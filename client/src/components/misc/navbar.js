@@ -186,11 +186,11 @@ function Navbar({
         <li>
           <Link
             className={styleAggregation}
-            to="/generate"
+            to="/inbody"
             onClick={() => onClickHeaderBtn("Aggregation")}
           >
             <img src={"/images/total.png"} alt="..." className="nav-icon" />
-            <p>Tổng hợp</p>
+            <p>InBody</p>
           </Link>
         </li>
         <li>

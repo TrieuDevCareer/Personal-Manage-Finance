@@ -32,6 +32,7 @@ app.use("/expense", require("./routers/expenseRouter"));
 app.use("/income", require("./routers/incomeRouter"));
 app.use("/investment", require("./routers/investmentRouter"));
 app.use("/saving", require("./routers/savingRouter"));
+app.use("/inbodymetric", require("./routers/bodyMetricsRouter"));
 
 // setup + connect to MongoDB
 try {

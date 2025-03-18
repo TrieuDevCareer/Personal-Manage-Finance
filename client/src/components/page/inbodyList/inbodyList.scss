@@ -1,0 +1,50 @@
+@import url("../../../style//variables.scss");
+
+@media only screen and (min-width: 64em) {
+    .incomeList-container {
+        display: grid;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        grid-auto-rows: 9% 86%;
+
+        .title-container {
+            align-self: flex-end;
+
+            .title-incomeList {
+                text-align: center;
+                font-size: 1.5vw;
+                font-weight: 500;
+                color: var(--background-title-color);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 46.200625em) {
+    .incomeList-container {
+        justify-self: center;
+        display: grid;
+        text-align: center;
+        width: 95%;
+        height: auto;
+        align-self: start;
+        margin-top: 5rem;
+
+        .title-incomeList {
+            text-align: center;
+            font-size: 6vw;
+            font-weight: 500;
+            color: var(--background-title-color);
+            margin-top: 1rem;
+        }
+
+        .title-container {
+            display: flex;
+            justify-self: center;
+        }
+    }
+}

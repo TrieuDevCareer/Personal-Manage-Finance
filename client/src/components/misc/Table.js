@@ -64,6 +64,7 @@ function Table({
 
   function renderDataTable() {
     let sortedItem = [...oData];
+    console.log(sortedItem)
     sortedItem = sortedItem.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
     });
@@ -110,8 +111,8 @@ function Table({
           {!isCatalogPage && (
             <td className="item-value">
               {bStatus &&
-              (filteredObj["savStatus"] === "Đã rút" ||
-                filteredObj["investStatus"] === "Đã rút") ? (
+                (filteredObj["savStatus"] === "Đã rút" ||
+                  filteredObj["investStatus"] === "Đã rút") ? (
                 <EditNoteIcon className="btn-style-edit-disable" />
               ) : (
                 <EditNoteIcon className="btn-style-edit" onClick={() => editModel(item)} />

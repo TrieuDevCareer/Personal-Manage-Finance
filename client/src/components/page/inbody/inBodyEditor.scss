@@ -1,0 +1,255 @@
+@import url("../../../style/mixins.scss");
+
+@media only screen and (min-width: 64em) {
+    .popup-container-inbody {
+        display: grid;
+        justify-content: center;
+        align-items: start;
+        height: 100%;
+        margin-top: 3vh;
+
+        .popup-form-inbody {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding-left: 2rem;
+            padding-top: 0.5rem;
+            padding-right: 2rem;
+            padding-bottom: 0.5rem;
+            border-radius: 1rem;
+            width: 60vw;
+            height: 100%;
+
+            .text-container {
+                display: grid;
+                grid-template-columns: 33% 33% 33%;
+
+
+                .popup-text {
+                    margin-bottom: 1rem;
+                    margin-right: 1rem;
+                    width: 90%;
+                    height: 7vh;
+
+                    label {
+                        color: var(--text-light-color);
+                        font-size: 1vw;
+                    }
+
+                    div {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        font-size: 1.1vw;
+
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                            -webkit-text-fill-color: var(--text-light-color);
+
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                            ;
+                        }
+                    }
+                }
+
+                .popup-text:hover {
+                    label {
+                        color: var(--text-danger-color);
+                    }
+
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                            ;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                            ;
+                        }
+                    }
+                }
+
+                .popup-text-disable {
+                    pointer-events: none;
+                    margin-bottom: 1rem;
+                    margin-right: 1rem;
+                    width: 90%;
+                    height: 7vh;
+
+                    label {
+                        color: var(--text-warning-color);
+                        font-size: 1vw;
+                    }
+
+                    div {
+                        color: var(--text-warning-color);
+                        text-align: left;
+                        font-size: 1.1vw;
+
+                        input {
+                            color: var(--text-warning-color);
+                            text-align: left;
+                            -webkit-text-fill-color: var(--text-light-color);
+
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                            ;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 46.200625em) {
+    .popup-container-inbody {
+        width: 100%;
+        height: auto;
+        margin-bottom: 2rem;
+
+        .popup-form-inbody {
+            display: grid;
+            justify-content: center;
+            background-color: var(--background-rdcolor);
+            box-shadow: var(--box-shadow);
+            padding: 1rem;
+            border-radius: 1rem;
+            width: 100%;
+
+            .text-container {
+
+                .popup-text {
+                    width: 84vw;
+                    margin-bottom: 1rem;
+
+                    label {
+                        color: var(--text-light-color);
+                        font-size: 3vw;
+                    }
+
+                    div {
+                        color: var(--text-light-color);
+                        text-align: left;
+                        font-size: 4vw;
+
+                        input {
+                            color: var(--text-light-color);
+                            text-align: left;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                        }
+                    }
+                }
+
+                .popup-text-disable {
+                    pointer-events: none;
+                    width: 84vw;
+                    margin-bottom: 1rem;
+
+                    label {
+                        color: var(--text-warning-color);
+                        font-size: 3vw;
+                    }
+
+                    div {
+                        color: var(--text-warning-color);
+                        text-align: left;
+                        font-size: 4vw;
+
+                        input {
+                            color: var(--text-warning-color);
+                            text-align: left;
+                            -webkit-text-fill-color: var(--text-light-color);
+                        }
+
+                        fieldset {
+                            border-color: var(--text-title-color);
+                            ;
+                        }
+
+                        svg {
+                            color: var(--text-title-color);
+                        }
+                    }
+                }
+
+                .popup-text:hover {
+                    label {
+                        color: var(--text-danger-color);
+                    }
+
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                            ;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                            ;
+                        }
+                    }
+                }
+
+                .popup-text-disabled:hover {
+                    label {
+                        color: var(--text-danger-color);
+                    }
+
+                    div {
+                        input {
+                            color: var(--text-light-color);
+                            ;
+                        }
+
+                        fieldset {
+                            border-color: var(--text-danger-color);
+                            ;
+                        }
+                    }
+                }
+            }
+
+            .css-1grant-MuiStack-root {
+                width: 86vw;
+
+                button {
+                    font-size: 3vw;
+                }
+            }
+
+            .css-1kbj1cy-MuiStack-root {
+                width: 86vw;
+
+                button {
+                    font-size: 3vw;
+                }
+            }
+        }
+    }
+}

@@ -6,7 +6,8 @@ import Expense from "./components/page/expense/expense";
 import Saving from "./components/page/saving/saving";
 import Investment from "./components/page/investment/investment";
 import Catalog from "./components/page/catalog/catalog";
-import Generate from "./components/page/generate/generate";
+import InBody from "./components/page/inbody/inBody";
+import InBodyList from "./components/page/inbodyList/inbodyList";
 import IncomeList from "./components/page/incomeList/incomeList";
 import ExpenseList from "./components/page/expenseList/expenseList";
 import BankList from "./components/page/bankList/bankList";
@@ -28,7 +29,8 @@ function Router({ isCheck, setIsCheck }) {
       <Route path="/saving" element={<Saving isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/invest" element={<Investment isCheck={isCheck} setIsCheck={setIsCheck} />} />
       <Route path="/catalog" element={<Catalog isCheck={isCheck} setIsCheck={setIsCheck} />} />
-      <Route path="/generate" element={<Generate />} />
+      <Route path="/inbody" element={<InBody />} />
+      <Route path="/inbodyList" element={<InBodyList />} />
       <Route path="/register_none_defind" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route
