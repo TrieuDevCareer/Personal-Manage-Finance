@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useEffect } from "react";
-import Axios from "axios";
 import AuthPage from "../../auth/authPage.js";
 import Table from "../../misc/Table.js";
 import LoadingProgess from "../../misc/loadingProgess.js";
 import UserContext from "../../../context/UserContext.js";
-import domain from "../../../util/domain.js";
 import "./inbodyList.scss";
 
 function IncomeList({ isCheck, setIsCheck, isCatalogPage }) {
