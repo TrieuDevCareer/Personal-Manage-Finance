@@ -27,8 +27,8 @@ const getMonthLastDay = (year, month) => {
 };
 
 const calculateDaysUntilSalary = (currentDay, salaryDate) => {
-  if (salaryDate > currentDay) {
-    return salaryDate - currentDay;
+  if (salaryDate >= currentDay) {
+    return salaryDate - currentDay + 1;
   }
 
   const year = new Date().getFullYear();
