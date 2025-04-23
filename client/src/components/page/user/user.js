@@ -157,8 +157,8 @@ function User() {
                   id="fullWidth"
                   type="number"
                   size="small"
-                  value={walletInvest}
-                  onChange={(e) => setWalletInvest(e.target.value)}
+                  value={walletSaving}
+                  onChange={(e) => setWalletSaving(e.target.value)}
                 />
                 <TextField
                   className={modeEdit ? "auth-text-res" : "auth-text-disable"}
@@ -167,8 +167,8 @@ function User() {
                   id="fullWidth"
                   type="number"
                   size="small"
-                  value={walletSaving}
-                  onChange={(e) => setWalletSaving(e.target.value)}
+                  value={walletInvest}
+                  onChange={(e) => setWalletInvest(e.target.value)}
                 />
                 <TextField
                   className={modeEdit ? "auth-text-res" : "auth-text-disable"}
