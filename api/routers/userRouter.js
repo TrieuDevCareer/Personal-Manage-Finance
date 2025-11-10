@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const schedule = require("node-schedule");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
@@ -18,6 +19,15 @@ const ERRORS = {
   LOGIN_REQUIRED: "Nhập đầy đủ thông tin đăng nhập để vào hệ thống!",
 };
 
+schedule.scheduleJob(
+  { hour: 11, minute: 32, tz: "Asia/Ho_Chi_Minh" },
+  async () => {
+    const users = await User.find({ verifyMail: true });
+    for (const user of users) {
+      await commonUtil.sendReminderEmail(user.email, user.userName);
+    }
+  }
+);
 // Helper functions
 const _createToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET);
@@ -32,23 +42,23 @@ const _getSecureCookieOptions = () => {
   };
 };
 
-const _calculateWalletAdjustment = (user) => {
-  const day = new Date().getDate();
-  let daysLeft = 0;
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const daysInMonth = new Date(year, month, 0).getDate();
+// const _calculateWalletAdjustment = (user) => {
+//   const day = new Date().getDate();
+//   let daysLeft = 0;
+//   const now = new Date();
+//   const year = now.getFullYear();
+//   const month = now.getMonth() + 1;
+//   const daysInMonth = new Date(year, month, 0).getDate();
 
-  if (user.salaryDate > day) {
-    daysLeft = user.salaryDate - day;
-  } else {
-    daysLeft = daysInMonth - day + user.salaryDate;
-  }
+//   if (user.salaryDate > day) {
+//     daysLeft = user.salaryDate - day;
+//   } else {
+//     daysLeft = daysInMonth - day + user.salaryDate;
+//   }
 
-  const adjustment = user.walletLife - user.dailyBudget * daysLeft;
-  return adjustment > 0 ? adjustment : 0;
-};
+//   const adjustment = user.walletLife - user.dailyBudget * daysLeft;
+//   return adjustment > 0 ? adjustment : 0;
+// };
 
 // Routes
 // Get user data
