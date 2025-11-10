@@ -19,11 +19,11 @@ const ERRORS = {
 };
 
 // Helper functions
-const createToken = (payload) => {
+const _createToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET);
 };
 
-const getSecureCookieOptions = () => {
+const _getSecureCookieOptions = () => {
   const isDevelopment = process.env.NODE_ENV === "development";
   return {
     httpOnly: true,
@@ -32,7 +32,7 @@ const getSecureCookieOptions = () => {
   };
 };
 
-const calculateWalletAdjustment = (user) => {
+const _calculateWalletAdjustment = (user) => {
   const day = new Date().getDate();
   let daysLeft = 0;
   const now = new Date();
@@ -125,7 +125,7 @@ router.post("/", async (req, res) => {
     const savedUser = await newUser.save();
 
     // Send verification email
-    const token = createToken({
+    const token = _createToken({
       id: savedUser._id,
     });
     const verificationLink = `${req.protocol}://${req.get("host")}/auth/${token}`;
@@ -165,35 +165,35 @@ router.post("/login", async (req, res) => {
     }
 
     // Calculate wallet adjustments
-    const walletAdjustment = calculateWalletAdjustment(user);
+    // const walletAdjustment = _calculateWalletAdjustment(user);
 
-    if (walletAdjustment > 0) {
-      await User.updateOne(
-        { _id: user._id },
-        {
-          $inc: {
-            walletFree: walletAdjustment,
-            walletLife: -walletAdjustment,
-          },
-        }
-      );
-    }
+    // if (walletAdjustment > 0) {
+    //   await User.updateOne(
+    //     { _id: user._id },
+    //     {
+    //       $inc: {
+    //         walletFree: walletAdjustment,
+    //         walletLife: -walletAdjustment,
+    //       },
+    //     }
+    //   );
+    // }
 
     // Create JWT token with user data
-    const token = createToken({
+    const token = _createToken({
       id: user._id,
       userName: user.userName,
       dailyBudget: user.dailyBudget,
       salaryDate: user.salaryDate,
-      walletLife: walletAdjustment > 0 ? user.walletLife - walletAdjustment : user.walletLife,
+      walletLife: user.walletLife,
       walletInvest: user.walletInvest,
       walletSaving: user.walletSaving,
-      walletFree: walletAdjustment > 0 ? user.walletFree + walletAdjustment : user.walletFree,
+      walletFree: user.walletFree,
       role: user.role,
     });
 
     // Set cookie and send response
-    res.cookie("token", token, getSecureCookieOptions()).send();
+    res.cookie("token", token, _getSecureCookieOptions()).send();
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
@@ -249,7 +249,7 @@ router.get("/loggedIn", (req, res) => {
 router.get("/logOut", (req, res) => {
   try {
     const cookieOptions = {
-      ...getSecureCookieOptions(),
+      ..._getSecureCookieOptions(),
       expires: new Date(0),
     };
 
