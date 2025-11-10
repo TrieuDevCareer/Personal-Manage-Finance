@@ -20,7 +20,7 @@ const ERRORS = {
 };
 
 schedule.scheduleJob(
-  { hour: 11, minute: 32, tz: "Asia/Ho_Chi_Minh" },
+  { hour: 22, minute: 0, tz: "Asia/Ho_Chi_Minh" },
   async () => {
     const users = await User.find({ verifyMail: true });
     for (const user of users) {
