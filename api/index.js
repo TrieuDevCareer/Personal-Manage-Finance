@@ -37,7 +37,7 @@ app.use("/investment", require("./routers/investmentRouter"));
 app.use("/saving", require("./routers/savingRouter"));
 app.use("/inbodymetric", require("./routers/bodyMetricsRouter"));
 
-app.get("/api/sendReminder", async (req, res) => {
+app.use("/api/sendReminder", async (req, res) => {
   try {
     await commonUtil.sendReminderEmail('lehaitrieu48@gmail.com', "Test User");
     res.status(200).json({ success: true, message: "Reminders sent" });
