@@ -297,7 +297,7 @@ router.get("/:token", async (req, res) => {
  * Send reminder emails to all verified users
  * @route GET /api/reminders
  */
-router.get("/sendReminder", auth, async (req, res) => {
+router.get("/sendReminder", async (req, res) => {
   try {
     const users = await User.find({ verifyMail: true });
     for (const user of users) {
