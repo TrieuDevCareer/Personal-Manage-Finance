@@ -5,6 +5,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+import { User } from "./models/userModel";
+import commonUtil from "./commonUtils";
+
 // setup express server
 dotenv.config();
 const app = express();
@@ -33,6 +36,16 @@ app.use("/income", require("./routers/incomeRouter"));
 app.use("/investment", require("./routers/investmentRouter"));
 app.use("/saving", require("./routers/savingRouter"));
 app.use("/inbodymetric", require("./routers/bodyMetricsRouter"));
+
+app.get("/api/sendReminder", async (req, res) => {
+  try {
+    await commonUtil.sendReminderEmail('lehaitrieu48@gmail.com', "Test User");
+    res.status(200).json({ success: true, message: "Reminders sent" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
+  }
+});
 
 // setup + connect to MongoDB
 try {
