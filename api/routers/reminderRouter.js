@@ -7,7 +7,7 @@ import commonUtil from "../commonUtils";
  * @route GET /api/savings
  * @header { token }
  */
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         // const users = await User.find({ verifyMail: true });
         // for (const user of users) {
