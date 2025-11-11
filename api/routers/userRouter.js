@@ -25,10 +25,11 @@ const ERRORS = {
  * Schedule daily reminder email at 22:00 Asia/Ho_Chi_Minh time
  */
 schedule.scheduleJob(
-  { hour: 9, minute: 31, tz: "Asia/Ho_Chi_Minh" },
+  { hour: 9, minute: 36, tz: "Asia/Ho_Chi_Minh" },
   async () => {
     const users = await User.find({ verifyMail: true });
     for (const user of users) {
+      console.log(`Sending reminder email to ${user.email}`);
       await commonUtil.sendReminderEmail(user.email, user.userName);
     }
   }
