@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// Constants
+//-------------------------------- CONSTANTS --------------------------------//
 const CURRENCY_FORMAT = {
   style: "currency",
   currency: "VND",
@@ -13,7 +13,13 @@ const CURRENCY_FORMAT = {
 
 const RENDER_COLORS = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
 
-// Helper Functions
+//-------------------------------- INTERNAL FUNCTION --------------------------------//
+
+/**
+ * format amount to currency string
+ * @param {*} amount 
+ * @returns 
+ */
 const formatCurrency = (amount) => {
   return amount.toLocaleString(CURRENCY_FORMAT.locale, {
     style: CURRENCY_FORMAT.style,
@@ -21,6 +27,13 @@ const formatCurrency = (amount) => {
   });
 };
 
+/**
+ * process operation result for entity and wallet updates
+ * @param {*} res 
+ * @param {*} entityResult 
+ * @param {*} walletResult 
+ * @returns 
+ */
 const processOperationResult = (res, entityResult, walletResult) => {
   if (entityResult.status === 200 && walletResult.status === 200) {
     return res.json(`${entityResult.message} và ${walletResult.message}`);
@@ -35,8 +48,13 @@ const processOperationResult = (res, entityResult, walletResult) => {
   });
 };
 
-// Routes
-// Get all savings
+//-------------------------------- ROUTES --------------------------------//
+
+/**
+ * Get all savings
+ * @route GET /api/savings
+ * @header { token }
+ */
 router.get("/", auth, async (req, res) => {
   try {
     await commonUtil.getAllData(req, res, Saving);
@@ -45,7 +63,11 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// Get saving report total data
+/**
+ * Get saving total data report
+ * @route GET /api/savings/reporttotaldata
+ * @header { token }
+ */
 router.get("/reporttotaldata", auth, async (req, res) => {
   try {
     const resultData = {
@@ -87,7 +109,12 @@ router.get("/reporttotaldata", auth, async (req, res) => {
   }
 });
 
-// Get saving data report list
+/**
+ * Get saving report with filters
+ * @route POST /api/savings/reportsaving
+ * @header { token }
+ * @body { date, month, bank, status }
+ */
 router.post("/reportsaving", auth, async (req, res) => {
   try {
     const { date, month, bank, status } = req.body;
@@ -204,7 +231,11 @@ router.post("/reportsaving", auth, async (req, res) => {
   }
 });
 
-// Create new saving
+/**
+ * Create new saving
+ * @route POST /api/savings
+ * @header { token }
+ */
 router.post("/", auth, async (req, res) => {
   try {
     const {
@@ -257,7 +288,11 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// Update saving
+/**
+ * Update saving
+ * @route PUT /api/savings/:id
+ * @header { token }
+ */
 router.put("/:id", auth, async (req, res) => {
   try {
     const {
@@ -315,7 +350,11 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-// Delete saving
+/**
+ * Delete saving
+ * @route DELETE /api/savings/:id
+ * @header { token }
+ */
 router.delete("/:id", auth, async (req, res) => {
   try {
     const savingId = req.params.id;

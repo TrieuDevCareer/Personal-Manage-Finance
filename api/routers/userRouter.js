@@ -6,7 +6,7 @@ const schedule = require("node-schedule");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// Constants
+//-------------------------------- CONSTANTS --------------------------------//
 const ERRORS = {
   MISSING_FIELDS: "Vui lòng điền đủ thông tin!",
   INVALID_SALARY_DATE: "Ngày nhận lương phải nằm trong tháng, vui lòng nhập lại!",
@@ -19,8 +19,13 @@ const ERRORS = {
   LOGIN_REQUIRED: "Nhập đầy đủ thông tin đăng nhập để vào hệ thống!",
 };
 
+//-------------------------------- INTERNAL FUNCTION --------------------------------//
+
+/**
+ * Schedule daily reminder email at 22:00 Asia/Ho_Chi_Minh time
+ */
 schedule.scheduleJob(
-  { hour: 22, minute: 0, tz: "Asia/Ho_Chi_Minh" },
+  { hour: 9, minute: 31, tz: "Asia/Ho_Chi_Minh" },
   async () => {
     const users = await User.find({ verifyMail: true });
     for (const user of users) {
@@ -28,11 +33,20 @@ schedule.scheduleJob(
     }
   }
 );
-// Helper functions
+
+/**
+ * Create JWT token
+ * @param {*} payload 
+ * @returns 
+ */
 const _createToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET);
 };
 
+/**
+ * Get secure cookie options based on environment
+ * @returns 
+ */
 const _getSecureCookieOptions = () => {
   const isDevelopment = process.env.NODE_ENV === "development";
   return {
@@ -42,26 +56,13 @@ const _getSecureCookieOptions = () => {
   };
 };
 
-// const _calculateWalletAdjustment = (user) => {
-//   const day = new Date().getDate();
-//   let daysLeft = 0;
-//   const now = new Date();
-//   const year = now.getFullYear();
-//   const month = now.getMonth() + 1;
-//   const daysInMonth = new Date(year, month, 0).getDate();
+//-------------------------------- ROUTES --------------------------------//
 
-//   if (user.salaryDate > day) {
-//     daysLeft = user.salaryDate - day;
-//   } else {
-//     daysLeft = daysInMonth - day + user.salaryDate;
-//   }
-
-//   const adjustment = user.walletLife - user.dailyBudget * daysLeft;
-//   return adjustment > 0 ? adjustment : 0;
-// };
-
-// Routes
-// Get user data
+/** 
+ * Get user data
+ * @route GET /api/users
+ * @header { token }
+ */
 router.get("/", auth, async (req, res) => {
   try {
     const userData = await User.findById(req.user);
@@ -74,7 +75,11 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// Register user
+/**
+ * Register a new user
+ * @route POST /api/users
+ * @body { email, userName, password, passwordVerify, salaryDate, walletLife, walletInvest, walletSaving, walletFree, dailyBudget }
+ */
 router.post("/", async (req, res) => {
   try {
     const {
@@ -149,7 +154,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Login user
+/**
+ * Login user
+ * @route POST /api/users/login
+ * @body { email, password }
+ */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -174,21 +183,6 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ errorMessage: ERRORS.UNVERIFIED_ACCOUNT(email) });
     }
 
-    // Calculate wallet adjustments
-    // const walletAdjustment = _calculateWalletAdjustment(user);
-
-    // if (walletAdjustment > 0) {
-    //   await User.updateOne(
-    //     { _id: user._id },
-    //     {
-    //       $inc: {
-    //         walletFree: walletAdjustment,
-    //         walletLife: -walletAdjustment,
-    //       },
-    //     }
-    //   );
-    // }
-
     // Create JWT token with user data
     const token = _createToken({
       id: user._id,
@@ -209,7 +203,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Update user data
+/**
+ * Update user data
+ * @route PUT /api/users
+ * @header { token }
+ * @body { walletLife, walletInvest, walletSaving, walletFree, salaryDate }
+ */
 router.put("/", auth, async (req, res) => {
   try {
     const { walletLife, walletInvest, walletSaving, walletFree, salaryDate } = req.body;
@@ -242,7 +241,11 @@ router.put("/", auth, async (req, res) => {
   }
 });
 
-// Check logged in status
+/**
+ * Get logged in user data
+ * @route GET /api/users/loggedIn
+ * @header { token }
+ */
 router.get("/loggedIn", (req, res) => {
   try {
     const token = req.cookies.token;
@@ -255,7 +258,10 @@ router.get("/loggedIn", (req, res) => {
   }
 });
 
-// Logout user
+/**
+ * Log out user
+ * @route GET /api/users/logOut
+ */
 router.get("/logOut", (req, res) => {
   try {
     const cookieOptions = {
@@ -269,7 +275,10 @@ router.get("/logOut", (req, res) => {
   }
 });
 
-// Verify email
+/**
+ * Verify user email
+ * @route GET /api/users/:token
+ */
 router.get("/:token", async (req, res) => {
   try {
     const token = req.params.token;

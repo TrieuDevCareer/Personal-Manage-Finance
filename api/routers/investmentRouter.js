@@ -4,14 +4,6 @@ const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
-// Helper functions
-const responseHandler = (res, result) => {
-  if (result.status === 200) {
-    return res.json(result.data || result.message);
-  }
-  return res.status(result.status).json({ errorMessage: result.message });
-};
-
 const handleMultipleResults = (res, results) => {
   const hasErrors = results.some((result) => result.status !== 200);
 
