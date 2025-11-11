@@ -34,8 +34,6 @@ app.use("/investment", require("./routers/investmentRouter"));
 app.use("/saving", require("./routers/savingRouter"));
 app.use("/inbodymetric", require("./routers/bodyMetricsRouter"));
 
-app.use("/api/sendReminder", require("./routers/reminderRouter"));
-
 // setup + connect to MongoDB
 try {
   mongoose.connect(process.env.MDB_CONNECT_STRING);
