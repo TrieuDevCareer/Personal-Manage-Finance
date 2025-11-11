@@ -1,5 +1,5 @@
-import { User } from "./models/userModel";
-import commonUtil from "./commonUtils";
+import { User } from "../models/userModel";
+import commonUtil from "../commonUtils";
 
 export default async function handler(req, res) {
     try {
