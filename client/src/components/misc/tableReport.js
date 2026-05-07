@@ -37,50 +37,32 @@ function TableReport({ page }) {
       totalExpense += i.expenseSite;
       i.different =
         i.incomeSite - i.expenseSite !== 0
-          ? (i.incomeSite - i.expenseSite).toLocaleString("it-IT", {
-              style: "currency",
-              currency: "VND",
-            })
+          ? (i.incomeSite - i.expenseSite).toLocaleString("vi-VN") + " VND"
           : "-";
       i.incomeSite =
         i.incomeSite !== 0
-          ? i.incomeSite.toLocaleString("it-IT", {
-              style: "currency",
-              currency: "VND",
-            })
+          ? i.incomeSite.toLocaleString("vi-VN") + " VND"
           : "-";
       i.expenseSite =
         i.expenseSite !== 0
-          ? i.expenseSite.toLocaleString("it-IT", {
-              style: "currency",
-              currency: "VND",
-            })
+          ? i.expenseSite.toLocaleString("vi-VN") + " VND"
           : "-";
       return i.incomeSite, i.expenseSite, i.different;
     });
     setResultData(result.data);
     setTotalDifferent(
       totalIncome - totalExpense !== 0
-        ? (totalIncome - totalExpense).toLocaleString("it-IT", {
-            style: "currency",
-            currency: "VND",
-          })
+        ? (totalIncome - totalExpense).toLocaleString("vi-VN") + " VND"
         : "-"
     );
     setTotalIncome(
       totalIncome !== 0
-        ? totalIncome.toLocaleString("it-IT", {
-            style: "currency",
-            currency: "VND",
-          })
+        ? totalIncome.toLocaleString("vi-VN") + " VND"
         : "-"
     );
     setTotalExpense(
       totalExpense !== 0
-        ? totalExpense.toLocaleString("it-IT", {
-            style: "currency",
-            currency: "VND",
-          })
+        ? totalExpense.toLocaleString("vi-VN") + " VND"
         : "-"
     );
   }

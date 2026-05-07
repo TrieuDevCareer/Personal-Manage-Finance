@@ -83,10 +83,7 @@ function AreaChartType({ data, pageChart }) {
                             ": " +
                             payload[payload.length - i].payload[
                               payload[payload.length - i].dataKey
-                            ].toLocaleString("it-IT", {
-                              style: "currency",
-                              currency: "VND",
-                            })}
+                            ].toLocaleString("vi-VN") + " VND"}
                         </div>
                       </>
                     );
@@ -112,10 +109,7 @@ function AreaChartType({ data, pageChart }) {
                             ": " +
                             payload[payload.length - i].payload[
                               payload[payload.length - i].dataKey
-                            ].toLocaleString("it-IT", {
-                              style: "currency",
-                              currency: "VND",
-                            })}
+                            ].toLocaleString("vi-VN") + " VND"}
                         </div>
                       </>
                     );
@@ -131,10 +125,7 @@ function AreaChartType({ data, pageChart }) {
                             ": " +
                             payload[payload.length - i].payload[
                               payload[payload.length - i].dataKey
-                            ].toLocaleString("it-IT", {
-                              style: "currency",
-                              currency: "VND",
-                            })}
+                            ].toLocaleString("vi-VN") + " VND"}
                         </div>
                       </>
                     );
@@ -153,20 +144,14 @@ function AreaChartType({ data, pageChart }) {
                       " - " +
                       data[label].TKContent +
                       ": " +
-                      payload[3].value.toLocaleString("it-IT", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
+                      payload[3].value.toLocaleString("vi-VN") + " VND"}
                   </div>
                   <div className="desc DT">
                     {payload[2].dataKey +
                       "  - " +
                       data[label].DTContent +
                       ": " +
-                      payload[2].value.toLocaleString("it-IT", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
+                      payload[2].value.toLocaleString("vi-VN") + " VND"}
                   </div>
                 </>
               )}
@@ -175,20 +160,14 @@ function AreaChartType({ data, pageChart }) {
                   " - " +
                   data[label].TDContent +
                   ": " +
-                  payload[1].value.toLocaleString("it-IT", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
+                  payload[1].value.toLocaleString("vi-VN") + " VND"}
               </div>
               <div className="desc SO">
                 {payload[0].dataKey +
                   " - " +
                   data[label].SOContent +
                   ": " +
-                  payload[0].value.toLocaleString("it-IT", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
+                  payload[0].value.toLocaleString("vi-VN") + " VND"}
               </div>
             </div>
           );

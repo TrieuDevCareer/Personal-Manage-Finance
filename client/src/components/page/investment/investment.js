@@ -73,10 +73,7 @@ function Investment({ isCheck, setIsCheck }) {
         style: "currency",
         currency: "USD",
       });
-      i.investMoney = i.investMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
+      i.investMoney = i.investMoney.toLocaleString("vi-VN") + " VND";
       i.investSeUSDT = i.investSeUSDT.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
@@ -85,14 +82,8 @@ function Investment({ isCheck, setIsCheck }) {
         style: "currency",
         currency: "USD",
       });
-      i.investReMoney = i.investReMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      i.investResult = i.investResult.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
+      i.investReMoney = i.investReMoney.toLocaleString("vi-VN") + " VND";
+      i.investResult = i.investResult.toLocaleString("vi-VN") + " VND";
       let today = i.investDate;
       today = Date.parse(today);
       i.investDate = new Date(today).toISOString().split("T")[0];

@@ -16,16 +16,21 @@ const StatusSav = [
   },
 ];
 
+const getTodayDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
 function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestmentData }) {
   const [coinLstID, setCoinLstID] = useState("");
   const [coinName, setCoinName] = useState("");
-  const [investDate, setInvestDate] = useState(null);
+  const [investDate, setInvestDate] = useState(getTodayDate());
   const [investExRate, setInvestExRate] = useState(0);
   const [investMoney, setInvestMoney] = useState(0);
   const [investNumCoin, setInvestNumCoin] = useState(0);
   const [investReUSDT, setInvestReUSDT] = useState(0);
   const [investStatus, setInvestStatus] = useState(false);
-  const [investSeDate, setInvestSeDate] = useState(null);
+  const [investSeDate, setInvestSeDate] = useState(getTodayDate());
   const [investSeMoney, setInvestSeMoney] = useState(0);
   const [investSeExRate, setInvestSeExRate] = useState(0);
   const [investSeUSDT, setInvestSeUSDT] = useState(0);
@@ -160,7 +165,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
           ? editInvestmentData.coinLstID + " - " + editInvestmentData.coinName
           : ""
       );
-      setInvestDate(editInvestmentData.investDate ? editInvestmentData.investDate : null);
+      setInvestDate(editInvestmentData.investDate ? editInvestmentData.investDate : getTodayDate());
       setInvestExRate(
         editInvestmentData.investExRate ? currencyStringToInt(editInvestmentData.investExRate) : 0
       );
@@ -170,7 +175,7 @@ function InvestmentEditor({ getInvestments, setInvestmentEditorOpen, editInvestm
       setInvestNumCoin(editInvestmentData.investNumCoin ? editInvestmentData.investNumCoin : 0);
       setInvestReUSDT(editInvestmentData.investReUSDT ? editInvestmentData.investReUSDT : 0);
       setInvestStatus(editInvestmentData.investStatus ? editInvestmentData.investStatus : false);
-      setInvestSeDate(editInvestmentData.investSeDate ? editInvestmentData.investSeDate : null);
+      setInvestSeDate(editInvestmentData.investSeDate ? editInvestmentData.investSeDate : getTodayDate());
       setInvestSeMoney(editInvestmentData.investSeMoney ? editInvestmentData.investSeMoney : 0);
       setInvestSeExRate(
         editInvestmentData.investSeExRate

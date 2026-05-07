@@ -30,10 +30,7 @@ function Income({ isCheck, setIsCheck }) {
   async function getIncomes() {
     const incomes = await Axios.get(`${domain}/income/`);
     incomes.data.map((i) => {
-      i.incMoney = i.incMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
+      i.incMoney = i.incMoney.toLocaleString("vi-VN") + " VND";
       let today = i.incDate;
       today = Date.parse(today);
       i.incDate = new Date(today).toISOString().split("T")[0];

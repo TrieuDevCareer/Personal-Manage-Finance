@@ -57,26 +57,11 @@ function Saving({ isCheck, setIsCheck }) {
   async function getSavings() {
     const savings = await Axios.get(`${domain}/saving/`);
     savings.data.map((i) => {
-      i.savMoney = i.savMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      i.savInteretMoney = i.savInteretMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      i.savTotalMoney = i.savTotalMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      i.savTRealMoney = i.savTRealMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
-      i.savRealInterMoney = i.savRealInterMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
+      i.savMoney = i.savMoney.toLocaleString("vi-VN") + " VND";
+      i.savInteretMoney = i.savInteretMoney.toLocaleString("vi-VN") + " VND";
+      i.savTotalMoney = i.savTotalMoney.toLocaleString("vi-VN") + " VND";
+      i.savTRealMoney = i.savTRealMoney.toLocaleString("vi-VN") + " VND";
+      i.savRealInterMoney = i.savRealInterMoney.toLocaleString("vi-VN") + " VND";
       let today = i.savDate;
       today = Date.parse(today);
       i.savDate = new Date(today).toISOString().split("T")[0];

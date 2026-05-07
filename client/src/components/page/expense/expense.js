@@ -32,10 +32,7 @@ function Expense({ isCheck, setIsCheck }) {
   async function getExpenses() {
     const expenses = await Axios.get(`${domain}/expense/`);
     expenses.data.map((i) => {
-      i.expMoney = i.expMoney.toLocaleString("it-IT", {
-        style: "currency",
-        currency: "VND",
-      });
+      i.expMoney = i.expMoney.toLocaleString("vi-VN") + " VND";
       let today = i.expDate;
       today = Date.parse(today);
       i.expDate = new Date(today).toISOString().split("T")[0];

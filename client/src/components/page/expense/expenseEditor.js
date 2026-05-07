@@ -6,10 +6,15 @@ import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage";
 import "./expenseEditor.scss";
 
+const getTodayDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
 function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
   const [exelstCode, setExelstCode] = useState("");
   const [exeLstContent, setExeLstContent] = useState("");
-  const [expDate, setIncDate] = useState(null);
+  const [expDate, setIncDate] = useState(getTodayDate());
   const [expDetail, setIncDetail] = useState("");
   const [expMoney, setIncMoney] = useState(0);
   const [expenseListData, setExpenseListData] = useState([]);
@@ -77,7 +82,7 @@ function ExpenseEditor({ getExpenses, setExpenseEditorOpen, editExpenseData }) {
     if (editExpenseData) {
       setExelstCode(editExpenseData.exelstCode ? editExpenseData.exelstCode : "");
       setExeLstContent(editExpenseData.exeLstContent ? editExpenseData.exeLstContent : "");
-      setIncDate(editExpenseData.expDate ? editExpenseData.expDate : null);
+      setIncDate(editExpenseData.expDate ? editExpenseData.expDate : getTodayDate());
       setIncDetail(editExpenseData.expDetail ? editExpenseData.expDetail : "");
       setIncMoney(editExpenseData.expMoney ? currencyStringToInt(editExpenseData.expMoney) : 0);
       setIsLockContent(false);

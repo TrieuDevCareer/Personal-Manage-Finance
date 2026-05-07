@@ -6,11 +6,16 @@ import domain from "../../../util/domain.js";
 import ErrorMessage from "../../misc/ErrorMessage";
 import "./incomeEditor.scss";
 
+const getTodayDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
 function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData, user }) {
   const [inlstCode, setInlstCode] = useState("");
   const [incSOType, setIncSOType] = useState("CD");
   const [inLstContent, setInLstContent] = useState("");
-  const [incDate, setIncDate] = useState(null);
+  const [incDate, setIncDate] = useState(getTodayDate());
   const [incDetail, setIncDetail] = useState("");
   const [incMoney, setIncMoney] = useState(0);
   const [incomeListData, setIncomeListData] = useState([]);
@@ -105,7 +110,7 @@ function IncomeEditor({ getIncomes, setIncomeEditorOpen, editIncomeData, user })
     if (editIncomeData) {
       setInlstCode(editIncomeData.inlstCode ? editIncomeData.inlstCode : "");
       setInLstContent(editIncomeData.inLstContent ? editIncomeData.inLstContent : "");
-      setIncDate(editIncomeData.incDate ? editIncomeData.incDate : null);
+      setIncDate(editIncomeData.incDate ? editIncomeData.incDate : getTodayDate());
       setIncDetail(editIncomeData.incDetail ? editIncomeData.incDetail : "");
       setIncMoney(editIncomeData.incMoney ? currencyStringToInt(editIncomeData.incMoney) : 0);
       setIsLockContent(false);

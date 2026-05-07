@@ -17,10 +17,15 @@ const StatusSav = [
   },
 ];
 
+const getTodayDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
 function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   const [bnkLstID, setBnkLstID] = useState("");
   const [bnkName, setBnkName] = useState("");
-  const [savDate, setSavDate] = useState(null);
+  const [savDate, setSavDate] = useState(getTodayDate());
   const [savMoney, setSavMoney] = useState(0);
   const [savMonth, setSavMonth] = useState(0);
   const [savInteret, setSavInteret] = useState(0);
@@ -127,7 +132,7 @@ function SavingEditor({ getSavings, setSavingEditorOpen, editSavingData }) {
   useEffect(() => {
     getBankLists();
     if (editSavingData) {
-      setSavDate(editSavingData.savDate ? editSavingData.savDate : null);
+      setSavDate(editSavingData.savDate ? editSavingData.savDate : getTodayDate());
       setBnkLstID(editSavingData.bnkLstID ? editSavingData.bnkLstID : "");
       setBnkName(
         editSavingData.bnkName ? editSavingData.bnkLstID + " - " + editSavingData.bnkName : ""

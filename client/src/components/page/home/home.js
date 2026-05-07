@@ -44,22 +44,10 @@ function Home() {
   }
   async function getUserData() {
     const usersData = await Axios.get(`${domain}/auth`);
-    usersData.data.walletLife = usersData.data.walletLife.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletInvest = usersData.data.walletInvest.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletSaving = usersData.data.walletSaving.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
-    usersData.data.walletFree = usersData.data.walletFree.toLocaleString("it-IT", {
-      style: "currency",
-      currency: "VND",
-    });
+    usersData.data.walletLife = usersData.data.walletLife.toLocaleString("vi-VN") + " VND";
+    usersData.data.walletInvest = usersData.data.walletInvest.toLocaleString("vi-VN") + " VND";
+    usersData.data.walletSaving = usersData.data.walletSaving.toLocaleString("vi-VN") + " VND";
+    usersData.data.walletFree = usersData.data.walletFree.toLocaleString("vi-VN") + " VND";
     setUserData(usersData.data);
   }
 
