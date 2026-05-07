@@ -1,1 +1,2 @@
+/api/*  https://personal-manage-finance.vercel.app/:splat  200!
 /*  /index.html  200
