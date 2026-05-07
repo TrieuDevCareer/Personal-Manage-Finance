@@ -22,15 +22,21 @@ const ERRORS = {
 //-------------------------------- INTERNAL FUNCTION --------------------------------//
 
 /**
- * Schedule daily reminder email at 22:00 Asia/Ho_Chi_Minh time
+ * Schedule daily reminder email at 09:42 Asia/Ho_Chi_Minh time
  */
 schedule.scheduleJob(
   { hour: 9, minute: 42, tz: "Asia/Ho_Chi_Minh" },
   async () => {
-    const users = await User.find({ verifyMail: true });
-    for (const user of users) {
-      console.log(`Sending reminder email to ${user.email}`);
-      await commonUtil.sendReminderEmail(user.email, user.userName);
+    try {
+      const users = await User.find({ verifyMail: true });
+      const emailPromises = users.map((user) => {
+        console.log(`Sending reminder email to ${user.email}`);
+        return commonUtil.sendReminderEmail(user.email, user.userName);
+      });
+      await Promise.allSettled(emailPromises);
+      console.log("Daily reminders processed.");
+    } catch (error) {
+      console.error("Error running daily reminder cron job:", error);
     }
   }
 );
@@ -297,7 +303,7 @@ router.get("/:token", async (req, res) => {
  * Send reminder emails to all verified users
  * @route GET /api/reminders
  */
-router.get("/api/sendReminder", async (req, res) => {
+router.get("/api/sendReminder", auth, async (req, res) => {
   try {
     const users = await User.find({ verifyMail: true });
     for (const user of users) {

@@ -2,143 +2,44 @@ const router = require("express").Router();
 const Income = require("../models/incomeModel");
 const Expense = require("../models/expenseModel");
 const Saving = require("../models/savingModel");
+const Investment = require("../models/investmentModel");
 const User = require("../models/userModel");
 const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
-
-const handleMultipleResults = (res, results) => {
-  const hasErrors = results.some((result) => result.status !== 200);
-
-  if (!hasErrors) {
-    const messages = results
-      .filter((r) => r.message)
-      .map((r) => r.message)
-      .join(" và ");
-    return res.json(messages || "Thao tác thành công");
-  }
-
-  const errorResult = results.find((r) => r.status !== 200);
-  return res.status(errorResult.status).json({
-    errorMessage: errorResult.message || "Hãy liên hệ nhà phát triễn ứng để xử lý",
-  });
-};
 
 // Data processing functions
 const processMonthlyData = async (req) => {
   const resultData = new Array(12).fill().map(() => ({ incomeSite: 0, expenseSite: 0 }));
 
-  // Fetch all data in parallel
+  // Use lean() for performance and fix the Investment model bug
   const [aIncomeData, aExpenseData, aSavingData, aInvestData] = await Promise.all([
-    Income.find({ user: req.user }),
-    Expense.find({ user: req.user }),
-    Saving.find({ user: req.user, savStatus: false }),
-    Saving.find({ user: req.user, investStatus: false }),
+    Income.find({ user: req.user }).lean(),
+    Expense.find({ user: req.user }).lean(),
+    Saving.find({ user: req.user, savStatus: false }).lean(),
+    Investment.find({ user: req.user, investStatus: false }).lean(),
   ]);
 
-  // Process income data
   aIncomeData.forEach((income) => {
     const month = income.incDate.getMonth();
     resultData[month].incomeSite += income.incMoney;
   });
 
-  // Process expense data
   aExpenseData.forEach((expense) => {
     const month = expense.expDate.getMonth();
     resultData[month].expenseSite += expense.expMoney;
   });
 
-  // Process saving data
   aSavingData.forEach((saving) => {
     const month = saving.savDate.getMonth();
     resultData[month].expenseSite += saving.savMoney;
   });
 
-  // Process investment data
   aInvestData.forEach((invest) => {
     const month = invest.investDate.getMonth();
     resultData[month].expenseSite += invest.investMoney;
   });
 
   return resultData;
-};
-
-const filterIncomeData = (data, filters) => {
-  const { date, month, capitalSource, contentData } = filters;
-
-  // Check if item matches filter criteria
-  const matches = (item, field, values, transform = (v) => v) => {
-    return !values || values.length === 0 || values.includes(transform(item[field]));
-  };
-
-  return data.filter(
-    (item) =>
-      matches(item, "incDate", date, (d) =>
-        d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString()
-      ) &&
-      matches(item, "incDate", month, (d) => (d.getMonth() + 1).toString()) &&
-      matches(item, "inlstCode", capitalSource) &&
-      (!contentData ||
-        contentData.length === 0 ||
-        contentData.some(
-          (keyword) => keyword.includes(item.inlstCode) && keyword.includes(item.inLstContent)
-        ))
-  );
-};
-
-const groupAndReduceIncomeData = (filteredData) => {
-  // Group data by code
-  const codeCategories = ["SO", "TD", "DT", "TK"];
-  const dataByCode = codeCategories.reduce((acc, code) => {
-    acc[code] = [];
-    return acc;
-  }, {});
-
-  filteredData.forEach((item) => {
-    if (dataByCode[item.inlstCode]) {
-      dataByCode[item.inlstCode].push(item);
-    }
-  });
-
-  // Reduce data within each category
-  const reduceData = (data) => {
-    return data.reduce((acc, current) => {
-      const existing = acc.find(
-        (item) => item.inlstCode === current.inlstCode && item.inLstContent === current.inLstContent
-      );
-
-      if (existing) {
-        existing.incMoney += current.incMoney;
-      } else {
-        acc.push({ ...current._doc });
-      }
-
-      return acc;
-    }, []);
-  };
-
-  // Apply reduction to each category
-  const reducedData = {};
-  codeCategories.forEach((code) => {
-    reducedData[code] = reduceData(dataByCode[code]);
-  });
-
-  return reducedData;
-};
-
-const formatIncomeReport = (reducedData) => {
-  const maxLength = Math.max(...Object.values(reducedData).map((arr) => arr.length));
-
-  return new Array(maxLength).fill().map((_, i) => ({
-    name: i + 1,
-    "Nguồn sống": reducedData.SO[i]?.incMoney || 0,
-    "Tiết kiệm": reducedData.TK[i]?.incMoney || 0,
-    "Đầu tư": reducedData.DT[i]?.incMoney || 0,
-    "Tự do": reducedData.TD[i]?.incMoney || 0,
-    SOContent: reducedData.SO[i]?.inLstContent || "",
-    TKContent: reducedData.TK[i]?.inLstContent || "",
-    DTContent: reducedData.DT[i]?.inLstContent || "",
-    TDContent: reducedData.TD[i]?.inLstContent || "",
-  }));
 };
 
 // Route handlers
@@ -165,10 +66,69 @@ router.get("/reporttotal", auth, async (req, res) => {
 // Get Income Data report list
 router.post("/reportincome", auth, async (req, res) => {
   try {
-    const aIncomeData = await Income.find({ user: req.user });
-    const filteredData = filterIncomeData(aIncomeData, req.body);
-    const reducedData = groupAndReduceIncomeData(filteredData);
-    const resultData = formatIncomeReport(reducedData);
+    const { date, month, capitalSource, contentData } = req.body;
+    
+    // Lean query for performance
+    const aIncomeData = await Income.find({ user: req.user }).lean();
+
+    const filteredData = aIncomeData.filter((item) => {
+      const dayMatches = !date || date.length === 0 || 
+        date.includes(item.incDate.getDate() < 10 ? "0" + item.incDate.getDate().toString() : item.incDate.getDate().toString());
+
+      const monthMatches = !month || month.length === 0 || 
+        month.includes((item.incDate.getMonth() + 1).toString());
+
+      const sourceMatches = !capitalSource || capitalSource.length === 0 || 
+        capitalSource.includes(item.inlstCode);
+
+      const contentMatches = !contentData || contentData.length === 0 || 
+        contentData.some((keyword) => keyword.includes(item.inlstCode) && keyword.includes(item.inLstContent));
+
+      return dayMatches && monthMatches && sourceMatches && contentMatches;
+    });
+
+    // O(N) grouping using Maps
+    const maps = {
+      "SO": new Map(),
+      "TD": new Map(),
+      "DT": new Map(),
+      "TK": new Map()
+    };
+
+    filteredData.forEach((item) => {
+      const map = maps[item.inlstCode];
+      if (map) {
+        const key = item.inLstContent;
+        if (map.has(key)) map.get(key).incMoney += item.incMoney;
+        else map.set(key, { ...item });
+      }
+    });
+
+    const reducedData = {
+      SO: Array.from(maps["SO"].values()),
+      TD: Array.from(maps["TD"].values()),
+      DT: Array.from(maps["DT"].values()),
+      TK: Array.from(maps["TK"].values())
+    };
+
+    const maxLength = Math.max(
+      reducedData.SO.length,
+      reducedData.TD.length,
+      reducedData.DT.length,
+      reducedData.TK.length
+    );
+
+    const resultData = new Array(maxLength).fill().map((_, i) => ({
+      name: i + 1,
+      "Nguồn sống": reducedData.SO[i]?.incMoney || 0,
+      "Tiết kiệm": reducedData.TK[i]?.incMoney || 0,
+      "Đầu tư": reducedData.DT[i]?.incMoney || 0,
+      "Tự do": reducedData.TD[i]?.incMoney || 0,
+      SOContent: reducedData.SO[i]?.inLstContent || "",
+      TKContent: reducedData.TK[i]?.inLstContent || "",
+      DTContent: reducedData.DT[i]?.inLstContent || "",
+      TDContent: reducedData.TD[i]?.inLstContent || "",
+    }));
 
     return res.json({ resultData });
   } catch (error) {
@@ -187,7 +147,7 @@ router.post("/", auth, async (req, res) => {
       commonUtil.updateWalletAfterCreation(req, res, inlstCode, parseInt(incMoney), User),
     ]);
 
-    return handleMultipleResults(res, results);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -211,7 +171,7 @@ router.put("/:id", auth, async (req, res) => {
       ),
     ]);
 
-    return handleMultipleResults(res, results);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -228,7 +188,7 @@ router.delete("/:id/", auth, async (req, res) => {
       commonUtil.updateWalletBatch(req, "inlstCode", "incMoney", data, User),
     ]);
 
-    return handleMultipleResults(res, results);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }

@@ -5,48 +5,10 @@ const auth = require("../middleware/auth");
 const commonUtil = require("../commonUtils");
 
 //-------------------------------- CONSTANTS --------------------------------//
-const CURRENCY_FORMAT = {
-  style: "currency",
-  currency: "VND",
-  locale: "it-IT",
-};
 
 const RENDER_COLORS = ["#8884d8", "#ffc658", "#ff007f", "#82ca9d"];
 
 //-------------------------------- INTERNAL FUNCTION --------------------------------//
-
-/**
- * format amount to currency string
- * @param {*} amount 
- * @returns 
- */
-const formatCurrency = (amount) => {
-  return amount.toLocaleString(CURRENCY_FORMAT.locale, {
-    style: CURRENCY_FORMAT.style,
-    currency: CURRENCY_FORMAT.currency,
-  });
-};
-
-/**
- * process operation result for entity and wallet updates
- * @param {*} res 
- * @param {*} entityResult 
- * @param {*} walletResult 
- * @returns 
- */
-const processOperationResult = (res, entityResult, walletResult) => {
-  if (entityResult.status === 200 && walletResult.status === 200) {
-    return res.json(`${entityResult.message} và ${walletResult.message}`);
-  }
-
-  if (entityResult.status !== 200 && walletResult.status === 200) {
-    return res.status(400).json({ errorMessage: entityResult.message });
-  }
-
-  return res.status(400).json({
-    errorMessage: "Hãy liên hệ nhà phát triễn ứng để xử lý",
-  });
-};
 
 //-------------------------------- ROUTES --------------------------------//
 
@@ -78,8 +40,8 @@ router.get("/reporttotaldata", auth, async (req, res) => {
       iAmountOfInterest: 0,
     };
 
-    const activeSavings = await Saving.find({ user: req.user, savStatus: false });
-    const userLogin = await User.findById(req.user);
+    const activeSavings = await Saving.find({ user: req.user, savStatus: false }).lean();
+    const userLogin = await User.findById(req.user).lean();
 
     // Calculate totals from active savings
     activeSavings.forEach((item) => {
@@ -96,11 +58,11 @@ router.get("/reporttotaldata", auth, async (req, res) => {
 
     // Format currency values
     const formattedData = {
-      iReportStartMon: formatCurrency(resultData.iReportStartMon),
-      iReportTotalMon: formatCurrency(resultData.iReportTotalMon),
-      iUnsavedAmount: formatCurrency(resultData.iUnsavedAmount),
-      iSavingAmount: formatCurrency(resultData.iSavingAmount),
-      iAmountOfInterest: formatCurrency(resultData.iAmountOfInterest),
+      iReportStartMon: commonUtil.formatCurrency(resultData.iReportStartMon),
+      iReportTotalMon: commonUtil.formatCurrency(resultData.iReportTotalMon),
+      iUnsavedAmount: commonUtil.formatCurrency(resultData.iUnsavedAmount),
+      iSavingAmount: commonUtil.formatCurrency(resultData.iSavingAmount),
+      iAmountOfInterest: commonUtil.formatCurrency(resultData.iAmountOfInterest),
     };
 
     res.json(formattedData);
@@ -118,83 +80,51 @@ router.get("/reporttotaldata", auth, async (req, res) => {
 router.post("/reportsaving", auth, async (req, res) => {
   try {
     const { date, month, bank, status } = req.body;
-    const allSavings = await Saving.find({ user: req.user });
+    const allSavings = await Saving.find({ user: req.user }).lean();
 
-    // Filter functions
-    const matches = (item, field, values, transform = (v) => v) => {
-      return !values || values.length === 0 || values.includes(transform(item[field]));
-    };
-
-    const dateToDay = (d) =>
-      d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString();
+    const dateToDay = (d) => d.getDate() < 10 ? "0" + d.getDate().toString() : d.getDate().toString();
     const dateToMonth = (d) => (d.getMonth() + 1).toString();
 
-    const filterData = (item) => {
-      return (
-        matches(item, "savDate", date, dateToDay) &&
-        matches(item, "savDate", month, dateToMonth) &&
-        matches(item, "bnkName", bank) &&
-        (!status ||
-          status.length === 0 ||
-          status.some((keyword) =>
-            keyword.includes(item.savStatus ? "Đã rút tiết kiệm" : "Đang gửi tiết kiệm")
-          ))
+    const filteredData = allSavings.filter((item) => {
+      const dateMatches = !date || date.length === 0 || date.includes(dateToDay(item.savDate));
+      const monthMatches = !month || month.length === 0 || month.includes(dateToMonth(item.savDate));
+      const bankMatches = !bank || bank.length === 0 || bank.includes(item.bnkName);
+      const statusMatches = !status || status.length === 0 || status.some((keyword) =>
+        keyword.includes(item.savStatus ? "Đã rút tiết kiệm" : "Đang gửi tiết kiệm")
       );
-    };
+      
+      return dateMatches && monthMatches && bankMatches && statusMatches;
+    });
 
-    const filteredData = allSavings.filter(filterData);
     const activeSavings = allSavings.filter((i) => i.savStatus === false);
 
-    // Group data by bank name
-    const groupDataByBank = (data) => {
-      const result = {};
-      data.forEach((item) => {
-        if (!result[item.bnkName]) {
-          result[item.bnkName] = [];
-        }
-        result[item.bnkName].push(item);
-      });
-      return result;
-    };
+    // O(N) grouping using Maps
+    const reducedDataMap = new Map();
+    const pieDataMap = new Map();
 
-    const dataByBank = groupDataByBank(filteredData);
-    const pieDataByBank = groupDataByBank(activeSavings);
-
-    // Reduce function to consolidate data
-    const reduceData = (data) => {
-      return data.reduce((acc, current) => {
-        const existing = acc.find(
-          (item) => item.bnkLstID === current.bnkLstID && item.bnkName === current.bnkName
-        );
-
-        if (existing) {
-          existing.savMoney += current.savMoney;
-          existing.savInteretMoney += current.savInteretMoney;
-          existing.savTotalMoney += current.savTotalMoney;
-          existing.savTRealMoney += current.savTRealMoney;
-          existing.savRealInterMoney += current.savRealInterMoney;
-        } else {
-          acc.push({ ...current._doc });
-        }
-
-        return acc;
-      }, []);
-    };
-
-    // Reduce each bank group
-    const reduceBankGroups = (groups) => {
-      const reducedGroups = {};
-      for (const [key, value] of Object.entries(groups)) {
-        reducedGroups[key] = reduceData(value)[0];
+    filteredData.forEach(item => {
+      if (reducedDataMap.has(item.bnkName)) {
+        const existing = reducedDataMap.get(item.bnkName);
+        existing.savMoney += item.savMoney;
+        existing.savInteretMoney += item.savInteretMoney;
+        existing.savTotalMoney += item.savTotalMoney;
+        existing.savTRealMoney += item.savTRealMoney;
+        existing.savRealInterMoney += item.savRealInterMoney;
+      } else {
+        reducedDataMap.set(item.bnkName, { ...item });
       }
-      return reducedGroups;
-    };
+    });
 
-    const reducedData = reduceBankGroups(dataByBank);
-    const reducedPieData = reduceBankGroups(pieDataByBank);
+    activeSavings.forEach(item => {
+      if (pieDataMap.has(item.bnkName)) {
+        pieDataMap.get(item.bnkName).savMoney += item.savMoney;
+      } else {
+        pieDataMap.set(item.bnkName, { ...item });
+      }
+    });
 
     // Prepare table data
-    const bankNames = Object.keys(reducedData);
+    const bankNames = Array.from(reducedDataMap.keys());
     const emptyRow = {
       name: "",
       ...bankNames.reduce((acc, key) => ({ ...acc, [key]: 0 }), {}),
@@ -210,7 +140,7 @@ router.post("/reportsaving", auth, async (req, res) => {
       { ...emptyRow },
     ];
 
-    for (const [key, value] of Object.entries(reducedData)) {
+    for (const [key, value] of reducedDataMap.entries()) {
       resultData[1][key] = value.savMoney;
       resultData[2][key] = value.savTotalMoney;
       resultData[3][key] = value.savTRealMoney;
@@ -219,7 +149,7 @@ router.post("/reportsaving", auth, async (req, res) => {
     }
 
     // Prepare pie chart data
-    const pieResultData = Object.entries(reducedData).map(([key, value], index) => ({
+    const pieResultData = Array.from(reducedDataMap.entries()).map(([key, value], index) => ({
       label: key,
       value: value.savMoney,
       color: RENDER_COLORS[(index + 1) % RENDER_COLORS.length],
@@ -227,7 +157,7 @@ router.post("/reportsaving", auth, async (req, res) => {
 
     res.json({ resultData, pieResultData });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -239,50 +169,21 @@ router.post("/reportsaving", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
   try {
     const {
-      bnkLstID,
-      bnkName,
-      savDate,
-      savMoney,
-      savMonth,
-      savInteret,
-      savInteretMoney,
-      savTotalMoney,
-      savStatus,
-      savTRealMoney,
-      savRealInterMoney,
+      bnkLstID, bnkName, savDate, savMoney, savMonth, savInteret, savInteretMoney,
+      savTotalMoney, savStatus, savTRealMoney, savRealInterMoney,
     } = req.body;
 
     const savingData = {
-      bnkLstID,
-      bnkName,
-      savDate,
-      savMoney,
-      savMonth,
-      savInteret,
-      savInteretMoney,
-      savTotalMoney,
-      savStatus,
-      savTRealMoney,
-      savRealInterMoney,
+      bnkLstID, bnkName, savDate, savMoney, savMonth, savInteret, savInteretMoney,
+      savTotalMoney, savStatus, savTRealMoney, savRealInterMoney,
     };
 
-    const savingResult = await commonUtil.createData(
-      req,
-      res,
-      savingData,
-      Saving,
-      "Bảng tiết kiệm"
-    );
+    const results = await Promise.all([
+      commonUtil.createData(req, res, savingData, Saving, "Bảng tiết kiệm"),
+      commonUtil.updateWalletAfterCreation(req, res, "TK", -parseInt(savMoney), User)
+    ]);
 
-    const walletResult = await commonUtil.updateWalletAfterCreation(
-      req,
-      res,
-      "TK",
-      -parseInt(savMoney),
-      User
-    );
-
-    processOperationResult(res, savingResult, walletResult);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -296,57 +197,26 @@ router.post("/", auth, async (req, res) => {
 router.put("/:id", auth, async (req, res) => {
   try {
     const {
-      bnkLstID,
-      bnkName,
-      savDate,
-      savMoney,
-      savMonth,
-      savInteret,
-      savInteretMoney,
-      savTotalMoney,
-      savStatus,
-      savTRealMoney,
-      savRealInterMoney,
-      savDMoney,
+      bnkLstID, bnkName, savDate, savMoney, savMonth, savInteret, savInteretMoney,
+      savTotalMoney, savStatus, savTRealMoney, savRealInterMoney, savDMoney,
     } = req.body;
 
     const savingData = {
-      bnkLstID,
-      bnkName,
-      savDate,
-      savMoney,
-      savMonth,
-      savInteret,
-      savInteretMoney,
-      savTotalMoney,
-      savStatus,
-      savTRealMoney,
-      savRealInterMoney,
+      bnkLstID, bnkName, savDate, savMoney, savMonth, savInteret, savInteretMoney,
+      savTotalMoney, savStatus, savTRealMoney, savRealInterMoney,
     };
 
     const savingId = req.params.id;
-    const updateAmount = savStatus === true ? parseInt(savTRealMoney) : -parseInt(savDMoney);
+    const updateAmount = savStatus === true ? parseInt(savTRealMoney) : -parseInt(savDMoney || savMoney);
 
-    const savingResult = await commonUtil.updateData(
-      req,
-      res,
-      savingData,
-      Saving,
-      savingId,
-      "Bảng tiết kiệm"
-    );
+    const results = await Promise.all([
+      commonUtil.updateData(req, res, savingData, Saving, savingId, "Bảng tiết kiệm"),
+      commonUtil.updateWalletAfterUpdate(req, res, "TK", updateAmount, User)
+    ]);
 
-    const walletResult = await commonUtil.updateWalletAfterUpdate(
-      req,
-      res,
-      "TK",
-      updateAmount,
-      User
-    );
-
-    processOperationResult(res, savingResult, walletResult);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -360,19 +230,14 @@ router.delete("/:id", auth, async (req, res) => {
     const savingId = req.params.id;
     const data = req.body;
 
-    const savingResult = await commonUtil.deleteData(req, res, Saving, savingId, "Bảng tiết kiệm");
+    const results = await Promise.all([
+      commonUtil.deleteData(req, res, Saving, savingId, "Bảng tiết kiệm"),
+      commonUtil.updateWalletBatch(req, "bnkLstID", "savMoney", data, User)
+    ]);
 
-    const walletResult = await commonUtil.updateWalletBatch(
-      req,
-      "bnkLstID",
-      "savMoney",
-      data,
-      User
-    );
-
-    processOperationResult(res, savingResult, walletResult);
+    return commonUtil.handleMultipleResults(res, results);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ error: error.message });
   }
 });
 
