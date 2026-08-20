@@ -35,9 +35,16 @@ app.use("/saving", require("./routers/savingRouter"));
 app.use("/inbodymetric", require("./routers/bodyMetricsRouter"));
 
 // setup + connect to MongoDB
-try {
-  mongoose.connect(process.env.MDB_CONNECT_STRING);
-  console.log("Connected to MongoDB");
-} catch (error) {
-  return console.error(err);
+if (process.env.MDB_CONNECT_STRING) {
+  mongoose
+    .connect(process.env.MDB_CONNECT_STRING)
+    .then(() => {
+      console.log("Connected to MongoDB successfully!");
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error:", err.message);
+    });
+} else {
+  console.error("MDB_CONNECT_STRING is not defined in environment variables.");
 }
+
