@@ -4,6 +4,12 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const dns = require("dns");
+
+// Force IPv4 resolution for MongoDB SRV DNS lookup in Node 18+ (Vercel Serverless environment)
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder("ipv4first");
+}
 
 // setup express server
 dotenv.config();
@@ -20,7 +26,9 @@ app.use(
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
 
 // setup and access to Router API
 app.use("/auth", require("./routers/userRouter"));
@@ -47,4 +55,7 @@ if (process.env.MDB_CONNECT_STRING) {
 } else {
   console.error("MDB_CONNECT_STRING is not defined in environment variables.");
 }
+
+module.exports = app;
+
 
